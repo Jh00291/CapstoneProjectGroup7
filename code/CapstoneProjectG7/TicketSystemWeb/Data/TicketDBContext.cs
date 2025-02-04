@@ -19,7 +19,7 @@ namespace TicketSystemWeb.Data
                     Title = "First Ticket",
                     Description = "This is a test ticket.",
                     Status = "Open",
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAt = new DateTime(2024, 2, 4, 12, 5, 0, DateTimeKind.Utc),
                     CreatedBy = "Admin"
                 },
                 new Ticket
@@ -28,7 +28,7 @@ namespace TicketSystemWeb.Data
                     Title = "Second Ticket",
                     Description = "Another test ticket.",
                     Status = "In Progress",
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAt = new DateTime(2024, 2, 4, 12, 0, 0, DateTimeKind.Utc),
                     CreatedBy = "User123"
                 }
             );

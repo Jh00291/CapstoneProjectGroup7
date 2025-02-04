@@ -1,22 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using TicketSystemWeb.Data;
 using TicketSystemWeb.Models;
+using System.Linq;
 
 namespace TicketSystemWeb.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly TicketDBContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, TicketDBContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var tickets = _context.Tickets.ToList(); // Fetch all tickets
+            return View(tickets);
         }
-
     }
 }
