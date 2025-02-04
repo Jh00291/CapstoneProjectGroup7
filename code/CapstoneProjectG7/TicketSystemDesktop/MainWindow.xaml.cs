@@ -1,24 +1,28 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using TicketSystemWeb.Data;
+using TicketSystemWeb.Models;
 
 namespace TicketSystemDesktop
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly TicketDBContext _context;
+
         public MainWindow()
         {
             InitializeComponent();
+            _context = new TicketDBContext(new Microsoft.EntityFrameworkCore.DbContextOptions<TicketDBContext>());
+            LoadTickets();
+        }
+
+        private void LoadTickets()
+        {
+            List<Ticket> tickets = _context.Tickets.ToList();
+            TicketsDataGrid.ItemsSource = tickets;
         }
     }
 }
+
+
