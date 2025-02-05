@@ -1,0 +1,74 @@
+
+# Ignore Visual Studio specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build outputs
+bin/
+obj/
+out/
+**/Debug/
+**/Release/
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+project.lock.json
+project.assets.json
+
+# Ignore ASP.NET Core specific files
+appsettings.*.json
+appsettings.json
+Properties/launchSettings.json
+node_modules/
+wwwroot/lib/
+wwwroot/css/
+wwwroot/js/
+dist/
+publish/
+coverage/
+*.db
+*.sqlite
+*.db-shm
+*.db-wal
+
+# Ignore WPF specific files
+Generated_Code/
+
+# Ignore compiled binaries except for external libs
+*.exe
+!lib/**/*.exe
+*.dll
+!lib/**/*.dll
+*.pdb
+*.cache
+*.log
+
+# Ignore Entity Framework migrations
+Migrations/
+*.mdf
+*.ldf
+
+# Ignore Resharper and Rider
+*.DotSettings.user
+.idea/
+*.resharper/
+*.sln.iml
+
+# Ignore compiled code
+*.csproj.user
+*.csproj.nuget.g.props
+*.csproj.nuget.g.targets
+
+# Ignore environment settings
+.env
+secrets.json
+*.key
+*.pem
+
+# Ignore AssemblyInfo and cache files
+**/AssemblyInfo.cs
+**/AssemblyInfoInputs.cache
