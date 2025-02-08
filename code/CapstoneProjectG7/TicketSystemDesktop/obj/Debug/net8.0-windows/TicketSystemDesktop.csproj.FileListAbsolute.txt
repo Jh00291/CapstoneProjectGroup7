@@ -145,11 +145,4 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.pdb
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.genruntimeconfig.cache
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\ref\TicketSystemDesktop.dll
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemWeb.deps.json
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemWeb.runtimeconfig.json
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\appsettings.Development.json
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\appsettings.json
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemWeb.staticwebassets.runtime.json
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemWeb.exe
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemWeb.dll
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemWeb.pdb
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemDesktop.dll.config

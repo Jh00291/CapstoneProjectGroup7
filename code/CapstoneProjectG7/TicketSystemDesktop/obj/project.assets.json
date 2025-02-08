@@ -1608,23 +1608,6 @@
             "rid": "win"
           }
         }
-      },
-      "TicketSystemWeb/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "9.0.1",
-          "Microsoft.EntityFrameworkCore.SqlServer": "9.0.1"
-        },
-        "compile": {
-          "bin/placeholder/TicketSystemWeb.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TicketSystemWeb.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
       }
     }
   },
@@ -4741,11 +4724,6 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
-    },
-    "TicketSystemWeb/1.0.0": {
-      "type": "project",
-      "path": "../TicketSystemWeb/TicketSystemWeb.csproj",
-      "msbuildProject": "../TicketSystemWeb/TicketSystemWeb.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4753,8 +4731,7 @@
       "Microsoft.EntityFrameworkCore >= 9.0.1",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.1",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.1",
-      "Microsoft.EntityFrameworkCore.Tools >= 9.0.1",
-      "TicketSystemWeb >= 1.0.0"
+      "Microsoft.EntityFrameworkCore.Tools >= 9.0.1"
     ]
   },
   "packageFolders": {
@@ -4788,11 +4765,7 @@
       "frameworks": {
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
-          "projectReferences": {
-            "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\TicketSystemWeb.csproj": {
-              "projectPath": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\TicketSystemWeb.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

@@ -8,7 +8,7 @@
         Title="Ticket System" Height="500" Width="900">
 
     <Grid>
-        <DataGrid x:Name="TicketsDataGrid"
+        <DataGrid x:Name="TicketDataGrid"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
