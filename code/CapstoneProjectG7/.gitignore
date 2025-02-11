@@ -17,13 +17,8 @@ out/
 # Ignore NuGet packages
 *.nupkg
 packages/
-project.lock.json
-project.assets.json
 
 # Ignore ASP.NET Core specific files
-appsettings.*.json
-appsettings.json
-Properties/launchSettings.json
 node_modules/
 wwwroot/lib/
 wwwroot/css/
@@ -31,7 +26,6 @@ wwwroot/js/
 dist/
 publish/
 coverage/
-*.db
 *.sqlite
 *.db-shm
 *.db-wal
@@ -47,11 +41,6 @@ Generated_Code/
 *.pdb
 *.cache
 *.log
-
-# Ignore Entity Framework migrations
-Migrations/
-*.mdf
-*.ldf
 
 # Ignore Resharper and Rider
 *.DotSettings.user
