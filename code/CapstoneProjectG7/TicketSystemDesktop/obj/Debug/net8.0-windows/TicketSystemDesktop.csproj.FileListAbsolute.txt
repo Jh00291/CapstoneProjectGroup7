@@ -145,3 +145,4 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.pdb
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.genruntimeconfig.cache
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\ref\TicketSystemDesktop.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemDesktop.dll.config

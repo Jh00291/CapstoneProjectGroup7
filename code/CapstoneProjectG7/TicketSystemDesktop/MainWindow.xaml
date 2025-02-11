@@ -5,8 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicketSystemDesktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Ticket System" Height="500" Width="900">
 
+    <Grid>
+        <DataGrid x:Name="TicketDataGrid"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  Margin="10">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding TicketId}" Width="50"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="150"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="250"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                <DataGridTextColumn Header="Created At" Binding="{Binding CreatedAt}" Width="150"/>
+                <DataGridTextColumn Header="Created By" Binding="{Binding CreatedBy}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
