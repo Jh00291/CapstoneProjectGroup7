@@ -21,7 +21,7 @@ Ensure you have the following installed before setting up the project:
 
 ### 1. Clone the Repository
 ```sh
-git clone https://github.com/your-repo/TicketSystem.git
+[git clone https://github.com/your-repo/TicketSystem.git](https://github.com/Jh00291/CapstoneProjectGroup7.git)
 cd TicketSystem
 ```
 
@@ -29,10 +29,10 @@ cd TicketSystem
 1. Open SQL Server and create a new database named `TicketSystemDB`.
 2. Run the provided SQL script (`database.sql`) to set up the schema and tables.
 3. Update the connection string in `appsettings.json`:
-    ```json
-    "ConnectionStrings": {
-        "DefaultConnection": "Server=YOUR_SERVER;Database=TicketSystemDB;User Id=YOUR_USER;Password=YOUR_PASSWORD;"
-    }
+    ```
+      "ConnectionStrings": {
+        "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=TicketSystemDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+      }
     ```
 
 ### 3. Build and Run the Application
@@ -53,9 +53,3 @@ Once the application is running, you can access it via:
 ```
 http://localhost:[PORT_NUMBER]
 ```
-
-## Contributing
-1. Fork the repository.
-2. Create a new branch for your feature.
-3. Commit your changes and push them.
-4. Open a Pull Request.
