@@ -21,7 +21,7 @@ Ensure you have the following installed before setting up the project:
 
 ### 1. Clone the Repository
 ```sh
-[git clone https://github.com/your-repo/TicketSystem.git](https://github.com/Jh00291/CapstoneProjectGroup7.git)
+clone https://github.com/Jh00291/CapstoneProjectGroup7.git
 cd TicketSystem
 ```
 
