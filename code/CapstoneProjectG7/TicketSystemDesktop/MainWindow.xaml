@@ -28,14 +28,14 @@
 
         <!-- Form to Add Ticket -->
         <StackPanel Orientation="Vertical" Margin="10,370,10,10">
-            <TextBox x:Name="TitleTextBox" PlaceholderText="Title" Margin="5"/>
-            <TextBox x:Name="DescriptionTextBox" PlaceholderText="Description" Margin="5"/>
+            <TextBox x:Name="TitleTextBox" Text="Title..." Margin="5"/>
+            <TextBox x:Name="DescriptionTextBox" Text="Description..." Margin="5"/>
             <ComboBox x:Name="StatusComboBox" Margin="5">
                 <ComboBoxItem Content="Open"/>
                 <ComboBoxItem Content="In Progress"/>
                 <ComboBoxItem Content="Closed"/>
             </ComboBox>
-            <TextBox x:Name="CreatedByTextBox" PlaceholderText="Created By" Margin="5"/>
+            <TextBox x:Name="CreatedByTextBox" Text="Created By..." Margin="5"/>
             <Button Content="Add Ticket" Click="AddTicket_Click" Margin="5"/>
         </StackPanel>
     </Grid>
