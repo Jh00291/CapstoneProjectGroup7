@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicketSystemDesktop"
         mc:Ignorable="d"
-        Title="Ticket System" Height="500" Width="900">
+        Title="Ticket System" Height="600" Width="900">
 
     <Grid>
+        <!-- DataGrid to Display Tickets -->
         <DataGrid x:Name="TicketDataGrid"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
                   IsReadOnly="True"
-                  Margin="10">
+                  Margin="10,10,10,200">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding TicketId}" Width="50"/>
@@ -24,5 +25,18 @@
                 <DataGridTextColumn Header="Created By" Binding="{Binding CreatedBy}" Width="120"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- Form to Add Ticket -->
+        <StackPanel Orientation="Vertical" Margin="10,370,10,10">
+            <TextBox x:Name="TitleTextBox" PlaceholderText="Title" Margin="5"/>
+            <TextBox x:Name="DescriptionTextBox" PlaceholderText="Description" Margin="5"/>
+            <ComboBox x:Name="StatusComboBox" Margin="5">
+                <ComboBoxItem Content="Open"/>
+                <ComboBoxItem Content="In Progress"/>
+                <ComboBoxItem Content="Closed"/>
+            </ComboBox>
+            <TextBox x:Name="CreatedByTextBox" PlaceholderText="Created By" Margin="5"/>
+            <Button Content="Add Ticket" Click="AddTicket_Click" Margin="5"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -132,7 +132,6 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\App.g.cs
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop_MarkupCompile.cache
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop_MarkupCompile.lref
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.g.resources
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.GeneratedMSBuildEditorConfig.editorconfig
