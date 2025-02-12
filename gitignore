@@ -1,11 +1,9 @@
-
 # Ignore Visual Studio specific files
 .vs/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
-*.vsidx
 
 # Ignore build outputs
 bin/
@@ -17,27 +15,12 @@ out/
 # Ignore NuGet packages
 *.nupkg
 packages/
+project.lock.json
+project.assets.json
 
-# Ignore ASP.NET Core specific files
-node_modules/
-wwwroot/lib/
-wwwroot/css/
-wwwroot/js/
-dist/
-publish/
-coverage/
-*.sqlite
-*.db-shm
-*.db-wal
-
-# Ignore WPF specific files
-Generated_Code/
-
-# Ignore compiled binaries except for external libs
+# Ignore WinForms specific files
 *.exe
-!lib/**/*.exe
 *.dll
-!lib/**/*.dll
 *.pdb
 *.cache
 *.log
@@ -46,19 +29,20 @@ Generated_Code/
 *.DotSettings.user
 .idea/
 *.resharper/
-*.sln.iml
 
 # Ignore compiled code
 *.csproj.user
 *.csproj.nuget.g.props
 *.csproj.nuget.g.targets
 
+# Ignore JetBrains Rider and Resharper files
+.idea/
+*.sln.iml
+
 # Ignore environment settings
 .env
-secrets.json
-*.key
-*.pem
 
 # Ignore AssemblyInfo and cache files
 **/AssemblyInfo.cs
 **/AssemblyInfoInputs.cache
+code/TicketApp/tools/.store/dotnet-reportgenerator-globaltool/5.4.3/dotnet-reportgenerator-globaltool/5.4.3/tools/net8.0/any/appsettings.json
