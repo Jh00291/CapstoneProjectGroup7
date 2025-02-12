@@ -8,6 +8,37 @@
     <h1 class="display-4">Ticket List</h1>
 </div>
 
+<!-- Add New Ticket Form -->
+<div class="card mb-4">
+    <div class="card-header">Add a New Ticket</div>
+    <div class="card-body">
+        <form asp-action="AddTicket" method="post">
+            <div class="mb-3">
+                <label for="Title" class="form-label">Title</label>
+                <input type="text" class="form-control" name="Title" required maxlength="100">
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <textarea class="form-control" name="Description" rows="3" required maxlength="500"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="Status" class="form-label">Status</label>
+                <select class="form-control" name="Status" required>
+                    <option value="Open">Open</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="CreatedBy" class="form-label">Created By</label>
+                <input type="text" class="form-control" name="CreatedBy" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Ticket</button>
+        </form>
+    </div>
+</div>
+
+<!-- Display Ticket List -->
 <table class="table table-bordered table-striped">
     <thead>
         <tr>

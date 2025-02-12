@@ -17,10 +17,26 @@ namespace TicketSystemWeb.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var tickets = _context.Tickets.ToList(); // Fetch all tickets
             return View(tickets);
+        }
+
+        [HttpPost]
+        public IActionResult AddTicket(Ticket ticket)
+        {
+            if (ModelState.IsValid)
+            {
+                ticket.CreatedAt = DateTime.UtcNow; // Set creation date
+                _context.Tickets.Add(ticket);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            var tickets = _context.Tickets.ToList();
+            return View("Index", tickets);
         }
     }
 }
