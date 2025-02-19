@@ -1,0 +1,19 @@
+Context – User has an existing login to the system, has the ability to access the database and application.
+
+Primary Flow
+User launches application.
+System presents login screen.
+User inputs given username and password.
+System verifies entered credentials against the database.
+If valid credentials, the system authenticates the user and grants access to the application.
+User is redirected to the manager dashboard.
+User navigates to the "Project Management" section.
+User selects an action: View, Create, or Delete a project.
+If View, system retrieves and displays assigned projects.
+If Create, user inputs project details, assigns a group, and submits. The system creates the project.
+If Delete, user selects a project, confirms deletion, and the system removes the project from the database.
+Alternate Flow(s)
+DELETE PROJECT - FAILURE
+a1 - User attempts to delete a project that has active groups working on it.
+a2 - System prevents deletion and notifies the user to remove assigned groups before deleting.
+
