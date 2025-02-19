@@ -1,0 +1,27 @@
+Context – User has an existing login to the system, has the ability to access the database and application.
+
+Primary Flow 
+User launches application.
+System presents login screen.
+User inputs given username and password.
+System verifies entered credentials against the database.
+If valid credentials, the system authenticates the user and grants access to the application.
+User is redirected to the admin dashboard.
+User navigates to the "Employee Management" section.
+User selects an action: View, Create, or Delete an employee.
+If View, system retrieves and displays employee records.
+If Create, user inputs new employee details, system validates inputs, and creates the employee record.
+If Delete, user selects an employee, confirms deletion, and the system removes the employee from the database.
+System updates the employee list accordingly.
+Alternate Flow(s)
+INVALID USER CREDENTIALS
+a1 - User inputs invalid username or password.
+a2 - System attempts to verify credentials, finds them invalid.
+a3 - System displays an error message, informing the user of invalid credentials.
+a4 - System prompts the user to re-enter credentials.
+Return to step 3.
+
+DELETE EMPLOYEE - FAILURE
+b1 - User attempts to delete an employee who is assigned to an active project or group.
+b2 - System prevents deletion and displays a message explaining why the deletion is restricted.
+b3 - User must reassign or remove the employee from active projects/groups before proceeding.

@@ -1,0 +1,11 @@
+Context – User has an existing login to the system, has the ability to access the database and application.
+
+Primary Flow 
+User launches application.
+System presents login screen.
+User inputs given username and password.
+System verifies entered credentials against the database.
+If valid credentials, the system authenticates the user and grants access to the application.
+User is redirected to the employee dashboard.
+User navigates to the "Groups" section.
+System retrieves and displays groups the employee is part of along with assigned employees.
