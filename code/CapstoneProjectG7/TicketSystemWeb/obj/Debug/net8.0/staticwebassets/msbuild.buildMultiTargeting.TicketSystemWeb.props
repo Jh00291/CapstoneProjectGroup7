@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="..\build\TicketSystemWeb.props" />
+  <Import Project="../build/TicketSystemWeb.props" />
 </Project>

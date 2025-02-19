@@ -1,31 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\drivera3\\source\\repos\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\TicketSystemWeb.csproj": {}
+    "/Users/danielrivera/CS_Capstone/Project/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/TicketSystemWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\drivera3\\source\\repos\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\TicketSystemWeb.csproj": {
+    "/Users/danielrivera/CS_Capstone/Project/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/TicketSystemWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\drivera3\\source\\repos\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\TicketSystemWeb.csproj",
+        "projectUniqueName": "/Users/danielrivera/CS_Capstone/Project/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/TicketSystemWeb.csproj",
         "projectName": "TicketSystemWeb",
-        "projectPath": "C:\\Users\\drivera3\\source\\repos\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\TicketSystemWeb.csproj",
-        "packagesPath": "C:\\Users\\drivera3\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\drivera3\\source\\repos\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\obj\\",
+        "projectPath": "/Users/danielrivera/CS_Capstone/Project/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/TicketSystemWeb.csproj",
+        "packagesPath": "/Users/danielrivera/.nuget/packages/",
+        "outputPath": "/Users/danielrivera/CS_Capstone/Project/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\drivera3\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/danielrivera/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -101,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.307/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
