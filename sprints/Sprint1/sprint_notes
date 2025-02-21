@@ -6,3 +6,17 @@ Project lead must be manager of one of the groups assigned to project
 Some sort of invite to other groups per project 
 
 NO DESKTOP
+
+-----------------------------------------------------------------------
+
+Start use case at process start (AKA update use case scenario)
+Employees can't see employee page - Admin/Manager can ? IDK MAD CONFUSING !!!!!!!!!!!!!!!!!
+Actually be "IN" the project 
+Projects page for only projects im on 
+Employees Page
+Groups Page
+EmployeeGroups need reference to Manager
+Get rid of managers and project managers table 
+Project needs references to Project manager 
+If changing manager is also project lead?
+	-admin needs to be aware that some update will happen to that manager 

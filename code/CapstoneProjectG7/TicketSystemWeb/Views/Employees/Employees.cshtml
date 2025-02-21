@@ -1,0 +1,130 @@
+﻿@model List<TicketSystemWeb.Models.User>
+
+<h2>User List</h2>
+
+<div>
+    <table class="table table-bordered table-striped" id="userTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Email Confirmed</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @foreach (var user in Model)
+            {
+                <tr class="user-row" data-id="@user.Id" data-username="@user.UserName">
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@(user.EmailConfirmed ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn text-white me-2" style="background-color: #6f42c1;" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+            Add User
+        </button>
+        <button id="removeUserBtn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeEmployeeModal" disabled>
+            Remove User
+        </button>
+
+    </div>
+
+    <nav>
+        <ul class="pagination justify-content-center" id="pagination">
+        </ul>
+    </nav>
+</div>
+
+@await Html.PartialAsync("AddEmployee")
+@await Html.PartialAsync("RemoveEmployee")
+
+<style>
+    .selected-row {
+        background-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let removeUserBtn = document.getElementById("removeUserBtn");
+        let selectedUserId = document.getElementById("selectedUserId");
+        let selectedUserName = document.getElementById("selectedUserName");
+
+        // Function to handle row selection
+        document.querySelectorAll(".user-row").forEach(row => {
+            row.addEventListener("click", function () {
+                document.querySelectorAll(".user-row").forEach(r => r.classList.remove("selected-row"));
+                this.classList.add("selected-row");
+                removeUserBtn.removeAttribute("disabled");
+                let userId = this.getAttribute("data-id");
+                let userName = this.getAttribute("data-username");
+                removeUserBtn.setAttribute("data-id", userId);
+                removeUserBtn.setAttribute("data-username", userName);
+            });
+        });
+
+        // Remove User
+        removeUserBtn.addEventListener("click", function () {
+            let userId = this.getAttribute("data-id");
+            let userName = this.getAttribute("data-username");
+
+            if (userId) {
+                selectedUserId.value = userId;
+                selectedUserName.textContent = userName;
+            }
+        });
+
+        // Pagination setup
+        let table = document.getElementById("userTable");
+        let tbody = document.getElementById("tableBody");
+        let pagination = document.getElementById("pagination");
+
+        let rowsPerPage = 10;
+        let rows = tbody.getElementsByTagName("tr");
+        let totalPages = Math.ceil(rows.length / rowsPerPage);
+        let currentPage = 1;
+
+        function showPage(page) {
+            let start = (page - 1) * rowsPerPage;
+            let end = start + rowsPerPage;
+
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].style.display = (i >= start && i < end) ? "" : "none";
+            }
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            pagination.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+                let li = document.createElement("li");
+                li.className = "page-item " + (i === currentPage ? "active" : "");
+                let a = document.createElement("a");
+                a.className = "page-link";
+                a.innerText = i;
+                a.href = "#";
+                a.onclick = function () {
+                    currentPage = i;
+                    showPage(currentPage);
+                    return false;
+                };
+                li.appendChild(a);
+                pagination.appendChild(li);
+            }
+        }
+
+        if (rows.length > rowsPerPage) {
+            showPage(1);
+        }
+    });
+</script>

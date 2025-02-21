@@ -11,11 +11,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<TicketDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<UserDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<UserDBContext>()
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<TicketDBContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -24,10 +21,23 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 4;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<TicketDBContext>();
+    dbContext.Database.Migrate();
+    await InitializeDB.SeedDatabase(services);
+}
 
 if (!app.Environment.IsDevelopment())
 {
