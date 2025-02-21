@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<Employee> _signInManager;
+        private readonly UserManager<Employee> _userManager;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public AccountController(SignInManager<Employee> signInManager, UserManager<Employee> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;

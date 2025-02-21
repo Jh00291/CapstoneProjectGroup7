@@ -46,6 +46,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/AddGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcR3JvdXBzXEFkZEdyb3VwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/RemoveGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcR3JvdXBzXFJlbW92ZUdyb3VwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/ProjectManagement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcUHJvamVjdE1hbmFnZW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/AddProject.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcUHJvamVjdHNcQWRkUHJvamVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/RemoveProject.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcUHJvamVjdHNcUmVtb3ZlUHJvamVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
