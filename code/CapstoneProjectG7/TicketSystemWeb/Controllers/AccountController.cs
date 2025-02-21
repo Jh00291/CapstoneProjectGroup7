@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using TicketSystemWeb.Models;
 
 namespace TicketSystemWeb.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> _signInManager;  // 🔹 Use User instead of IdentityUser
+        private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
 
         public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
@@ -26,8 +25,8 @@ namespace TicketSystemWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = true;// await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-                if (result) // result.Succeeded
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+                if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
