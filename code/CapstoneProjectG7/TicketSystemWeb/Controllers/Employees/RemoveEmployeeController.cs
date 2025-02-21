@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Controllers
 {
     public class RemoveEmployeeController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Employee> _userManager;
 
-        public RemoveEmployeeController(UserManager<User> userManager)
+        public RemoveEmployeeController(UserManager<Employee> userManager)
         {
             _userManager = userManager;
         }

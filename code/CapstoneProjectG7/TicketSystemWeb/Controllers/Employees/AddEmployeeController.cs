@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Controllers
 {
     public class AddEmployeeController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Employee> _userManager;
 
-        public AddEmployeeController(UserManager<User> userManager)
+        public AddEmployeeController(UserManager<Employee> userManager)
         {
             _userManager = userManager;
         }
@@ -18,7 +18,7 @@ namespace TicketSystemWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = UserName, Email = Email, EmailConfirmed = true };
+                var user = new Employee { UserName = UserName, Email = Email, EmailConfirmed = true };
                 var result = await _userManager.CreateAsync(user, Password);
 
                 if (result.Succeeded)

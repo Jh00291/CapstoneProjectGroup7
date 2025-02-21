@@ -23,16 +23,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Employees">Employees</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
                         @if (User.IsInRole("admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Employees">Employees</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ProjectManagement" asp-action="Management">Management</a>
                             </li>
                         }
-                    </ul>
-                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item" style="color: #6f42c1">
                             <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
                                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>

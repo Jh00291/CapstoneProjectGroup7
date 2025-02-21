@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Data;
-using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.Employee;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +11,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<TicketDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentity<Employee, IdentityRole>()
     .AddEntityFrameworkStores<TicketDBContext>()
     .AddDefaultTokenProviders();
 

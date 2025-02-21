@@ -1,4 +1,5 @@
-﻿@model List<TicketSystemWeb.Models.User>
+﻿@using TicketSystemWeb.Models.Employee
+@model List<Employee>
 
 <h2>User List</h2>
 
@@ -26,15 +27,18 @@
 
     </table>
 
-    <div class="d-flex justify-content-end mt-3">
-        <button class="btn text-white me-2" style="background-color: #6f42c1;" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
-            Add User
-        </button>
-        <button id="removeUserBtn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeEmployeeModal" disabled>
-            Remove User
-        </button>
+    @if (User.IsInRole("admin"))
+    {
+        <div class="d-flex justify-content-end mt-3">
+            <button class="btn text-white me-2" style="background-color: #6f42c1;" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                Add User
+            </button>
+            <button id="removeUserBtn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeEmployeeModal" disabled>
+                Remove User
+            </button>
 
-    </div>
+        </div>
+    }
 
     <nav>
         <ul class="pagination justify-content-center" id="pagination">

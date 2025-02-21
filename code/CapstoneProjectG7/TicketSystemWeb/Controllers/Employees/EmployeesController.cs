@@ -3,21 +3,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Data;
-using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Controllers.Employees
 {
-    [Authorize(Roles = "admin")]
     public class EmployeesController : Controller
     {
         private readonly ILogger<EmployeesController> _logger;
         private readonly TicketDBContext _context;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Employee> _userManager;
 
         public EmployeesController(
             ILogger<EmployeesController> logger,
             TicketDBContext context,
-            UserManager<User> userManager)
+            UserManager<Employee> userManager)
         {
             _logger = logger;
             _context = context;

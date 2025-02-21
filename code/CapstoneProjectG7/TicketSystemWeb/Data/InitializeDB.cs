@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Data
 {
@@ -13,7 +11,7 @@ namespace TicketSystemWeb.Data
         {
             var dbContext = serviceProvider.GetRequiredService<TicketDBContext>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<Employee>>();
 
             await dbContext.Database.EnsureCreatedAsync(); 
             string adminRole = "admin";
@@ -27,7 +25,7 @@ namespace TicketSystemWeb.Data
 
             if (await userManager.FindByNameAsync("admin") == null)
             {
-                var adminUser = new User
+                var adminUser = new Employee
                 {
                     Id = "e8d2f7a0-ecf1-4e0a-a3e5-3e3ddedf1b1d",
                     UserName = "admin",
@@ -42,7 +40,7 @@ namespace TicketSystemWeb.Data
 
             if (await userManager.FindByNameAsync("user") == null)
             {
-                var normalUser = new User
+                var normalUser = new Employee
                 {
                     Id = "17c18f27-ae29-4d49-b6f8-62f7ec2a2a34",
                     UserName = "user",
