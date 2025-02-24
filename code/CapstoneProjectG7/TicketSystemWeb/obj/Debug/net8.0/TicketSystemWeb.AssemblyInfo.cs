@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TicketSystemWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f058d77ee0d85d9c467c189b6b177a8f8070c79f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bbd9b2a8741aca2c5707329a98f585149532f921")]
 [assembly: System.Reflection.AssemblyProductAttribute("TicketSystemWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TicketSystemWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
