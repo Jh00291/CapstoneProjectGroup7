@@ -1,18 +1,20 @@
-﻿<div class="modal fade" id="removeEmployeeModal" tabindex="-1" aria-labelledby="removeEmployeeModalLabel" aria-hidden="true">
+﻿@model int
+
+<div class="modal fade" id="removeEmployeeModal" tabindex="-1" aria-labelledby="removeEmployeeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="removeEmployeeModalLabel">Confirm Remove Employee</h5>
+                <h5 class="modal-title" id="removeEmployeeModalLabel">Confirm Employee Removal</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-action="RemoveEmployee" asp-controller="RemoveEmployee" method="post">
+            <form asp-controller="RemoveEmployee" asp-action="RemoveEmployee" method="post">
+                <input type="hidden" id="removeEmployeeId" name="employeeId" value="@Model" />
                 <div class="modal-body">
-                    <p>Are you sure you want to remove <strong id="selectedUserName"></strong>?</p>
-                    <input type="hidden" id="selectedUserId" name="UserId">
+                    <p>Are you sure you want to remove <span id="removeEmployeeName"></span>?</p>
                 </div>
                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Remove</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Remove Employee</button>
                 </div>
             </form>
         </div>
