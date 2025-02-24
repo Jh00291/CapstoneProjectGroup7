@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model TicketSystemWeb.ViewModels.AddGroupViewModel
+
+<div class="modal fade" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addGroupModalLabel">Add Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="GroupManagement" asp-action="CreateGroup" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="groupName" class="form-label">Group Name</label>
+                        <input type="text" class="form-control" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manager" class="form-label">Assign Manager</label>
+                        <select class="form-control" name="SelectedManagerId" required>
+                            <option value="">-- Select Manager --</option>
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="employees" class="form-label">Add Employees</label>
+                        <select multiple class="form-control" name="SelectedEmployeeIds">
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple employees.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add Group</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

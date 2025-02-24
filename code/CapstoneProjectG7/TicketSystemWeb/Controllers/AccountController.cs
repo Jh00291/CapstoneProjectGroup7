@@ -31,7 +31,6 @@ namespace TicketSystemWeb.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-
                 ModelState.AddModelError("", "Invalid username or password.");
             }
             return View(model);
