@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.Employee;
 
-namespace TicketSystemWeb.Controllers.Employees
+namespace TicketSystemWeb.Controllers
 {
     public class EmployeesController : Controller
     {

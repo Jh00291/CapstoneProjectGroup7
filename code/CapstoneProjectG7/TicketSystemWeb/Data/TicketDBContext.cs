@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Models;
 using TicketSystemWeb.Models.Employee;
@@ -10,12 +9,13 @@ namespace TicketSystemWeb.Data
 {
     public class TicketDBContext : IdentityDbContext<Employee>
     {
-        public DbSet<Ticket> Tickets { get; set; }
+        public TicketDBContext(DbContextOptions<TicketDBContext> options) : base(options) { }
 
+        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<EmployeeGroup> EmployeeGroups { get; set; }
-
-        public TicketDBContext(DbContextOptions<TicketDBContext> options) : base(options) { }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectGroup> ProjectGroups { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -43,7 +43,7 @@ namespace TicketSystemWeb.Data
                 .HasForeignKey(eg => eg.GroupId);
 
             modelBuilder.Entity<ProjectGroup>()
-                        .HasKey(pg => new { pg.ProjectId, pg.GroupId });
+                .HasKey(pg => new { pg.ProjectId, pg.GroupId });
 
             modelBuilder.Entity<ProjectGroup>()
                 .HasOne(pg => pg.Project)

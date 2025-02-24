@@ -1,0 +1,159 @@
+﻿@model TicketSystemWeb.ViewModels.ManagementViewModel
+
+@{
+    ViewData["Title"] = "Project Management";
+}
+
+<h2>Project Management</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Manager</th>
+            <th>Groups Assigned</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model.Projects)
+        {
+            <tr>
+                <td>@project.Title</td>
+                <td>@project.Description</td>
+                <td>@(project.ProjectManager != null ? project.ProjectManager.UserName : "None")</td>
+                <td>
+                    @if (project.ProjectGroups != null && project.ProjectGroups.Any())
+                    {
+                        @foreach (var group in project.ProjectGroups.Select(pg => pg.Group))
+                        {
+                            <span class="badge bg-secondary">@group.Name</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Groups Assigned</span>
+                    }
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && (User.Identity.Name == project.ProjectManager?.UserName || User.IsInRole("Admin")))
+                    {
+                        <button class="btn btn-warning"
+                                onclick="openEditProjectModal(@project.Id, '@project.Title', '@project.Description', [@(string.Join(",", project.ProjectGroups.Select(pg => pg.Group.Id)))])">
+                            Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="openRemoveProjectModal(@project.Id)">Remove</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.CanAddProject)
+{
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">Add Project</button>
+    </div>
+}
+
+<h2>Group Management</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Manager</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in Model.Groups)
+        {
+            <tr>
+                <td>@group.Name</td>
+                <td>@(group.Manager != null ? group.Manager.UserName : "None")</td>
+                <td>
+                    @if (Model.CanManageGroups)
+                    {
+                        <button class="btn btn-warning" onclick="openEditGroupModal(@group.Id, '@group.Name')"> Edit </button>
+                        <button class="btn btn-danger" onclick="openRemoveGroupModal(@group.Id)"> Remove </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.CanManageGroups)
+{
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupModal">Add Group</button>
+    </div>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var addGroupModal = document.getElementById("addGroupModal");
+        if (addGroupModal) {
+            addGroupModal.addEventListener("hidden.bs.modal", function () {
+                resetForm("addGroupModal");
+            });
+        }
+
+        var addProjectModal = document.getElementById("addProjectModal");
+        if (addProjectModal) {
+            addProjectModal.addEventListener("hidden.bs.modal", function () {
+                resetForm("addProjectModal");
+            });
+        }
+    });
+    function resetForm(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) {
+            var form = modal.querySelector("form");
+            if (form) {
+                form.reset();
+            }
+        }
+    }
+    function openRemoveProjectModal(projectId) {
+        document.getElementById("removeProjectId").value = projectId;
+        var removeModal = new bootstrap.Modal(document.getElementById("removeProjectModal"));
+        removeModal.show();
+    }
+    function openEditProjectModal(projectId, title, description, groupIds) {
+        document.getElementById("editProjectId").value = projectId;
+        document.getElementById("editTitle").value = title;
+        document.getElementById("editDescription").value = description;
+        var groupSelect = document.getElementById("editGroups");
+        if (groupSelect) {
+            for (var i = 0; i < groupSelect.options.length; i++) {
+                groupSelect.options[i].selected = groupIds.includes(parseInt(groupSelect.options[i].value));
+            }
+        }
+        var editModal = new bootstrap.Modal(document.getElementById("editProjectModal"));
+        editModal.show();
+    }
+    function openEditGroupModal(groupId, groupName) {
+        document.getElementById("editGroupId").value = groupId;
+        document.getElementById("editGroupName").value = groupName;
+
+        var editModal = new bootstrap.Modal(document.getElementById("editGroupModal"));
+        editModal.show();
+    }
+    function openRemoveGroupModal(groupId) {
+        document.getElementById("removeGroupId").value = groupId;
+
+        var removeModal = new bootstrap.Modal(document.getElementById("removeGroupModal"));
+        removeModal.show();
+    }
+</script>
+
+
+@await Html.PartialAsync("Projects/AddProject", new TicketSystemWeb.ViewModels.AddProjectViewModel { AllGroups = Model.Groups })
+@await Html.PartialAsync("Projects/RemoveProject", 0)
+@await Html.PartialAsync("Projects/EditProject", new TicketSystemWeb.ViewModels.EditProjectViewModel())
+@await Html.PartialAsync("Groups/AddGroup", new TicketSystemWeb.ViewModels.AddGroupViewModel { AllEmployees = Model.AllEmployees })
+@await Html.PartialAsync("Groups/RemoveGroup", 0)
+@await Html.PartialAsync("Groups/EditGroup", new TicketSystemWeb.ViewModels.EditGroupViewModel())
+

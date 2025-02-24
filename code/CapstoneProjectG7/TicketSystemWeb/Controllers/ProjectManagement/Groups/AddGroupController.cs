@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TicketSystemWeb.Controllers.ProjectManagement.Groups
+namespace TicketSystemWeb.Controllers
 {
     public class AddGroupController : Controller
     {
