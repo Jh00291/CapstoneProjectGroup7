@@ -1,0 +1,49 @@
+﻿@model TicketSystemWeb.ViewModels.EditEmployeeViewModel
+
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="EditEmployee" asp-action="UpdateEmployee" method="post">
+                <input type="hidden" id="editEmployeeId" name="Id" value="@Model.Id" />
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="editUsername" name="UserName" value="@Model.UserName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" name="Email" value="@Model.Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRole" class="form-label">Role</label>
+                        <select class="form-select" id="editRole" name="Role">
+                            <option value="user" selected="@(Model.Role == "user" ? "selected" : null)">User</option>
+                            <option value="admin" selected="@(Model.Role == "admin" ? "selected" : null)">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openEditEmployeeModal(employeeId, userName, email, role) {
+        document.getElementById("editUsername").value = userName;
+        document.getElementById("editEmail").value = email;
+        document.getElementById("editRole").value = role;
+
+        document.getElementById("editEmployeeId").value = employeeId;
+
+        var editModal = new bootstrap.Modal(document.getElementById("editEmployeeModal"));
+        editModal.show();
+    }
+</script>

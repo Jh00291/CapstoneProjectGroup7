@@ -23,9 +23,8 @@
                         <select multiple class="form-control" id="editGroups" name="SelectedGroupIds">
                             @foreach (var group in Model.AllGroups)
                             {
-                                <option value="@group.Id" selected="@(Model.SelectedGroupIds.Contains(group.Id) ? "selected" : null)">
-                                    @group.Name
-                                </option>
+                                var isSelected = Model.SelectedGroupIds.Contains(group.Id) ? "selected" : "";
+                                <option value="@group.Id">@group.Name</option> //@isSelected
                             }
                         </select>
                         <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple groups.</small>

@@ -14,22 +14,22 @@ namespace TicketSystemWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveEmployee(string UserId)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveEmployee(string employeeId)
         {
-            var user = await _userManager.FindByIdAsync(UserId);
-            if (user != null)
+            if (employeeId == null) return BadRequest("Invalid employee ID.");
+
+            var user = await _userManager.FindByIdAsync(employeeId);
+            if (user == null) return NotFound("Employee not found.");
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
             {
-                var result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Employees", "Employees");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Error deleting user.");
-                }
+                ModelState.AddModelError("", "Error removing employee.");
+                return RedirectToAction("Employees", "Employees");
             }
-            return View();
+
+            return RedirectToAction("Employees", "Employees");
         }
     }
 }

@@ -34,7 +34,7 @@ namespace TicketSystemWeb.Controllers
             var project = await _context.Projects.FindAsync(model.ProjectId);
             if (project == null) return NotFound();
 
-            bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
 
             if (!isAdmin && project.ProjectManagerId != user.Id)
             {
