@@ -12,8 +12,8 @@ using TicketSystemWeb.Data;
 namespace TicketSystemWeb.Migrations
 {
     [DbContext(typeof(TicketDBContext))]
-    [Migration("20250221223708_AddedProjectsWithGroups")]
-    partial class AddedProjectsWithGroups
+    [Migration("20250224203828_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,7 +158,7 @@ namespace TicketSystemWeb.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Employee", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.Employee.Employee", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -223,7 +223,7 @@ namespace TicketSystemWeb.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.EmployeeGroup", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.Employee.EmployeeGroup", b =>
                 {
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)")
@@ -240,7 +240,7 @@ namespace TicketSystemWeb.Migrations
                     b.ToTable("EmployeeGroups");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Group", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Group.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,7 +262,7 @@ namespace TicketSystemWeb.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Project", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Project.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,10 +285,10 @@ namespace TicketSystemWeb.Migrations
 
                     b.HasIndex("ProjectManagerId");
 
-                    b.ToTable("Project");
+                    b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.ProjectGroup", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Project.ProjectGroup", b =>
                 {
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
@@ -300,7 +300,7 @@ namespace TicketSystemWeb.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("ProjectGroup");
+                    b.ToTable("ProjectGroups");
                 });
 
             modelBuilder.Entity("TicketSystemWeb.Models.Ticket", b =>
@@ -351,7 +351,7 @@ namespace TicketSystemWeb.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee", null)
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -360,7 +360,7 @@ namespace TicketSystemWeb.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee", null)
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -375,7 +375,7 @@ namespace TicketSystemWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TicketSystemWeb.Models.Employee", null)
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,22 +384,22 @@ namespace TicketSystemWeb.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee", null)
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.EmployeeGroup", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.Employee.EmployeeGroup", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee", "Employee")
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", "Employee")
                         .WithMany("EmployeeGroups")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TicketSystemWeb.Models.Group", "Group")
+                    b.HasOne("TicketSystemWeb.Models.ProjectManagement.Group.Group", "Group")
                         .WithMany("EmployeeGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -410,18 +410,18 @@ namespace TicketSystemWeb.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Group", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Group.Group", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee", "Manager")
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", "Manager")
                         .WithMany()
                         .HasForeignKey("ManagerId");
 
                     b.Navigation("Manager");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Project", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Project.Project", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee", "ProjectManager")
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", "ProjectManager")
                         .WithMany()
                         .HasForeignKey("ProjectManagerId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -429,15 +429,15 @@ namespace TicketSystemWeb.Migrations
                     b.Navigation("ProjectManager");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.ProjectGroup", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Project.ProjectGroup", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Group", "Group")
+                    b.HasOne("TicketSystemWeb.Models.ProjectManagement.Group.Group", "Group")
                         .WithMany("ProjectGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TicketSystemWeb.Models.Project", "Project")
+                    b.HasOne("TicketSystemWeb.Models.ProjectManagement.Project.Project", "Project")
                         .WithMany("ProjectGroups")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -448,19 +448,19 @@ namespace TicketSystemWeb.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Employee", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.Employee.Employee", b =>
                 {
                     b.Navigation("EmployeeGroups");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Group", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Group.Group", b =>
                 {
                     b.Navigation("EmployeeGroups");
 
                     b.Navigation("ProjectGroups");
                 });
 
-            modelBuilder.Entity("TicketSystemWeb.Models.Project", b =>
+            modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Project.Project", b =>
                 {
                     b.Navigation("ProjectGroups");
                 });

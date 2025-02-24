@@ -17,75 +17,75 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TicketSystemWeb
 build_property.RootNamespace = TicketSystemWeb
-build_property.ProjectDir = C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\
+build_property.ProjectDir = C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb
+build_property.MSBuildProjectDirectory = C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Account/Login.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/AddEmployee.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/AddEmployee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXEFkZEVtcGxveWVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/EditEmployee.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/EditEmployee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXEVkaXRFbXBsb3llZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/Employees.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/Employees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXEVtcGxveWVlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/RemoveEmployee.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Employees/RemoveEmployee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXFJlbW92ZUVtcGxveWVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Home/Index.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/AddGroup.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/AddGroup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcR3JvdXBzXEFkZEdyb3VwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/EditGroup.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/EditGroup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcR3JvdXBzXEVkaXRHcm91cC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/RemoveGroup.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Groups/RemoveGroup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcR3JvdXBzXFJlbW92ZUdyb3VwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Management.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcTWFuYWdlbWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/AddProject.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/AddProject.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcUHJvamVjdHNcQWRkUHJvamVjdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/EditProject.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/EditProject.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcUHJvamVjdHNcRWRpdFByb2plY3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/RemoveProject.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/ProjectManagement/Projects/RemoveProject.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hbmFnZW1lbnRcUHJvamVjdHNcUmVtb3ZlUHJvamVjdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/_ViewImports.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/_ViewStart.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/drivera3/source/repos/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Shared/_Layout.cshtml]
+[C:/Users/jh00291/Documents/GitHub/CapstoneProjectGroup7/code/CapstoneProjectG7/TicketSystemWeb/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-4eavrht2i5
