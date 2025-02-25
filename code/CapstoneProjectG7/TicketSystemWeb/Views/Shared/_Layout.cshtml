@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using TicketSystemWeb.Data
+@using TicketSystemWeb.Models.Employee
+@inject UserManager<Employee> UserManager
+@inject TicketDBContext DbContext
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    bool isAdmin = user != null && await UserManager.IsInRoleAsync(user, "admin");
+    bool isGroupManager = user != null && await DbContext.Groups.AnyAsync(g => g.ManagerId == user.Id);
+    bool isProjectManager = user != null && await DbContext.Projects.AnyAsync(p => p.ProjectManagerId == user.Id);
+
+    ViewData["IsManager"] = isAdmin || isGroupManager || isProjectManager;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,7 +43,7 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        @if (User.IsInRole("admin"))
+                        @if (User.IsInRole("admin") || ViewData["IsManager"] as bool? == true)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="ProjectManagement" asp-action="Management">Management</a>
