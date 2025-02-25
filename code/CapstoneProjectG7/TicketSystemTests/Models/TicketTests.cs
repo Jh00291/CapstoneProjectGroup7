@@ -26,8 +26,8 @@ namespace TicketSystemWeb.Tests.Models
             Assert.That(ticket.Description, Is.EqualTo("This is a test ticket"));
             Assert.That(ticket.Status, Is.EqualTo("Open"));
             Assert.That(ticket.CreatedBy, Is.EqualTo("JohnDoe"));
-            Assert.That(ticket.CreatedAt, Is.LessThanOrEqualTo(DateTime.UtcNow)); // Should be set to current time
-            Assert.That(ticket.ClosedAt, Is.Null); // Default is null
+            Assert.That(ticket.CreatedAt, Is.LessThanOrEqualTo(DateTime.UtcNow));
+            Assert.That(ticket.ClosedAt, Is.Null);
         }
 
         [Test]

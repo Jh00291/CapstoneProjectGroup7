@@ -8,6 +8,7 @@ using NUnit.Framework;
 using TicketSystemWeb.Controllers;
 using TicketSystemWeb.Models;
 using TicketSystemWeb.Models.Employee;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace TicketSystemWeb.Tests.Controllers
 {
@@ -36,7 +37,6 @@ namespace TicketSystemWeb.Tests.Controllers
 
             _controller = new AccountController(_signInManagerMock.Object, _userManagerMock.Object);
         }
-
 
         [TearDown]
         public void TearDown()
@@ -69,7 +69,7 @@ namespace TicketSystemWeb.Tests.Controllers
 
             _signInManagerMock
                 .Setup(s => s.PasswordSignInAsync(model.Username, model.Password, false, false))
-                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+                .ReturnsAsync(SignInResult.Success);
 
             var result = await _controller.Login(model);
 
@@ -86,12 +86,23 @@ namespace TicketSystemWeb.Tests.Controllers
 
             _signInManagerMock
                 .Setup(s => s.PasswordSignInAsync(model.Username, model.Password, false, false))
-                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+                .ReturnsAsync(SignInResult.Failed);
 
             var result = await _controller.Login(model);
 
             Assert.That(result, Is.TypeOf<ViewResult>());
             Assert.That(_controller.ModelState[""].Errors.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task Login_InvalidModelState_ReturnsView()
+        {
+            var model = new LoginViewModel { Username = "", Password = "" };
+            _controller.ModelState.AddModelError("Username", "Username is required");
+
+            var result = await _controller.Login(model);
+
+            Assert.That(result, Is.TypeOf<ViewResult>());
         }
 
         [Test]
@@ -105,6 +116,16 @@ namespace TicketSystemWeb.Tests.Controllers
             var redirect = (RedirectToActionResult)result;
             Assert.That(redirect.ActionName, Is.EqualTo("Login"));
             Assert.That(redirect.ControllerName, Is.EqualTo("Account"));
+        }
+
+        [Test]
+        public async Task Logout_WhenSignOutFails_DoesNotThrowException()
+        {
+            _signInManagerMock
+                .Setup(s => s.SignOutAsync())
+                .ThrowsAsync(new Exception("Logout failed"));
+
+            Assert.DoesNotThrowAsync(async () => await _controller.Logout());
         }
     }
 }

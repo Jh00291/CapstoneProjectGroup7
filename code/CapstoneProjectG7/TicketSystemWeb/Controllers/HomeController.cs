@@ -50,6 +50,9 @@ namespace TicketSystemWeb.Controllers
             if (ModelState.IsValid)
             {
                 ticket.CreatedAt = DateTime.UtcNow;
+                ticket.CreatedBy = "System";
+                ticket.Status = "Open";
+
                 _context.Tickets.Add(ticket);
                 _context.SaveChanges();
                 return RedirectToAction("Index");

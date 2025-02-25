@@ -23,7 +23,7 @@ namespace TicketSystemWeb.Tests.Models
         {
             // Arrange
             var employee = new Employee { Id = "emp123", UserName = "TestUser" };
-            var group = new Group { Id = 1, Name = "Development" }; // Assuming Group has Id & Name
+            var group = new Group { Id = 1, Name = "Development" };
             var employeeGroup = new EmployeeGroup
             {
                 EmployeeId = "emp123",
