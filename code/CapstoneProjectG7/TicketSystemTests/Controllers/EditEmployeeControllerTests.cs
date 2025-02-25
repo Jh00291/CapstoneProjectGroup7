@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -187,6 +188,9 @@ namespace TicketSystemWeb.Tests.Controllers
             _userManagerMock.Setup(u => u.FindByIdAsync("123")).ReturnsAsync(employee);
             _userManagerMock.Setup(u => u.GetRolesAsync(employee)).ReturnsAsync(new List<string>()); // Empty roles
 
+            // Debugging - Ensure roles.Count == 0
+            Console.WriteLine("Roles count before executing controller method: " + 0);
+
             // Act
             var result = await _controller.EditEmployee("123") as PartialViewResult;
 
@@ -196,7 +200,12 @@ namespace TicketSystemWeb.Tests.Controllers
 
             var model = result.Model as EditEmployeeViewModel;
             Assert.That(model, Is.Not.Null);
-            Assert.That(model.Role, Is.EqualTo("user")); // Default role should be assigned
+
+            // Verify that the default role "user" was assigned
+            Assert.That(model.Role, Is.EqualTo("user"));
+
+            // Additional verification to ensure roles were empty
+            _userManagerMock.Verify(u => u.GetRolesAsync(employee), Times.Once());
         }
 
     }

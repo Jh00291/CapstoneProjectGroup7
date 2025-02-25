@@ -232,22 +232,22 @@ var assemblies = [
       { "name": "AspNetCoreGeneratedDocument.Views_ProjectManagement_Projects_EditProject", "rp": "TicketSystemWeb_Views_ProjectManagement_Projects_EditProject.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 40, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Shared__Layout", "rp": "TicketSystemWeb_Views_Shared__Layout.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 57, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Program", "rp": "TicketSystemWeb_Program.html", "cl": 0, "ucl": 43, "cal": 43, "tl": 63, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.AccountController", "rp": "TicketSystemWeb_AccountController.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 45, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.AccountController", "rp": "TicketSystemWeb_AccountController.html", "cl": 23, "ucl": 0, "cal": 23, "tl": 45, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "TicketSystemWeb.Controllers.AddEmployeeController", "rp": "TicketSystemWeb_AddEmployeeController.html", "cl": 19, "ucl": 0, "cal": 19, "tl": 37, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.AddGroupController", "rp": "TicketSystemWeb_AddGroupController.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.AddProjectController", "rp": "TicketSystemWeb_AddProjectController.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 60, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.EditEmployeeController", "rp": "TicketSystemWeb_EditEmployeeController.html", "cl": 38, "ucl": 0, "cal": 38, "tl": 70, "cb": 13, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.EditGroupController", "rp": "TicketSystemWeb_EditGroupController.html", "cl": 0, "ucl": 40, "cal": 40, "tl": 69, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.EditProjectController", "rp": "TicketSystemWeb_EditProjectController.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 53, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.AddGroupController", "rp": "TicketSystemWeb_AddGroupController.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.AddProjectController", "rp": "TicketSystemWeb_AddProjectController.html", "cl": 10, "ucl": 27, "cal": 37, "tl": 60, "cb": 2, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.EditEmployeeController", "rp": "TicketSystemWeb_EditEmployeeController.html", "cl": 38, "ucl": 0, "cal": 38, "tl": 70, "cb": 14, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.EditGroupController", "rp": "TicketSystemWeb_EditGroupController.html", "cl": 21, "ucl": 19, "cal": 40, "tl": 69, "cb": 5, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.EditProjectController", "rp": "TicketSystemWeb_EditProjectController.html", "cl": 21, "ucl": 2, "cal": 23, "tl": 53, "cb": 7, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "TicketSystemWeb.Controllers.EmployeesController", "rp": "TicketSystemWeb_EmployeesController.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.GroupManagementController", "rp": "TicketSystemWeb_GroupManagementController.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 68, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.HomeController", "rp": "TicketSystemWeb_HomeController.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 44, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.ProjectManagementController", "rp": "TicketSystemWeb_ProjectManagementController.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 67, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.RemoveEmployeeController", "rp": "TicketSystemWeb_RemoveEmployeeController.html", "cl": 12, "ucl": 3, "cal": 15, "tl": 35, "cb": 5, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.RemoveGroupController", "rp": "TicketSystemWeb_RemoveGroupController.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 46, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Controllers.RemoveProjectController", "rp": "TicketSystemWeb_RemoveProjectController.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 44, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.GroupManagementController", "rp": "TicketSystemWeb_GroupManagementController.html", "cl": 31, "ucl": 11, "cal": 42, "tl": 68, "cb": 5, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.HomeController", "rp": "TicketSystemWeb_HomeController.html", "cl": 18, "ucl": 1, "cal": 19, "tl": 44, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.ProjectManagementController", "rp": "TicketSystemWeb_ProjectManagementController.html", "cl": 10, "ucl": 25, "cal": 35, "tl": 67, "cb": 1, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.RemoveEmployeeController", "rp": "TicketSystemWeb_RemoveEmployeeController.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 35, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.RemoveGroupController", "rp": "TicketSystemWeb_RemoveGroupController.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 46, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Controllers.RemoveProjectController", "rp": "TicketSystemWeb_RemoveProjectController.html", "cl": 9, "ucl": 9, "cal": 18, "tl": 44, "cb": 1, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "TicketSystemWeb.Data.InitializeDB", "rp": "TicketSystemWeb_InitializeDB.html", "cl": 0, "ucl": 61, "cal": 61, "tl": 82, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "TicketSystemWeb.Data.TicketDBContext", "rp": "TicketSystemWeb_TicketDBContext.html", "cl": 6, "ucl": 34, "cal": 40, "tl": 65, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "TicketSystemWeb.Data.TicketDBContext", "rp": "TicketSystemWeb_TicketDBContext.html", "cl": 37, "ucl": 3, "cal": 40, "tl": 65, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "TicketSystemWeb.Migrations.InitialCreate", "rp": "TicketSystemWeb_InitialCreate.html", "cl": 0, "ucl": 737, "cal": 737, "tl": 835, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "TicketSystemWeb.Migrations.TicketDBContextModelSnapshot", "rp": "TicketSystemWeb_TicketDBContextModelSnapshot.html", "cl": 0, "ucl": 422, "cal": 422, "tl": 467, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "TicketSystemWeb.Models.Employee.Employee", "rp": "TicketSystemWeb_Employee.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -310,32 +310,8 @@ var riskHotspots = [
   {
     "assembly": "TicketSystemWeb", "class": "TicketSystemWeb.Controllers.AddProjectController", "reportPath": "TicketSystemWeb_AddProjectController.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 26,
     "metrics": [
-      { "value": 110, "exceeded": true },
+      { "value": 70, "exceeded": true },
       { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "TicketSystemWeb", "class": "TicketSystemWeb.Controllers.EditProjectController", "reportPath": "TicketSystemWeb_EditProjectController.html", "methodName": "UpdateProject()", "methodShortName": "UpdateProject()", "fileIndex": 0, "line": 25,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "TicketSystemWeb", "class": "TicketSystemWeb.Controllers.EditGroupController", "reportPath": "TicketSystemWeb_EditGroupController.html", "methodName": "UpdateGroup()", "methodShortName": "UpdateGroup()", "fileIndex": 0, "line": 47,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "TicketSystemWeb", "class": "TicketSystemWeb.Controllers.GroupManagementController", "reportPath": "TicketSystemWeb_GroupManagementController.html", "methodName": "CreateGroup()", "methodShortName": "CreateGroup()", "fileIndex": 0, "line": 27,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "TicketSystemWeb", "class": "TicketSystemWeb.Controllers.RemoveProjectController", "reportPath": "TicketSystemWeb_RemoveProjectController.html", "methodName": "DeleteProject()", "methodShortName": "DeleteProject()", "fileIndex": 0, "line": 24,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
     ]},
   {
     "assembly": "TicketSystemWeb", "class": "AspNetCoreGeneratedDocument.Views_Employees_Employees", "reportPath": "TicketSystemWeb_Views_Employees_Employees.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 17,
@@ -345,12 +321,6 @@ var riskHotspots = [
     ]},
   {
     "assembly": "TicketSystemWeb", "class": "AspNetCoreGeneratedDocument.Views_ProjectManagement_Projects_EditProject", "reportPath": "TicketSystemWeb_Views_ProjectManagement_Projects_EditProject.html", "methodName": "<ExecuteAsync()", "methodShortName": "<ExecuteAsync()", "fileIndex": 0, "line": 24,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "TicketSystemWeb", "class": "TicketSystemWeb.Controllers.RemoveGroupController", "reportPath": "TicketSystemWeb_RemoveGroupController.html", "methodName": "DeleteGroup()", "methodShortName": "DeleteGroup()", "fileIndex": 0, "line": 25,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },

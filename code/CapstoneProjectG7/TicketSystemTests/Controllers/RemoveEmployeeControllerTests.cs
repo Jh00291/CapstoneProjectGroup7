@@ -71,21 +71,25 @@ namespace TicketSystemWeb.Tests.Controllers
         {
             // Arrange
             var employee = new Employee { Id = "123", UserName = "TestUser", Email = "test@example.com" };
+
             _userManagerMock.Setup(u => u.FindByIdAsync("123")).ReturnsAsync(employee);
-            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Error removing employee." }));
+            _userManagerMock.Setup(u => u.DeleteAsync(employee))
+                .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Error removing employee." }));
 
             // Act
             var result = await _controller.RemoveEmployee("123") as RedirectToActionResult;
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ActionName, Is.EqualTo("Employees"));
+            Assert.That(result, Is.Not.Null, "Result should not be null");
+            Assert.That(result.ActionName, Is.EqualTo("Employees"), "Should redirect to Employees");
 
-            
-            Assert.That(_controller.ModelState[""].Errors[0].ErrorMessage, Is.EqualTo("Error removing employee."));
+            // Ensure ModelState contains the error
+            Assert.That(_controller.ModelState.IsValid, Is.False, "ModelState should not be valid");
+            Assert.That(_controller.ModelState[""].Errors, Has.Count.GreaterThan(0), "ModelState should contain at least one error");
+            Assert.That(_controller.ModelState[""].Errors[0].ErrorMessage, Is.EqualTo("Error removing employee."), "Error message mismatch");
 
-            _userManagerMock.Verify(u => u.DeleteAsync(employee), Times.Once());
+            // Ensure DeleteAsync was actually called
+            _userManagerMock.Verify(u => u.DeleteAsync(employee), Times.Once(), "DeleteAsync should be called once");
         }
-
     }
 }
