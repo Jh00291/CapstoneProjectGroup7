@@ -1,6 +1,13 @@
 @echo off
-cd /d "C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests"
 echo Running unit tests...
+
+:: Navigate to the script's directory (ensuring it works for any user)
+cd /d "%~dp0"
+
+:: Change directory to the test project (relative to script location)
+cd "..\code\CapstoneProjectG7\TicketSystemTests"
+
+:: Run unit tests and collect coverage
 dotnet test --collect:"XPlat Code Coverage"
 
 :: Wait for test execution to finish
@@ -11,8 +18,8 @@ for /f "delims=" %%i in ('dir /b /ad /o-d "TestResults" 2^>nul') do set "latestD
 echo No test results found!
 pause
 exit /b 1
-:found
 
+:found
 echo Generating code coverage report...
 reportgenerator -reports:"%latestDir%\coverage.cobertura.xml" -targetdir:"coverageresults" -reporttypes:Html
 
