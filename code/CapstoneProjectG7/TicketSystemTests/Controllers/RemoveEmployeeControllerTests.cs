@@ -65,5 +65,27 @@ namespace TicketSystemWeb.Tests.Controllers
 
             _userManagerMock.Verify(u => u.DeleteAsync(user), Times.Once());
         }
+
+        [Test]
+        public async Task RemoveEmployee_DeleteFails_ReturnsRedirectWithError()
+        {
+            // Arrange
+            var employee = new Employee { Id = "123", UserName = "TestUser", Email = "test@example.com" };
+            _userManagerMock.Setup(u => u.FindByIdAsync("123")).ReturnsAsync(employee);
+            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Error removing employee." }));
+
+            // Act
+            var result = await _controller.RemoveEmployee("123") as RedirectToActionResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ActionName, Is.EqualTo("Employees"));
+
+            
+            Assert.That(_controller.ModelState[""].Errors[0].ErrorMessage, Is.EqualTo("Error removing employee."));
+
+            _userManagerMock.Verify(u => u.DeleteAsync(employee), Times.Once());
+        }
+
     }
 }

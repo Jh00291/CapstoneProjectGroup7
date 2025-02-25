@@ -178,5 +178,26 @@ namespace TicketSystemWeb.Tests.Controllers
 
             _userManagerMock.Verify(u => u.UpdateAsync(employee), Times.Once());
         }
+
+        [Test]
+        public async Task EditEmployee_UserHasNoRoles_AssignsDefaultRole()
+        {
+            // Arrange
+            var employee = new Employee { Id = "123", UserName = "TestUser", Email = "test@example.com" };
+            _userManagerMock.Setup(u => u.FindByIdAsync("123")).ReturnsAsync(employee);
+            _userManagerMock.Setup(u => u.GetRolesAsync(employee)).ReturnsAsync(new List<string>()); // Empty roles
+
+            // Act
+            var result = await _controller.EditEmployee("123") as PartialViewResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ViewName, Is.EqualTo("EditEmployee"));
+
+            var model = result.Model as EditEmployeeViewModel;
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Role, Is.EqualTo("user")); // Default role should be assigned
+        }
+
     }
 }
