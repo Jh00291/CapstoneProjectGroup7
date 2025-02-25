@@ -5,8 +5,15 @@ using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Data
 {
+    /// <summary>
+    /// the initdb class
+    /// </summary>
     public static class InitializeDB
     {
+        /// <summary>
+        /// Seeds the database.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
         public static async Task SeedDatabase(IServiceProvider serviceProvider)
         {
             var dbContext = serviceProvider.GetRequiredService<TicketDBContext>();
