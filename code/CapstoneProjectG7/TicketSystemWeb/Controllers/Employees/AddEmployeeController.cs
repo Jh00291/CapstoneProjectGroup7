@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketSystemWeb.Models.Employee;
+using TicketSystemWeb.ViewModels;
 
 namespace TicketSystemWeb.Controllers
 {
@@ -14,16 +15,15 @@ namespace TicketSystemWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(string UserName, string Email, string Password, string Role)
+        public async Task<IActionResult> AddEmployee(AddEmployeeViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new Employee { UserName = UserName, Email = Email, EmailConfirmed = true };
-                var result = await _userManager.CreateAsync(user, Password);
-
+                var user = new Employee { UserName = model.UserName, Email = model.Email, EmailConfirmed = true };
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, Role);
+                    await _userManager.AddToRoleAsync(user, model.Role);
                     return RedirectToAction("Employees", "Employees");
                 }
                 else
@@ -31,7 +31,7 @@ namespace TicketSystemWeb.Controllers
                     ModelState.AddModelError("", "Error creating user.");
                 }
             }
-            return View();
+            return PartialView("AddEmployee", model);
         }
     }
 }

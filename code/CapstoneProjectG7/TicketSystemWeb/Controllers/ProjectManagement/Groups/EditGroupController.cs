@@ -23,10 +23,11 @@ namespace TicketSystemWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var group = await _context.Groups.Include(g => g.Manager)
-                                             .Include(g => g.EmployeeGroups)
-                                             .ThenInclude(eg => eg.Employee)
-                                             .FirstOrDefaultAsync(g => g.Id == id);
+            var group = await _context.Groups
+                .Include(g => g.Manager)
+                .Include(g => g.EmployeeGroups)
+                .ThenInclude(eg => eg.Employee)
+                .FirstOrDefaultAsync(g => g.Id == id);
             if (group == null) return NotFound();
             var employees = await _context.Users.ToListAsync();
             var viewModel = new EditGroupViewModel
@@ -37,8 +38,7 @@ namespace TicketSystemWeb.Controllers
                 SelectedEmployeeIds = group.EmployeeGroups.Select(eg => eg.EmployeeId).ToList(),
                 AllEmployees = employees
             };
-
-            return View("EditGroup", viewModel);
+            return PartialView("EditGroup", viewModel);
         }
 
         [HttpPost]
