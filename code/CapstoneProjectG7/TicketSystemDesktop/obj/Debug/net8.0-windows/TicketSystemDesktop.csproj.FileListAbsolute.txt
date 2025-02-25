@@ -322,3 +322,6 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\System.Security.Cryptography.Xml.dll
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop_MarkupCompile.lref
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\Castle.Core.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\Moq.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\Moq.EntityFrameworkCore.dll

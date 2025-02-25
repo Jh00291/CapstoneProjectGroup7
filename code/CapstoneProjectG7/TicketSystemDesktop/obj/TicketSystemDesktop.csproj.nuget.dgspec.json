@@ -63,13 +63,17 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[9.0.2, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -80,6 +84,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.1, )"
+            },
+            "Moq.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0.1, )"
             }
           },
           "imports": [

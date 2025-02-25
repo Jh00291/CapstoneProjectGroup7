@@ -470,3 +470,7 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\Moq.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\Moq.EntityFrameworkCore.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemTests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll

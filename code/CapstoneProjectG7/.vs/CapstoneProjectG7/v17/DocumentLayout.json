@@ -3,24 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\tickettests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\tickettests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\controllers\\editemployeecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\controllers\\editemployeecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\projecttests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\projecttests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\controllers\\employees\\editemployeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\controllers\\employees\\editemployeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\projectgrouptests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\projectgrouptests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\controllers\\addemployeecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\controllers\\addemployeecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\controllers\\removeemployeecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\controllers\\removeemployeecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\controllers\\employeescontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\controllers\\employeescontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\loginviewmodeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\loginviewmodeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\managementviewmodeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\managementviewmodeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\loginviewmodeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\loginviewmodeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\projecttests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\projecttests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\tickettests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\tickettests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\projectgrouptests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|solutionrelative:ticketsystemtests\\models\\projectgrouptests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5BB3ED1A-5ACA-4B9F-BC0E-246CCEE53385}|TicketSystemTests\\TicketSystemTests.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemtests\\models\\employeegrouptests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -62,11 +82,115 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EditEmployeeControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\EditEmployeeControllerTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Controllers\\EditEmployeeControllerTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\EditEmployeeControllerTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Controllers\\EditEmployeeControllerTests.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T00:49:55.497Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AddEmployeeControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\AddEmployeeControllerTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Controllers\\AddEmployeeControllerTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\AddEmployeeControllerTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Controllers\\AddEmployeeControllerTests.cs",
+              "ViewState": "AQIAAC4AAAAAAAAAAAAmwGgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T00:18:21.94Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "RemoveEmployeeControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\RemoveEmployeeControllerTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Controllers\\RemoveEmployeeControllerTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\RemoveEmployeeControllerTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Controllers\\RemoveEmployeeControllerTests.cs",
+              "ViewState": "AQIAACMAAAAAAAAAAAAgwD4AAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T00:51:05.564Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EditEmployeeController.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Controllers\\Employees\\EditEmployeeController.cs",
+              "RelativeDocumentMoniker": "TicketSystemWeb\\Controllers\\Employees\\EditEmployeeController.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Controllers\\Employees\\EditEmployeeController.cs",
+              "RelativeToolTip": "TicketSystemWeb\\Controllers\\Employees\\EditEmployeeController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T01:39:36.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EmployeesControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\EmployeesControllerTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Controllers\\EmployeesControllerTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Controllers\\EmployeesControllerTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Controllers\\EmployeesControllerTests.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAA1wEYAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T00:50:31.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ProjectTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\ProjectTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Models\\ProjectTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\ProjectTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Models\\ProjectTests.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T23:18:04.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TicketTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\TicketTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Models\\TicketTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\TicketTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Models\\TicketTests.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T22:45:12.044Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LoginViewModelTests.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\LoginViewModelTests.cs",
+              "RelativeDocumentMoniker": "TicketSystemTests\\Models\\LoginViewModelTests.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\LoginViewModelTests.cs",
+              "RelativeToolTip": "TicketSystemTests\\Models\\LoginViewModelTests.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T22:48:03.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "ManagementViewModelTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\ManagementViewModelTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\ManagementViewModelTests.cs",
@@ -79,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "ProjectGroupTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\ProjectGroupTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\ProjectGroupTests.cs",
@@ -92,46 +216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ProjectTests.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\ProjectTests.cs",
-              "RelativeDocumentMoniker": "TicketSystemTests\\Models\\ProjectTests.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\ProjectTests.cs",
-              "RelativeToolTip": "TicketSystemTests\\Models\\ProjectTests.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAA5AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T23:18:04.874Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TicketTests.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\TicketTests.cs",
-              "RelativeDocumentMoniker": "TicketSystemTests\\Models\\TicketTests.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\TicketTests.cs",
-              "RelativeToolTip": "TicketSystemTests\\Models\\TicketTests.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABYAAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T22:45:12.044Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LoginViewModelTests.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\LoginViewModelTests.cs",
-              "RelativeDocumentMoniker": "TicketSystemTests\\Models\\LoginViewModelTests.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\LoginViewModelTests.cs",
-              "RelativeToolTip": "TicketSystemTests\\Models\\LoginViewModelTests.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T22:48:03.853Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "EmployeeGroupTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\EmployeeGroupTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\EmployeeGroupTests.cs",
@@ -144,7 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "EditProjectViewModelTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\EditProjectViewModelTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\EditProjectViewModelTests.cs",
@@ -157,20 +242,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "EditGroupViewModelTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\EditGroupViewModelTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\EditGroupViewModelTests.cs",
               "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\EditGroupViewModelTests.cs",
               "RelativeToolTip": "TicketSystemTests\\Models\\EditGroupViewModelTests.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABgAAAAOAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAIBJwBgAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-24T22:50:53.318Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "AddGroupViewModelTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\AddGroupViewModelTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\AddGroupViewModelTests.cs",
@@ -183,20 +268,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "AddProjectViewModelTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\AddProjectViewModelTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\AddProjectViewModelTests.cs",
               "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\AddProjectViewModelTests.cs",
               "RelativeToolTip": "TicketSystemTests\\Models\\AddProjectViewModelTests.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAABYAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwBYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-24T23:16:52.456Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "EditEmployeeViewModelTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\EditEmployeeViewModelTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\EditEmployeeViewModelTests.cs",
@@ -209,7 +294,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 16,
               "Title": "EmployeeTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\EmployeeTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\EmployeeTests.cs",
@@ -222,7 +307,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 17,
               "Title": "GroupTests.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemTests\\Models\\GroupTests.cs",
               "RelativeDocumentMoniker": "TicketSystemTests\\Models\\GroupTests.cs",

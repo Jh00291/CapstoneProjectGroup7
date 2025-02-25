@@ -719,3 +719,7 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\obj\Debug\net8.0\TicketSystemWeb.pdb
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\obj\Debug\net8.0\TicketSystemWeb.genruntimeconfig.cache
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\obj\Debug\net8.0\ref\TicketSystemWeb.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\bin\Debug\net8.0\Moq.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\bin\Debug\net8.0\Moq.EntityFrameworkCore.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
