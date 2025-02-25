@@ -23,15 +23,16 @@
                         <select multiple class="form-control" id="editGroups" name="SelectedGroupIds">
                             @foreach (var group in Model.AllGroups)
                             {
-                                var isSelected = Model.SelectedGroupIds.Contains(group.Id) ? "selected" : "";
-                                <option value="@group.Id">@group.Name</option> //@isSelected
+                                <option value="@group.Id" selected="@(Model.SelectedGroupIds.Contains(group.Id) ? "selected" : null)">
+                                    @group.Name
+                                </option>
                             }
                         </select>
                         <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple groups.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="submit" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Save Changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>

@@ -22,14 +22,17 @@
                 <td>@employee.Email</td>
                 <td>@(employee.EmailConfirmed ? "Yes" : "No")</td>
                 <td>
-                    <button class="btn btn-warning btn-sm"
-                            onclick="openEditEmployeeModal('@employee.Id', '@employee.UserName', '@employee.Email')">
-                        Edit
-                    </button>
-                    <button class="btn btn-danger btn-sm"
-                            onclick="openRemoveEmployeeModal('@employee.Id', '@employee.UserName')">
-                        Remove
-                    </button>
+                    @if (User.Identity.Name != employee.UserName || !User.IsInRole("admin"))
+                    {
+                        <button class="btn btn-warning btn-sm"
+                                onclick="openEditEmployeeModal('@employee.Id', '@employee.UserName', '@employee.Email')">
+                            Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="openRemoveEmployeeModal('@employee.Id', '@employee.UserName')">
+                            Remove
+                        </button>
+                    }
                 </td>
             </tr>
         }
@@ -39,7 +42,8 @@
 @if (User.IsInRole("admin"))
 {
     <div class="d-flex justify-content-end mt-3">
-        <button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"
+        <button class="btn btn-primary text-white"
+                onclick="openAddEmployeeModal()"
                 style="background-color: #6f42c1; border-color: #6f42c1;">
             Add Employee
         </button>
@@ -58,14 +62,12 @@
                 resetForm("addEmployeeModal");
             });
         }
-
         var editEmployeeModal = document.getElementById("editEmployeeModal");
         if (editEmployeeModal) {
             editEmployeeModal.addEventListener("hidden.bs.modal", function () {
                 resetForm("editEmployeeModal");
             });
         }
-
         var removeEmployeeModal = document.getElementById("removeEmployeeModal");
         if (removeEmployeeModal) {
             removeEmployeeModal.addEventListener("hidden.bs.modal", function () {
@@ -73,7 +75,6 @@
             });
         }
     });
-
     function resetForm(modalId) {
         var modal = document.getElementById(modalId);
         if (modal) {
@@ -83,7 +84,12 @@
             }
         }
     }
-
+    function openAddEmployeeModal() {
+        console.log("Opening Add Employee Modal");
+        resetForm("addEmployeeModal");
+        var addModal = new bootstrap.Modal(document.getElementById("addEmployeeModal"));
+        addModal.show();
+    }
     function openEditEmployeeModal(employeeId, username, email) {
         document.getElementById("editEmployeeId").value = employeeId;
         document.getElementById("editUsername").value = username;
@@ -92,7 +98,6 @@
         var editModal = new bootstrap.Modal(document.getElementById("editEmployeeModal"));
         editModal.show();
     }
-
     function openRemoveEmployeeModal(employeeId, username) {
         console.log("Opening Remove Modal for:", employeeId, username);
         document.getElementById("removeEmployeeId").value = employeeId;
