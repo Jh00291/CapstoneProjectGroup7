@@ -7,14 +7,46 @@ using TicketSystemWeb.Models.ProjectManagement.Project;
 
 namespace TicketSystemWeb.Data
 {
+    /// <summary>
+    /// the ticket db context
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext&lt;TicketSystemWeb.Models.Employee.Employee&gt;" />
     public class TicketDBContext : IdentityDbContext<Employee>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TicketDBContext"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
         public TicketDBContext(DbContextOptions<TicketDBContext> options) : base(options) { }
 
+        /// <summary>
+        /// Gets or sets the tickets.
+        /// </summary>
+        /// <value>
+        /// The tickets.
+        /// </value>
         public DbSet<Ticket> Tickets { get; set; }
+        /// <summary>
+        /// Gets or sets the groups.
+        /// </summary>
+        /// <value>
+        /// The groups.
+        /// </value>
         public DbSet<Group> Groups { get; set; }
+        /// <summary>
+        /// Gets or sets the employee groups.
+        /// </summary>
+        /// <value>
+        /// The employee groups.
+        /// </value>
         public DbSet<EmployeeGroup> EmployeeGroups { get; set; }
         public DbSet<Project> Projects { get; set; }
+        /// <summary>
+        /// Gets or sets the project groups.
+        /// </summary>
+        /// <value>
+        /// The project groups.
+        /// </value>
         public DbSet<ProjectGroup> ProjectGroups { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

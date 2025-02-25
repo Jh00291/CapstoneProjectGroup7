@@ -5,6 +5,13 @@
 }
 
 <h2>Project Management</h2>
+@if (ViewData["ProjectErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @ViewData["ProjectErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -36,10 +43,10 @@
                     }
                 </td>
                 <td>
-                    @if (User.Identity.IsAuthenticated && (User.Identity.Name == project.ProjectManager?.UserName || User.IsInRole("Admin")))
+                    @if (User.IsInRole("admin") || project.ProjectManagerId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
                     {
                         <button class="btn btn-warning"
-                                onclick="openEditProjectModal(@project.Id, '@project.Title', '@project.Description', [@(string.Join(",", project.ProjectGroups.Select(pg => pg.Group.Id)))])">
+                                onclick="openEditProjectModal(@project.Id, '@project.Title', '@project.Description', [@(string.Join(",", project.ProjectGroups.Select(pg => pg.GroupId.ToString())))], '@project.ProjectManagerId')">
                             Edit
                         </button>
                         <button class="btn btn-danger" onclick="openRemoveProjectModal(@project.Id)">Remove</button>
@@ -50,14 +57,140 @@
     </tbody>
 </table>
 
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProjectModalLabel">Add Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ProjectManagement" asp-action="CreateProject" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="addTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="addTitle" name="Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="addDescription" name="Description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addManager" class="form-label">Assign Manager</label>
+                        <select class="form-control" id="addManager" name="ProjectManagerId" required>
+                            <option value="">-- Select Manager --</option>
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addGroups" class="form-label">Assign Groups</label>
+                        <select multiple class="form-control" id="addGroups" name="GroupIds">
+                            @foreach (var group in Model.Groups)
+                            {
+                                <option value="@group.Id">@group.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
+                        Add
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ProjectManagement" asp-action="UpdateProject" method="post">
+                <input type="hidden" id="editProjectId" name="ProjectId" />
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="editTitle" name="Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editDescription" name="Description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editManager" class="form-label">Assign Manager</label>
+                        <select class="form-control" id="editManager" name="ProjectManagerId" required>
+                            <option value="">-- Select Manager --</option>
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editGroups" class="form-label">Assigned Groups</label>
+                        <select multiple class="form-control" id="editGroups" name="SelectedGroupIds">
+                            @foreach (var group in Model.Groups)
+                            {
+                                <option value="@group.Id">@group.Name</option>
+                            }
+                        </select>
+                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple groups.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="removeProjectModal" tabindex="-1" aria-labelledby="removeProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeProjectModalLabel">Confirm Project Removal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ProjectManagement" asp-action="DeleteProject" method="post">
+                <input type="hidden" id="removeProjectId" name="projectId" value="" />
+                <div class="modal-body">
+                    <p>Are you sure you want to remove this project?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @if (Model.CanAddProject)
 {
     <div class="d-flex justify-content-end mt-3">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add Project</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal"
+                style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
+            Add Project
+        </button>
     </div>
 }
 
 <h2>Group Management</h2>
+@if (ViewData["GroupErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @ViewData["GroupErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -73,9 +206,15 @@
                 <td>@group.Name</td>
                 <td>@(group.Manager != null ? group.Manager.UserName : "None")</td>
                 <td>
-                    @if (Model.CanManageGroups)
+                    @if (User.IsInRole("admin") || group.ManagerId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
                     {
-                        <button class="btn btn-warning" onclick="openEditGroupModal(@group.Id, '@group.Name')"> Edit </button>
+                        <button class="btn btn-warning"
+                                onclick="openEditGroupModal(@group.Id,
+                            '@group.Name',
+                            '@(group.ManagerId ?? "null")',
+                            '@string.Join(",", group.EmployeeGroups.Select(eg => eg.EmployeeId))')">
+                            Edit
+                        </button>
                         <button class="btn btn-danger" onclick="openRemoveGroupModal(@group.Id)"> Remove </button>
                     }
                 </td>
@@ -84,10 +223,125 @@
     </tbody>
 </table>
 
+<div class="modal fade" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addGroupModalLabel">Add Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ProjectManagement" asp-action="CreateGroup" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="groupName" class="form-label">Group Name</label>
+                        <input type="text" class="form-control" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manager" class="form-label">Assign Manager</label>
+                        <select class="form-control" name="SelectedManagerId" required>
+                            <option value="">-- Select Manager --</option>
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="employees" class="form-label">Add Employees</label>
+                        <select multiple class="form-control" name="SelectedEmployeeIds">
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple employees.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
+                        Add Group
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="editGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editGroupModalLabel">Edit Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ProjectManagement" asp-action="UpdateGroup" method="post">
+                <input type="hidden" id="editGroupId" name="GroupId" />
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editGroupName" class="form-label">Group Name</label>
+                        <input type="text" class="form-control" id="editGroupName" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editManager" class="form-label">Assign Manager</label>
+                        <select class="form-control" id="editManager" name="SelectedManagerId" required>
+                            <option value="">-- Select Manager --</option>
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmployees" class="form-label">Add Employees</label>
+                        <select multiple class="form-control" id="editEmployees" name="SelectedEmployeeIds">
+                            @foreach (var employee in Model.AllEmployees)
+                            {
+                                <option value="@employee.Id">@employee.UserName</option>
+                            }
+                        </select>
+                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple employees.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"
+                            style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
+                        Save Changes
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="removeGroupModal" tabindex="-1" aria-labelledby="removeGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeGroupModalLabel">Confirm Group Removal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ProjectManagement" asp-action="DeleteGroup" method="post">
+                <input type="hidden" id="removeGroupId" name="groupId" />
+                <div class="modal-body">
+                    <p>Are you sure you want to remove this group?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @if (Model.CanManageGroups)
 {
     <div class="d-flex justify-content-end mt-3">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupModal" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add Group</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupModal"
+                style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
+            Add Group
+        </button>
     </div>
 }
 
@@ -107,6 +361,38 @@
             });
         }
     });
+    $(document).ready(function () {
+        $(".edit-project-btn").click(function () {
+            let projectId = $(this).data("project-id");
+            let title = $(this).data("title");
+            let description = $(this).data("description");
+            let groupIds = $(this).data("group-ids").split(",").map(id => parseInt(id));
+            $("#editProjectId").val(projectId);
+            $("#editTitle").val(title);
+            $("#editDescription").val(description);
+            $("#editGroups option").each(function () {
+                let optionValue = parseInt($(this).val());
+                $(this).prop("selected", groupIds.includes(optionValue));
+            });
+            $("#editProjectModal").modal("show");
+        });
+    });
+    $(document).ready(function () {
+        $(".edit-group-btn").click(function () {
+            let groupId = $(this).data("group-id");
+            let groupName = $(this).data("group-name");
+
+            $("#editGroupId").val(groupId);
+            $("#editGroupName").val(groupName);
+
+            $("#editGroupModal").modal("show");
+        });
+    });
+    function openRemoveGroupModal(groupId) {
+        document.getElementById("removeGroupId").value = groupId;
+        var removeModal = new bootstrap.Modal(document.getElementById("removeGroupModal"));
+        removeModal.show();
+    }
     function resetForm(modalId) {
         var modal = document.getElementById(modalId);
         if (modal) {
@@ -114,46 +400,58 @@
             if (form) {
                 form.reset();
             }
-        }
+        } 
     }
     function openRemoveProjectModal(projectId) {
         document.getElementById("removeProjectId").value = projectId;
         var removeModal = new bootstrap.Modal(document.getElementById("removeProjectModal"));
         removeModal.show();
     }
-    function openEditProjectModal(projectId, title, description, groupIds) {
+    function openEditProjectModal(projectId, title, description, groupIds, projectManagerId) {
         document.getElementById("editProjectId").value = projectId;
         document.getElementById("editTitle").value = title;
         document.getElementById("editDescription").value = description;
+        var managerSelect = document.getElementById("editManager");
+        if (managerSelect) {
+            for (var i = 0; i < managerSelect.options.length; i++) {
+                if (managerSelect.options[i].value == projectManagerId) {
+                    managerSelect.options[i].selected = true;
+                    break;
+                }
+            }
+        }
         var groupSelect = document.getElementById("editGroups");
         if (groupSelect) {
+            let selectedGroups = groupIds.map(id => parseInt(id));
             for (var i = 0; i < groupSelect.options.length; i++) {
-                groupSelect.options[i].selected = groupIds.includes(parseInt(groupSelect.options[i].value));
+                let optionValue = parseInt(groupSelect.options[i].value);
+                groupSelect.options[i].selected = selectedGroups.includes(optionValue);
             }
         }
         var editModal = new bootstrap.Modal(document.getElementById("editProjectModal"));
         editModal.show();
     }
-    function openEditGroupModal(groupId, groupName) {
+    function openEditGroupModal(groupId, groupName, managerId, employeeIds) {
         document.getElementById("editGroupId").value = groupId;
         document.getElementById("editGroupName").value = groupName;
-
+        var managerSelect = document.getElementById("editManager");
+        if (managerSelect) {
+            for (var i = 0; i < managerSelect.options.length; i++) {
+                if (managerSelect.options[i].value == managerId) {
+                    managerSelect.options[i].selected = true;
+                    break;
+                }
+            }
+        }
+        var employeeSelect = document.getElementById("editEmployees");
+        if (employeeSelect) {
+            let selectedEmployeeIds = employeeIds.split(",").map(id => parseInt(id.trim()));
+            for (var i = 0; i < employeeSelect.options.length; i++) {
+                let optionValue = parseInt(employeeSelect.options[i].value);
+                employeeSelect.options[i].selected = selectedEmployeeIds.includes(optionValue);
+            }
+        }
         var editModal = new bootstrap.Modal(document.getElementById("editGroupModal"));
         editModal.show();
     }
-    function openRemoveGroupModal(groupId) {
-        document.getElementById("removeGroupId").value = groupId;
-
-        var removeModal = new bootstrap.Modal(document.getElementById("removeGroupModal"));
-        removeModal.show();
-    }
 </script>
-
-
-@await Html.PartialAsync("Projects/AddProject", new TicketSystemWeb.ViewModels.AddProjectViewModel { AllGroups = Model.Groups })
-@await Html.PartialAsync("Projects/RemoveProject", 0)
-@await Html.PartialAsync("Projects/EditProject", new TicketSystemWeb.ViewModels.EditProjectViewModel())
-@await Html.PartialAsync("Groups/AddGroup", new TicketSystemWeb.ViewModels.AddGroupViewModel { AllEmployees = Model.AllEmployees })
-@await Html.PartialAsync("Groups/RemoveGroup", 0)
-@await Html.PartialAsync("Groups/EditGroup", new TicketSystemWeb.ViewModels.EditGroupViewModel())
-

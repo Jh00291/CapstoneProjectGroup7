@@ -1,7 +1,16 @@
 ﻿@using TicketSystemWeb.Models.Employee
-@model List<Employee>
+@using TicketSystemWeb.ViewModels
+@model Tuple<List<Employee>, AddEmployeeViewModel>
 
 <h2>Employee Management</h2>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @ViewData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -14,7 +23,7 @@
         </tr>
     </thead>
     <tbody id="tableBody">
-        @foreach (var employee in Model)
+        @foreach (var employee in Model.Item1)
         {
             <tr>
                 <td>@employee.Id</td>
@@ -22,14 +31,17 @@
                 <td>@employee.Email</td>
                 <td>@(employee.EmailConfirmed ? "Yes" : "No")</td>
                 <td>
-                    <button class="btn btn-warning btn-sm"
-                            onclick="openEditEmployeeModal('@employee.Id', '@employee.UserName', '@employee.Email')">
-                        Edit
-                    </button>
-                    <button class="btn btn-danger btn-sm"
-                            onclick="openRemoveEmployeeModal('@employee.Id', '@employee.UserName')">
-                        Remove
-                    </button>
+                    @if (User.Identity.Name != employee.UserName || !User.IsInRole("admin"))
+                    {
+                        <button class="btn btn-warning btn-sm"
+                                onclick="openEditEmployeeModal('@employee.Id', '@employee.UserName', '@employee.Email')">
+                            Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="openRemoveEmployeeModal('@employee.Id', '@employee.UserName')">
+                            Remove
+                        </button>
+                    }
                 </td>
             </tr>
         }
@@ -39,7 +51,8 @@
 @if (User.IsInRole("admin"))
 {
     <div class="d-flex justify-content-end mt-3">
-        <button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"
+        <button class="btn btn-primary text-white"
+                onclick="openAddEmployeeModal()"
                 style="background-color: #6f42c1; border-color: #6f42c1;">
             Add Employee
         </button>
@@ -50,30 +63,121 @@
     <ul class="pagination justify-content-center" id="pagination"></ul>
 </nav>
 
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="AddEmployee" asp-controller="Employees" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="UserName" required>
+                        <span asp-validation-for="@Model.Item2.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="Email" required>
+                        <span asp-validation-for="@Model.Item2.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="Password" required>
+                        <span asp-validation-for="@Model.Item2.Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" name="Role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add Employee</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Employees" asp-action="UpdateEmployee" method="post">
+                <input type="hidden" id="editEmployeeId" name="Id" />
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="editUsername" name="UserName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" name="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRole" class="form-label">Role</label>
+                        <select class="form-select" id="editRole" name="Role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1;">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="removeEmployeeModal" tabindex="-1" aria-labelledby="removeEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeEmployeeModalLabel">Confirm Employee Removal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Employees" asp-action="RemoveEmployee" method="post">
+                <input type="hidden" id="removeEmployeeId" name="employeeId" />
+                <div class="modal-body">
+                    <p>Are you sure you want to remove <span id="removeEmployeeName"></span>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var addEmployeeModal = document.getElementById("addEmployeeModal");
-        if (addEmployeeModal) {
-            addEmployeeModal.addEventListener("hidden.bs.modal", function () {
-                resetForm("addEmployeeModal");
-            });
-        }
-
-        var editEmployeeModal = document.getElementById("editEmployeeModal");
-        if (editEmployeeModal) {
-            editEmployeeModal.addEventListener("hidden.bs.modal", function () {
-                resetForm("editEmployeeModal");
-            });
-        }
-
-        var removeEmployeeModal = document.getElementById("removeEmployeeModal");
-        if (removeEmployeeModal) {
-            removeEmployeeModal.addEventListener("hidden.bs.modal", function () {
-                resetForm("removeEmployeeModal");
-            });
-        }
-    });
-
+    function openAddEmployeeModal() {
+        resetForm("addEmployeeModal");
+        var addModal = new bootstrap.Modal(document.getElementById("addEmployeeModal"));
+        addModal.show();
+    }
+    function openEditEmployeeModal(employeeId, username, email) {
+        document.getElementById("editEmployeeId").value = employeeId;
+        document.getElementById("editUsername").value = username;
+        document.getElementById("editEmail").value = email;
+        var editModal = new bootstrap.Modal(document.getElementById("editEmployeeModal"));
+        editModal.show();
+    }
+    function openRemoveEmployeeModal(employeeId, username) {
+        document.getElementById("removeEmployeeId").value = employeeId;
+        document.getElementById("removeEmployeeName").textContent = username;
+        var removeModal = new bootstrap.Modal(document.getElementById("removeEmployeeModal"));
+        removeModal.show();
+    }
     function resetForm(modalId) {
         var modal = document.getElementById(modalId);
         if (modal) {
@@ -83,26 +187,4 @@
             }
         }
     }
-
-    function openEditEmployeeModal(employeeId, username, email) {
-        document.getElementById("editEmployeeId").value = employeeId;
-        document.getElementById("editUsername").value = username;
-        document.getElementById("editEmail").value = email;
-
-        var editModal = new bootstrap.Modal(document.getElementById("editEmployeeModal"));
-        editModal.show();
-    }
-
-    function openRemoveEmployeeModal(employeeId, username) {
-        console.log("Opening Remove Modal for:", employeeId, username);
-        document.getElementById("removeEmployeeId").value = employeeId;
-        document.getElementById("removeEmployeeName").textContent = username;
-
-        var removeModal = new bootstrap.Modal(document.getElementById("removeEmployeeModal"));
-        removeModal.show();
-    }
 </script>
-
-@await Html.PartialAsync("AddEmployee", new TicketSystemWeb.ViewModels.AddEmployeeViewModel())
-@await Html.PartialAsync("RemoveEmployee", 0)
-@await Html.PartialAsync("EditEmployee", new TicketSystemWeb.ViewModels.EditEmployeeViewModel())

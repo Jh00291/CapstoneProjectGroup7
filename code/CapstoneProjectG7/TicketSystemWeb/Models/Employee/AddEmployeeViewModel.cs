@@ -1,10 +1,37 @@
 ﻿namespace TicketSystemWeb.ViewModels
 {
+    /// <summary>
+    /// addemployee viewmodel
+    /// </summary>
     public class AddEmployeeViewModel
     {
+        /// <summary>
+        /// Gets or sets the name of the user.
+        /// </summary>
+        /// <value>
+        /// The name of the user.
+        /// </value>
         public string UserName { get; set; } = string.Empty;
+        /// <summary>
+        /// Gets or sets the email.
+        /// </summary>
+        /// <value>
+        /// The email.
+        /// </value>
         public string Email { get; set; } = string.Empty;
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
         public string Password { get; set; } = string.Empty;
+        /// <summary>
+        /// Gets or sets the role.
+        /// </summary>
+        /// <value>
+        /// The role.
+        /// </value>
         public string Role { get; set; } = "user";
     }
 }
