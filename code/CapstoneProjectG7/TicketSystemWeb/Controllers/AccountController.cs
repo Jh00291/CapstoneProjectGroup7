@@ -54,14 +54,19 @@ namespace TicketSystemWeb.Controllers
             return View(model);
         }
 
-        /// <summary>
-        /// Logouts this instance.
-        /// </summary>
-        /// <returns>back to the login view</returns>
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            try
+            {
+                await _signInManager.SignOutAsync();
+            }
+            catch (Exception)
+            {
+                
+            }
+
             return RedirectToAction("Login", "Account");
         }
+
     }
 }

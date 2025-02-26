@@ -16,7 +16,7 @@ namespace TicketSystemWeb.ViewModels
         /// </value>
         [Required]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Group name must be between 3 and 100 characters.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         /// <summary>
         /// Gets or sets the selected manager identifier.
         /// </summary>
