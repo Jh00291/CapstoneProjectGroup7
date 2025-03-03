@@ -88,6 +88,10 @@
             "Moq.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.0.1, )"
+            },
+            "jQuery.Validation.Unobtrusive": {
+              "target": "Package",
+              "version": "[2.0.20710, )"
             }
           },
           "imports": [
