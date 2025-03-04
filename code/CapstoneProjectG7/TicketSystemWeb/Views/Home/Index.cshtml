@@ -1,66 +1,95 @@
-﻿@model List<TicketSystemWeb.Models.Ticket>
+﻿@using TicketSystemWeb.Models.KanbanBoard
+@model TicketSystemWeb.Models.KanbanBoard.KanbanBoard
 
-@{
-    ViewData["Title"] = "Home Page";
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="~/css/kanban.css">
+</head>
+<body>
 
-<div class="text-center">
-    <h1 class="display-4">Ticket List</h1>
-</div>
+    <h1 class="kanban-title">@Model.ProjectName</h1>
 
-<!-- Add New Ticket Form -->
-<div class="card mb-4">
-    <div class="card-header">Add a New Ticket</div>
-    <div class="card-body">
-        <form asp-action="AddTicket" method="post">
-            <div class="mb-3">
-                <label for="Title" class="form-label">Title</label>
-                <input type="text" class="form-control" name="Title" required maxlength="100">
-            </div>
-            <div class="mb-3">
-                <label for="Description" class="form-label">Description</label>
-                <textarea class="form-control" name="Description" rows="3" required maxlength="500"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="Status" class="form-label">Status</label>
-                <select class="form-control" name="Status" required>
-                    <option value="Open">Open</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Closed">Closed</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="CreatedBy" class="form-label">Created By</label>
-                <input type="text" class="form-control" name="CreatedBy" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Ticket</button>
-        </form>
-    </div>
-</div>
-
-<!-- Display Ticket List -->
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Ticket ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th>Created By</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ticket in Model)
+    <div class="kanban-board">
+        @foreach (var column in Model.Columns.OrderBy(c => c.Order))
         {
-            <tr>
-                <td>@ticket.TicketId</td>
-                <td>@ticket.Title</td>
-                <td>@ticket.Description</td>
-                <td>@ticket.Status</td>
-                <td>@ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@ticket.CreatedBy</td>
-            </tr>
+            <div class="kanban-column" data-column-id="@column.Id" ondrop="dropColumn(event)" ondragover="allowDrop(event)">
+                <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
+                    <h3>@column.Name</h3>
+                </div>
+                <div class="kanban-cards" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    @if (!column.Tickets.Any())
+                    {
+                        <div class="drop-placeholder"></div>
+                    }
+                    @foreach (var ticket in column.Tickets)
+                    {
+                        <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
+                            <div class="card-header">
+                                <strong>@ticket.Title</strong>
+                            </div>
+                            <div class="card-body">
+                                <p>@ticket.Description</p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="status">@ticket.Status</span>
+                                <span class="date">@ticket.CreatedAt.ToShortDateString()</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+        function drag(event) {
+            event.dataTransfer.setData("dragType", "ticket");
+            event.dataTransfer.setData("ticketId", event.target.id);
+        }
+        async function drop(event) {
+            event.preventDefault();
+            let dragType = event.dataTransfer.getData("dragType");
+            if (dragType !== "ticket") return;
+            let ticketId = event.dataTransfer.getData("ticketId").replace("ticket-", "");
+            let columnElement = event.target.closest(".kanban-column");
+            if (!columnElement) return;
+            let columnId = columnElement.getAttribute("data-column-id");
+            let response = await fetch(`/Home/MoveTicket?ticketId=${ticketId}&columnId=${columnId}`, {
+                method: "POST"
+            });
+            if (response.ok) {
+                let dropArea = columnElement.querySelector(".kanban-cards");
+                dropArea.appendChild(document.getElementById(`ticket-${ticketId}`));
+                let placeholder = dropArea.querySelector(".drop-placeholder");
+                if (placeholder) {
+                    placeholder.remove();
+                }
+            } else {
+                console.error("Failed to move ticket");
+            }
+        }
+        function dragColumn(event) {
+            event.dataTransfer.setData("dragType", "column");
+            event.dataTransfer.setData("columnId", event.target.closest(".column-header").parentNode.getAttribute("data-column-id"));
+        }
+        async function dropColumn(event) {
+            event.preventDefault();
+            let dragType = event.dataTransfer.getData("dragType");
+            if (dragType !== "column") return;
+            let draggedColumnId = event.dataTransfer.getData("columnId");
+            let targetColumnId = event.target.closest(".kanban-column").getAttribute("data-column-id");
+            let response = await fetch(`/Home/SwapColumns?draggedColumnId=${draggedColumnId}&targetColumnId=${targetColumnId}`, { method: "POST" });
+            if (response.ok) {
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

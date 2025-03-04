@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.KanbanBoard;
 
 namespace TicketSystemWeb.Tests.Models
 {

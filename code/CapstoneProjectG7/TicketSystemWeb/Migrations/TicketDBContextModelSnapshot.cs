@@ -237,6 +237,90 @@ namespace TicketSystemWeb.Migrations
                     b.ToTable("EmployeeGroups");
                 });
 
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanBoard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ProjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KanbanBoards");
+                });
+
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanColumn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("KanbanBoardId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KanbanBoardId");
+
+                    b.ToTable("KanbanColumns");
+                });
+
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.Ticket", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ColumnId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("ColumnId");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Group.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -298,43 +382,6 @@ namespace TicketSystemWeb.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("ProjectGroups");
-                });
-
-            modelBuilder.Entity("TicketSystemWeb.Models.Ticket", b =>
-                {
-                    b.Property<int>("TicketId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
-
-                    b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("TicketId");
-
-                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -407,6 +454,28 @@ namespace TicketSystemWeb.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanColumn", b =>
+                {
+                    b.HasOne("TicketSystemWeb.Models.KanbanBoard.KanbanBoard", "KanbanBoard")
+                        .WithMany("Columns")
+                        .HasForeignKey("KanbanBoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KanbanBoard");
+                });
+
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.Ticket", b =>
+                {
+                    b.HasOne("TicketSystemWeb.Models.KanbanBoard.KanbanColumn", "Column")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ColumnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Column");
+                });
+
             modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Group.Group", b =>
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "Manager")
@@ -448,6 +517,16 @@ namespace TicketSystemWeb.Migrations
             modelBuilder.Entity("TicketSystemWeb.Models.Employee.Employee", b =>
                 {
                     b.Navigation("EmployeeGroups");
+                });
+
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanBoard", b =>
+                {
+                    b.Navigation("Columns");
+                });
+
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanColumn", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("TicketSystemWeb.Models.ProjectManagement.Group.Group", b =>
