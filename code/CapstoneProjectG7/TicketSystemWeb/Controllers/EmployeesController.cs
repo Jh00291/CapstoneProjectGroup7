@@ -153,19 +153,53 @@ namespace TicketSystemWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveEmployee(string employeeId)
         {
-            if (string.IsNullOrEmpty(employeeId)) return BadRequest("Invalid employee ID.");
+            if (string.IsNullOrEmpty(employeeId))
+                return BadRequest("Invalid employee ID.");
+
             var user = await _userManager.FindByIdAsync(employeeId);
-            if (user == null) return NotFound("Employee not found.");
+            if (user == null)
+                return NotFound("Employee not found.");
+
+            bool isGroupManager = await _context.Groups.AnyAsync(g => g.ManagerId == employeeId);
+
+            bool isProjectManager = await _context.Projects.AnyAsync(p => p.ProjectManagerId == employeeId);
+
+            if (isGroupManager || isProjectManager)
+            {
+                TempData["ErrorMessage"] = "This employee cannot be removed because they are a manager of a group or a project.";
+                return RedirectToAction(nameof(Employees));
+            }
+
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
+                TempData["ErrorMessage"] = "An error occurred while trying to delete the employee.";
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError("", error.Description);
+                    TempData["ErrorMessage"] += $" {error.Description}";
                 }
                 return RedirectToAction(nameof(Employees));
             }
+
+            TempData["SuccessMessage"] = "Employee removed successfully.";
             return RedirectToAction(nameof(Employees));
+        }
+
+        /// <summary>
+        /// Confirms if an Employee can be deleted or not.
+        /// </summary>
+        /// <param name="employeeId">The employee identifier.</param>
+        /// <returns> canDelete>
+        [HttpGet]
+        public async Task<IActionResult> CanDeleteEmployee(string employeeId)
+        {
+            if (string.IsNullOrEmpty(employeeId))
+                return Json(new { canDelete = false });
+
+            bool isGroupManager = await _context.Groups.AnyAsync(g => g.ManagerId == employeeId);
+            bool isProjectManager = await _context.Projects.AnyAsync(p => p.ProjectManagerId == employeeId);
+
+            return Json(new { canDelete = !(isGroupManager || isProjectManager) });
         }
     }
 }

@@ -158,6 +158,22 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorModalMessage">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function openAddEmployeeModal() {
@@ -172,11 +188,26 @@
         var editModal = new bootstrap.Modal(document.getElementById("editEmployeeModal"));
         editModal.show();
     }
+   
     function openRemoveEmployeeModal(employeeId, username) {
-        document.getElementById("removeEmployeeId").value = employeeId;
-        document.getElementById("removeEmployeeName").textContent = username;
-        var removeModal = new bootstrap.Modal(document.getElementById("removeEmployeeModal"));
-        removeModal.show();
+        fetch(`/Employees/CanDeleteEmployee?employeeId=${employeeId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.canDelete) {
+                    showErrorModal("This employee cannot be removed because they are a manager of a group or a project.");
+                } else {
+                    document.getElementById("removeEmployeeId").value = employeeId;
+                    document.getElementById("removeEmployeeName").textContent = username;
+                    var removeModal = new bootstrap.Modal(document.getElementById("removeEmployeeModal"));
+                    removeModal.show();
+                }
+            })
+            .catch(error => console.error("Error checking employee delete status:", error));
+    }
+    function showErrorModal(message) {
+        document.getElementById("errorModalMessage").textContent = message;
+        var errorModal = new bootstrap.Modal(document.getElementById("errorModal"));
+        errorModal.show();
     }
     function resetForm(modalId) {
         var modal = document.getElementById(modalId);
