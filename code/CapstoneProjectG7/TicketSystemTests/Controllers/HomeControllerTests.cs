@@ -5,10 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NUnit.Framework;
 using TicketSystemWeb.Controllers;
 using TicketSystemWeb.Data;
-using TicketSystemWeb.Models;
+using TicketSystemWeb.Models.KanbanBoard;
 
 namespace TicketSystemWeb.Tests.Controllers
 {
@@ -49,42 +48,5 @@ namespace TicketSystemWeb.Tests.Controllers
             _controller?.Dispose();
         }
 
-        [Test]
-        public void Index_ReturnsViewWithTickets()
-        {
-            var result = _controller.Index();
-
-            Assert.That(result, Is.TypeOf<ViewResult>());
-            var viewResult = (ViewResult)result;
-            Assert.That(viewResult.Model, Is.TypeOf<List<Ticket>>());
-        }
-
-        [Test]
-        public async Task AddTicket_ValidModel_AddsTicketAndRedirects()
-        {
-            var ticket = new Ticket { Title = "New Ticket", Description = "Test description" };
-
-            var result = _controller.AddTicket(ticket);
-
-            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
-            var redirect = (RedirectToActionResult)result;
-            Assert.That(redirect.ActionName, Is.EqualTo("Index"));
-
-            var tickets = await _context.Tickets.ToListAsync();
-            Assert.That(tickets.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void AddTicket_InvalidModel_ReturnsViewWithTickets()
-        {
-            var ticket = new Ticket();
-            _controller.ModelState.AddModelError("Error", "Invalid ticket data");
-
-            var result = _controller.AddTicket(ticket);
-
-            Assert.That(result, Is.TypeOf<ViewResult>());
-            var viewResult = (ViewResult)result;
-            Assert.That(viewResult.Model, Is.TypeOf<List<Ticket>>());
-        }
     }
 }

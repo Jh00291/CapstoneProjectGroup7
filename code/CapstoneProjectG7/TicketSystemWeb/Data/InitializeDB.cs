@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TicketSystemWeb.Models;
 using TicketSystemWeb.Models.Employee;
+using TicketSystemWeb.Models.KanbanBoard;
 
 namespace TicketSystemWeb.Data
 {
@@ -60,28 +60,56 @@ namespace TicketSystemWeb.Data
                     await userManager.AddToRoleAsync(normalUser, userRole);
             }
 
+            if (!await dbContext.KanbanBoards.AnyAsync())
+            {
+                var board = new KanbanBoard { ProjectName = "Ticket System Board" };
+                dbContext.KanbanBoards.Add(board);
+                await dbContext.SaveChangesAsync();
+            }
+
+            if (!await dbContext.KanbanColumns.AnyAsync())
+            {
+                dbContext.KanbanColumns.AddRange(
+                    new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = 1 },
+                    new KanbanColumn { Name = "In Progress", Order = 2, KanbanBoardId = 1 },
+                    new KanbanColumn { Name = "Done", Order = 3, KanbanBoardId = 1 },
+                    new KanbanColumn { Name = "Backlog", Order = 4, KanbanBoardId = 1}
+                );
+                await dbContext.SaveChangesAsync();
+            }
+
             if (!await dbContext.Tickets.AnyAsync())
             {
                 dbContext.Tickets.AddRange(new Ticket[]
                 {
-                    new Ticket
-                    {
-                        Title = "First Ticket",
-                        Description = "This is a test ticket.",
-                        Status = "Open",
-                        CreatedAt = new DateTime(2024, 2, 4, 12, 5, 0, DateTimeKind.Utc),
-                        CreatedBy = "Admin"
-                    },
-                    new Ticket
-                    {
-                        Title = "Second Ticket",
-                        Description = "Another test ticket.",
-                        Status = "In Progress",
-                        CreatedAt = new DateTime(2024, 2, 4, 12, 0, 0, DateTimeKind.Utc),
-                        CreatedBy = "User123"
-                    }
+                new Ticket
+                {
+                    Title = "First Ticket",
+                    Description = "This is a test ticket.",
+                    Status = "Open",
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = "Admin",
+                    ColumnId = 1
+                },
+                new Ticket
+                {
+                    Title = "Second Ticket",
+                    Description = "Another test ticket.",
+                    Status = "In Progress",
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = "User123",
+                    ColumnId = 2
+                },
+                new Ticket
+                {
+                    Title = "Completed Ticket",
+                    Description = "This ticket is done.",
+                    Status = "Closed",
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = "Admin",
+                    ColumnId = 3
+                }
                 });
-
                 await dbContext.SaveChangesAsync();
             }
         }

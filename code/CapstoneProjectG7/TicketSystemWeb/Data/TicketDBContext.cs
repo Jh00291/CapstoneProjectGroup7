@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TicketSystemWeb.Models;
 using TicketSystemWeb.Models.Employee;
+using TicketSystemWeb.Models.KanbanBoard;
 using TicketSystemWeb.Models.ProjectManagement.Group;
 using TicketSystemWeb.Models.ProjectManagement.Project;
 
@@ -40,6 +40,12 @@ namespace TicketSystemWeb.Data
         /// The employee groups.
         /// </value>
         public DbSet<EmployeeGroup> EmployeeGroups { get; set; }
+        /// <summary>
+        /// Gets or sets the projects.
+        /// </summary>
+        /// <value>
+        /// The projects.
+        /// </value>
         public DbSet<Project> Projects { get; set; }
         /// <summary>
         /// Gets or sets the project groups.
@@ -48,6 +54,20 @@ namespace TicketSystemWeb.Data
         /// The project groups.
         /// </value>
         public DbSet<ProjectGroup> ProjectGroups { get; set; }
+        /// <summary>
+        /// Gets or sets the kanban boards.
+        /// </summary>
+        /// <value>
+        /// The kanban boards.
+        /// </value>
+        public DbSet<KanbanBoard> KanbanBoards { get; set; }
+        /// <summary>
+        /// Gets or sets the kanban columns.
+        /// </summary>
+        /// <value>
+        /// The kanban columns.
+        /// </value>
+        public DbSet<KanbanColumn> KanbanColumns { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -92,6 +112,16 @@ namespace TicketSystemWeb.Data
                 .WithMany()
                 .HasForeignKey(p => p.ProjectManagerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<KanbanBoard>()
+                .HasMany(b => b.Columns)
+                .WithOne(c => c.KanbanBoard)
+                .HasForeignKey(c => c.KanbanBoardId);
+
+            modelBuilder.Entity<KanbanColumn>()
+                .HasMany(c => c.Tickets)
+                .WithOne(t => t.Column)
+                .HasForeignKey(t => t.ColumnId);
         }
     }
 }
