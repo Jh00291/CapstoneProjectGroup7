@@ -1,15 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 using TicketSystemWeb.Data;
-using TicketSystemWeb.Models;
-using System.Linq;
+using TicketSystemWeb.Models.KanbanBoard;
+using Microsoft.EntityFrameworkCore;
 
 namespace TicketSystemWeb.Controllers
 {
 
     /// <summary>
-    /// the home page controller
+    /// the home controller
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class HomeController : Controller
@@ -33,19 +31,27 @@ namespace TicketSystemWeb.Controllers
         /// </summary>
         /// <returns>the home page</returns>
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var tickets = _context.Tickets.ToList();
-            return View(tickets);
+            var board = await _context.KanbanBoards
+                .Include(b => b.Columns)
+                    .ThenInclude(c => c.Tickets)
+                .FirstOrDefaultAsync();
+
+            if (board == null)
+            {
+                return View("NoBoardFound");
+            }
+            return View(board);
         }
 
         /// <summary>
         /// Adds the ticket.
         /// </summary>
         /// <param name="ticket">The ticket.</param>
-        /// <returns>the home page</returns>
+        /// <returns>the ticket was added</returns>
         [HttpPost]
-        public IActionResult AddTicket(Ticket ticket)
+        public async Task<IActionResult> AddTicket(Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -53,13 +59,58 @@ namespace TicketSystemWeb.Controllers
                 ticket.CreatedBy = "System";
                 ticket.Status = "Open";
 
+                var firstColumn = await _context.KanbanColumns.OrderBy(c => c.Order).FirstOrDefaultAsync();
+                if (firstColumn == null) return NotFound("No columns found.");
+
+                ticket.ColumnId = firstColumn.Id;
                 _context.Tickets.Add(ticket);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            var tickets = _context.Tickets.ToList();
-            return View("Index", tickets);
+            var board = await _context.KanbanBoards
+                .Include(b => b.Columns)
+                    .ThenInclude(c => c.Tickets)
+                .FirstOrDefaultAsync();
+            return View("Index", board);
         }
+
+        /// <summary>
+        /// Moves the ticket.
+        /// </summary>
+        /// <param name="ticketId">The ticket identifier.</param>
+        /// <param name="columnId">The column identifier.</param>
+        /// <returns>the ticket was moved</returns>
+        [HttpPost]
+        public async Task<IActionResult> MoveTicket(int ticketId, int columnId)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            var column = await _context.KanbanColumns.FindAsync(columnId);
+            if (ticket == null || column == null) return NotFound();
+            ticket.ColumnId = columnId;
+            await _context.SaveChangesAsync();
+            return new JsonResult(new { success = true });
+        }
+
+        /// <summary>
+        /// Swaps the columns.
+        /// </summary>
+        /// <param name="draggedColumnId">The dragged column identifier.</param>
+        /// <param name="targetColumnId">The target column identifier.</param>
+        /// <returns>the view with the columns moved</returns>
+        [HttpPost]
+        public async Task<IActionResult> SwapColumns(int draggedColumnId, int targetColumnId)
+        {
+            var draggedColumn = await _context.KanbanColumns.FindAsync(draggedColumnId);
+            var targetColumn = await _context.KanbanColumns.FindAsync(targetColumnId);
+            if (draggedColumn == null || targetColumn == null) return NotFound();
+            int tempOrder = draggedColumn.Order;
+            draggedColumn.Order = targetColumn.Order;
+            targetColumn.Order = tempOrder;
+            await _context.SaveChangesAsync();
+            return new JsonResult(new { success = true });
+        }
+
     }
+
 }
