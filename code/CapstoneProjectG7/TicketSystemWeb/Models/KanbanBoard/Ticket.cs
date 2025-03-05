@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TicketSystemWeb.Models.ProjectManagement.Project;
 
 namespace TicketSystemWeb.Models.KanbanBoard
 {
@@ -72,20 +73,20 @@ namespace TicketSystemWeb.Models.KanbanBoard
         public string CreatedBy { get; set; }
 
         /// <summary>
-        /// Gets or sets the column identifier.
+        /// Gets or sets the project identifier.
         /// </summary>
         /// <value>
-        /// The column identifier.
+        /// The project identifier.
         /// </value>
-        public int ColumnId { get; set; }
+        public int ProjectId { get; set; }
 
         /// <summary>
-        /// Gets or sets the column.
+        /// Gets or sets the project.
         /// </summary>
         /// <value>
-        /// The column.
+        /// The project.
         /// </value>
-        public KanbanColumn Column { get; set; }
+        public Project Project { get; set; }
     }
 
 }

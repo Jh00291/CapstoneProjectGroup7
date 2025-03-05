@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.KanbanBoard;
-using Microsoft.EntityFrameworkCore;
 
 namespace TicketSystemWeb.Controllers
 {
-
     /// <summary>
-    /// the home controller
+    /// The home controller
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class HomeController : Controller
@@ -19,7 +18,7 @@ namespace TicketSystemWeb.Controllers
         /// Initializes a new instance of the <see cref="HomeController"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The database context.</param>
         public HomeController(ILogger<HomeController> logger, TicketDBContext context)
         {
             _logger = logger;
@@ -27,77 +26,71 @@ namespace TicketSystemWeb.Controllers
         }
 
         /// <summary>
-        /// Indexes this instance.
+        /// Displays the Kanban board for a specific project.
         /// </summary>
-        /// <returns>the home page</returns>
+        /// <param name="projectId">The project ID.</param>
+        /// <returns>The project Kanban board view.</returns>
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int projectId)
         {
-            var board = await _context.KanbanBoards
-                .Include(b => b.Columns)
-                    .ThenInclude(c => c.Tickets)
-                .FirstOrDefaultAsync();
-
-            if (board == null)
+            var project = await _context.Projects
+                .Include(p => p.KanbanBoard)
+                    .ThenInclude(b => b.Columns)
+                        .Include(p => p.Tickets)
+                .FirstOrDefaultAsync(p => p.Id == 1);
+            if (project == null)
             {
-                return View("NoBoardFound");
+                return View("NoProjectFound");
             }
-            return View(board);
+            return View(project.KanbanBoard);
         }
 
         /// <summary>
-        /// Adds the ticket.
+        /// Adds a new ticket to a project.
         /// </summary>
-        /// <param name="ticket">The ticket.</param>
-        /// <returns>the ticket was added</returns>
+        /// <param name="projectId">The project ID.</param>
+        /// <param name="ticket">The new ticket.</param>
+        /// <returns>Redirects to the Kanban board.</returns>
         [HttpPost]
-        public async Task<IActionResult> AddTicket(Ticket ticket)
+        public async Task<IActionResult> AddTicket(int projectId, Ticket ticket)
         {
-            if (ModelState.IsValid)
-            {
-                ticket.CreatedAt = DateTime.UtcNow;
-                ticket.CreatedBy = "System";
-                ticket.Status = "Open";
-
-                var firstColumn = await _context.KanbanColumns.OrderBy(c => c.Order).FirstOrDefaultAsync();
-                if (firstColumn == null) return NotFound("No columns found.");
-
-                ticket.ColumnId = firstColumn.Id;
-                _context.Tickets.Add(ticket);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            var board = await _context.KanbanBoards
-                .Include(b => b.Columns)
-                    .ThenInclude(c => c.Tickets)
-                .FirstOrDefaultAsync();
-            return View("Index", board);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var project = await _context.Projects
+                .Include(p => p.KanbanBoard)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project == null) return NotFound("Project not found.");
+            ticket.CreatedAt = DateTime.UtcNow;
+            ticket.CreatedBy = "System";
+            ticket.ProjectId = projectId;
+            ticket.Status = "To Do";
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { projectId });
         }
 
         /// <summary>
-        /// Moves the ticket.
+        /// Moves a ticket between Kanban columns.
         /// </summary>
-        /// <param name="ticketId">The ticket identifier.</param>
-        /// <param name="columnId">The column identifier.</param>
-        /// <returns>the ticket was moved</returns>
+        /// <param name="ticketId">The ticket ID.</param>
+        /// <param name="columnId">The target column ID.</param>
+        /// <returns>Returns success if the operation is successful.</returns>
         [HttpPost]
         public async Task<IActionResult> MoveTicket(int ticketId, int columnId)
         {
             var ticket = await _context.Tickets.FindAsync(ticketId);
             var column = await _context.KanbanColumns.FindAsync(columnId);
             if (ticket == null || column == null) return NotFound();
-            ticket.ColumnId = columnId;
+            ticket.Status = column.Name;
             await _context.SaveChangesAsync();
             return new JsonResult(new { success = true });
         }
 
         /// <summary>
-        /// Swaps the columns.
+        /// Swaps the order of two columns.
         /// </summary>
-        /// <param name="draggedColumnId">The dragged column identifier.</param>
-        /// <param name="targetColumnId">The target column identifier.</param>
-        /// <returns>the view with the columns moved</returns>
+        /// <param name="draggedColumnId">The dragged column ID.</param>
+        /// <param name="targetColumnId">The target column ID.</param>
+        /// <returns>Returns success if the swap was successful.</returns>
         [HttpPost]
         public async Task<IActionResult> SwapColumns(int draggedColumnId, int targetColumnId)
         {
@@ -110,7 +103,5 @@ namespace TicketSystemWeb.Controllers
             await _context.SaveChangesAsync();
             return new JsonResult(new { success = true });
         }
-
     }
-
 }
