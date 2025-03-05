@@ -1,4 +1,18 @@
-﻿.kanban-board {
+﻿.kanban-container {
+    display: flex;
+}
+
+.project-selector {
+    width: 200px;
+    padding: 10px;
+}
+
+.kanban-content {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.kanban-board {
     display: flex;
     gap: 16px;
     overflow-x: auto;

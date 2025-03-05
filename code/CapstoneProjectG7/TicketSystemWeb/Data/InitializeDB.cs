@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.Employee;
 using TicketSystemWeb.Models.KanbanBoard;
+using TicketSystemWeb.Models.ProjectManagement.Group;
 using TicketSystemWeb.Models.ProjectManagement.Project;
 
 namespace TicketSystemWeb.Data
@@ -22,107 +23,167 @@ namespace TicketSystemWeb.Data
             var dbContext = serviceProvider.GetRequiredService<TicketDBContext>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<Employee>>();
-
             await dbContext.Database.EnsureCreatedAsync();
-
             string adminRole = "admin";
             string userRole = "user";
-
             if (!await roleManager.RoleExistsAsync(adminRole))
-                await roleManager.CreateAsync(new IdentityRole { Id = "c1a5a1b6-4c1d-4a6e-b3e4-7a8b6c5d4e3f", Name = adminRole, NormalizedName = "ADMIN" });
-
+                await roleManager.CreateAsync(new IdentityRole { Name = adminRole, NormalizedName = "ADMIN" });
             if (!await roleManager.RoleExistsAsync(userRole))
-                await roleManager.CreateAsync(new IdentityRole { Id = "f2b3c4d5-6e7f-8g9h-0i1j-2k3l4m5n6o7p", Name = userRole, NormalizedName = "USER" });
-
-            if (await userManager.FindByNameAsync("admin") == null)
+                await roleManager.CreateAsync(new IdentityRole { Name = userRole, NormalizedName = "USER" });
+            var adminUser = await CreateUser(userManager, "admin", "admin@example.com", adminRole);
+            var user1 = await CreateUser(userManager, "johndoe", "john.doe@example.com", userRole);
+            var user2 = await CreateUser(userManager, "janesmith", "jane.smith@example.com", userRole);
+            var user3 = await CreateUser(userManager, "michael", "michael@example.com", userRole);
+            if (!await dbContext.Groups.AnyAsync())
             {
-                var adminUser = new Employee
-                {
-                    Id = "e8d2f7a0-ecf1-4e0a-a3e5-3e3ddedf1b1d",
-                    UserName = "admin",
-                    Email = "admin@example.com",
-                    EmailConfirmed = true
-                };
-                var result = await userManager.CreateAsync(adminUser, "admin");
-
-                if (result.Succeeded)
-                    await userManager.AddToRoleAsync(adminUser, adminRole);
+                var group1 = new Group { Name = "Development Team", ManagerId = adminUser.Id };
+                var group2 = new Group { Name = "QA Team", ManagerId = user1.Id };
+                var group3 = new Group { Name = "Support Team", ManagerId = user2.Id };
+                dbContext.Groups.AddRange(group1, group2, group3);
+                await dbContext.SaveChangesAsync();
+                dbContext.EmployeeGroups.AddRange(
+                    new EmployeeGroup { EmployeeId = user1.Id, GroupId = group1.Id },
+                    new EmployeeGroup { EmployeeId = user2.Id, GroupId = group2.Id },
+                    new EmployeeGroup { EmployeeId = user3.Id, GroupId = group3.Id },
+                    new EmployeeGroup { EmployeeId = adminUser.Id, GroupId = group1.Id }
+                );
+                await dbContext.SaveChangesAsync();
             }
-
-            if (await userManager.FindByNameAsync("user") == null)
-            {
-                var normalUser = new Employee
-                {
-                    Id = "17c18f27-ae29-4d49-b6f8-62f7ec2a2a34",
-                    UserName = "user",
-                    Email = "user@example.com",
-                    EmailConfirmed = true
-                };
-                var result = await userManager.CreateAsync(normalUser, "user");
-
-                if (result.Succeeded)
-                    await userManager.AddToRoleAsync(normalUser, userRole);
-            }
-
             if (!await dbContext.Projects.AnyAsync())
             {
-                var project = new Project
+                var group1 = new Group { Name = "Development Team", ManagerId = adminUser.Id };
+                var group2 = new Group { Name = "QA Team", ManagerId = user1.Id };
+                var group3 = new Group { Name = "Support Team", ManagerId = user2.Id };
+                dbContext.Groups.AddRange(group1, group2, group3);
+                await dbContext.SaveChangesAsync();
+                var devTeam = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "Development Team");
+                var qaTeam = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "QA Team");
+                var supportTeam = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "Support Team");
+                var project1 = new Project
                 {
                     Title = "Ticket System Project",
                     Description = "A project for managing tickets with a Kanban board.",
-                    ProjectManagerId = "e8d2f7a0-ecf1-4e0a-a3e5-3e3ddedf1b1d"
+                    ProjectManagerId = adminUser.Id
                 };
-                dbContext.Projects.Add(project);
-                await dbContext.SaveChangesAsync();
 
-                var board = new KanbanBoard
+                var project2 = new Project
                 {
-                    ProjectId = project.Id,
-                    ProjectName = project.Title
+                    Title = "Bug Tracking System",
+                    Description = "A project for tracking and resolving software bugs.",
+                    ProjectManagerId = user1.Id
                 };
-                dbContext.KanbanBoards.Add(board);
+                dbContext.Projects.AddRange(project1, project2);
                 await dbContext.SaveChangesAsync();
-
-                dbContext.KanbanColumns.AddRange(
-                    new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = board.Id },
-                    new KanbanColumn { Name = "In Progress", Order = 2, KanbanBoardId = board.Id },
-                    new KanbanColumn { Name = "Done", Order = 3, KanbanBoardId = board.Id },
-                    new KanbanColumn { Name = "Backlog", Order = 4, KanbanBoardId = board.Id }
+                var ticketSystemProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Title == "Ticket System Project");
+                var bugTrackingProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Title == "Bug Tracking System");
+                dbContext.ProjectGroups.AddRange(
+                    new ProjectGroup { ProjectId = ticketSystemProject.Id, GroupId = devTeam.Id },
+                    new ProjectGroup { ProjectId = ticketSystemProject.Id, GroupId = qaTeam.Id },
+                    new ProjectGroup { ProjectId = bugTrackingProject.Id, GroupId = supportTeam.Id }
                 );
                 await dbContext.SaveChangesAsync();
+                var board1 = new KanbanBoard { ProjectId = ticketSystemProject.Id, ProjectName = ticketSystemProject.Title };
+                var board2 = new KanbanBoard { ProjectId = bugTrackingProject.Id, ProjectName = bugTrackingProject.Title };
+                dbContext.KanbanBoards.AddRange(board1, board2);
+                await dbContext.SaveChangesAsync();
+                var kanbanBoard1 = await dbContext.KanbanBoards.FirstOrDefaultAsync(b => b.ProjectId == ticketSystemProject.Id);
+                var kanbanBoard2 = await dbContext.KanbanBoards.FirstOrDefaultAsync(b => b.ProjectId == bugTrackingProject.Id);
+                dbContext.KanbanColumns.AddRange(
+                    new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = kanbanBoard1.Id },
+                    new KanbanColumn { Name = "In Progress", Order = 2, KanbanBoardId = kanbanBoard1.Id },
+                    new KanbanColumn { Name = "Done", Order = 3, KanbanBoardId = kanbanBoard1.Id },
+                    new KanbanColumn { Name = "Backlog", Order = 4, KanbanBoardId = kanbanBoard1.Id },
 
-                dbContext.Tickets.AddRange(new Ticket[]
-                {
+                    new KanbanColumn { Name = "Backlog", Order = 1, KanbanBoardId = kanbanBoard2.Id },
+                    new KanbanColumn { Name = "Planned", Order = 2, KanbanBoardId = kanbanBoard2.Id },
+                    new KanbanColumn { Name = "Completed", Order = 3, KanbanBoardId = kanbanBoard2.Id },
+                    new KanbanColumn { Name = "Backlog", Order = 4, KanbanBoardId = kanbanBoard2.Id }
+                );
+                await dbContext.SaveChangesAsync();
+                dbContext.Tickets.AddRange(
                     new Ticket
                     {
-                        Title = "First Ticket",
-                        Description = "This is a test ticket.",
+                        Title = "Implement Login Feature",
+                        Description = "Develop and integrate login system.",
                         Status = "To Do",
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = "Admin",
-                        ProjectId = project.Id
+                        ProjectId = ticketSystemProject.Id
                     },
                     new Ticket
                     {
-                        Title = "Second Ticket",
-                        Description = "Another test ticket.",
+                        Title = "Setup CI/CD Pipeline",
+                        Description = "Automate deployment process.",
                         Status = "In Progress",
                         CreatedAt = DateTime.UtcNow,
-                        CreatedBy = "User123",
-                        ProjectId = project.Id
+                        CreatedBy = "JohnDoe",
+                        ProjectId = ticketSystemProject.Id
                     },
                     new Ticket
                     {
-                        Title = "Completed Ticket",
-                        Description = "This ticket is done.",
+                        Title = "Refactor API Code",
+                        Description = "Improve performance and readability.",
                         Status = "Done",
                         CreatedAt = DateTime.UtcNow,
-                        CreatedBy = "Admin",
-                        ProjectId = project.Id
+                        CreatedBy = "JaneSmith",
+                        ProjectId = ticketSystemProject.Id
                     }
-                });
+                );
+                dbContext.Tickets.AddRange(
+                    new Ticket
+                    {
+                        Title = "Bug #123 - Fix Login Issue",
+                        Description = "Resolve authentication bug affecting users.",
+                        Status = "Backlog",
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = "Michael",
+                        ProjectId = bugTrackingProject.Id
+                    },
+                    new Ticket
+                    {
+                        Title = "Optimize Database Queries",
+                        Description = "Improve slow queries for bug tracking.",
+                        Status = "Planned",
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = "JaneSmith",
+                        ProjectId = bugTrackingProject.Id
+                    },
+                    new Ticket
+                    {
+                        Title = "Deploy v1.0 Release",
+                        Description = "Push stable version to production.",
+                        Status = "Completed",
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = "JohnDoe",
+                        ProjectId = bugTrackingProject.Id
+                    }
+                );
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        /// <summary>
+        /// Creates a new user if they do not exist.
+        /// </summary>
+        private static async Task<Employee> CreateUser(UserManager<Employee> userManager, string username, string email, string role)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                user = new Employee
+                {
+                    UserName = username,
+                    Email = email,
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(user, username);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                }
+            }
+            return user;
         }
     }
 }
