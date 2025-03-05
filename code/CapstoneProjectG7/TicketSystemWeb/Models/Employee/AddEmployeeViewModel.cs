@@ -33,5 +33,12 @@
         /// The role.
         /// </value>
         public string Role { get; set; } = "user";
+        /// <summary>
+        /// Gets or sets the managed group ids.
+        /// </summary>
+        /// <value>
+        /// The managed group ids.
+        /// </value>
+        public List<int> ManagedGroupIds { get; set; } = new List<int>();
     }
 }

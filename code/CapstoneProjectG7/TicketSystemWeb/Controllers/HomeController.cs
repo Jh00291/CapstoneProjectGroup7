@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.KanbanBoard;
+using TicketSystemWeb.Models.ProjectManagement.Project;
 
 namespace TicketSystemWeb.Controllers
 {
@@ -30,19 +31,48 @@ namespace TicketSystemWeb.Controllers
         /// </summary>
         /// <param name="projectId">The project ID.</param>
         /// <returns>The project Kanban board view.</returns>
-        [HttpGet]
         public async Task<IActionResult> Index(int projectId)
         {
+            var userId = GetLoggedInUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            List<Project> userProjects;
+            if (User.IsInRole("admin"))
+            {
+                userProjects = await _context.Projects.ToListAsync();
+            }
+            else
+            {
+                userProjects = await _context.Projects
+                    .Where(p => p.ProjectGroups
+                        .Any(pg => pg.Group.EmployeeGroups.Any(eg => eg.EmployeeId == userId)))
+                    .ToListAsync();
+            }
+            if (!userProjects.Any()) return View("NoProjectFound");
+            if (projectId == 0) projectId = userProjects.First().Id;
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
                     .ThenInclude(b => b.Columns)
-                        .Include(p => p.Tickets)
-                .FirstOrDefaultAsync(p => p.Id == 1);
+                .Include(p => p.Tickets)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
             {
                 return View("NoProjectFound");
             }
-            return View(project.KanbanBoard);
+            ViewBag.UserProjects = userProjects;
+            if (project.KanbanBoard != null)
+            {
+                return View(project.KanbanBoard);
+            }
+            return View("Error"); // Error since the KanbanBoard is null
+        }
+
+
+        private string GetLoggedInUserId()
+        {
+            return User?.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : string.Empty;
         }
 
         /// <summary>
