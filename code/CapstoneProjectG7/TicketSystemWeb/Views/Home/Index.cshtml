@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="~/css/kanban.css">
 </head>
 <body>
-
-    <h1 class="kanban-title">@Model.ProjectName</h1>
+    <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
 
     <div class="kanban-board">
         @foreach (var column in Model.Columns.OrderBy(c => c.Order))
@@ -21,11 +20,11 @@
                     <h3>@column.Name</h3>
                 </div>
                 <div class="kanban-cards" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    @if (!column.Tickets.Any())
+                    @if (!Model.Project.Tickets.Any(t => t.Status == column.Name))
                     {
                         <div class="drop-placeholder"></div>
                     }
-                    @foreach (var ticket in column.Tickets)
+                    @foreach (var ticket in Model.Project.Tickets.Where(t => t.Status == column.Name))
                     {
                         <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
                             <div class="card-header">

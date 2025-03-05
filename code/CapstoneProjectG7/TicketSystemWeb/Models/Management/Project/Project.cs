@@ -12,6 +12,7 @@
         /// The identifier.
         /// </value>
         public int Id { get; set; }
+
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
@@ -19,6 +20,7 @@
         /// The title.
         /// </value>
         public string Title { get; set; } = string.Empty;
+
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
@@ -26,6 +28,7 @@
         /// The description.
         /// </value>
         public string Description { get; set; } = string.Empty;
+
         /// <summary>
         /// Gets or sets the project groups.
         /// </summary>
@@ -33,6 +36,7 @@
         /// The project groups.
         /// </value>
         public List<ProjectGroup> ProjectGroups { get; set; } = new();
+
         /// <summary>
         /// Gets or sets the project manager identifier.
         /// </summary>
@@ -40,6 +44,7 @@
         /// The project manager identifier.
         /// </value>
         public string? ProjectManagerId { get; set; }
+
         /// <summary>
         /// Gets or sets the project manager.
         /// </summary>
@@ -47,6 +52,22 @@
         /// The project manager.
         /// </value>
         public Employee.Employee? ProjectManager { get; set; }
+
+        /// <summary>
+        /// Gets or sets the kanban board.
+        /// </summary>
+        /// <value>
+        /// The kanban board.
+        /// </value>
+        public KanbanBoard.KanbanBoard? KanbanBoard { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tickets.
+        /// </summary>
+        /// <value>
+        /// The tickets.
+        /// </value>
+        public List<KanbanBoard.Ticket> Tickets { get; set; } = new();
     }
 
 }
