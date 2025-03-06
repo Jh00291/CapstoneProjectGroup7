@@ -73,6 +73,17 @@
         }
       },
       "coverlet.collector/6.0.4": {},
+      "jQuery/1.4.1": {},
+      "jQuery.Validation/1.8.0": {
+        "dependencies": {
+          "jQuery": "1.4.1"
+        }
+      },
+      "jQuery.Validation.Unobtrusive/2.0.20710": {
+        "dependencies": {
+          "Microsoft.jQuery.Unobtrusive.Validation": "2.0.20710"
+        }
+      },
       "Microsoft.ApplicationInsights/2.22.0": {
         "dependencies": {
           "System.Diagnostics.DiagnosticSource": "9.0.2"
@@ -645,6 +656,11 @@
             "assemblyVersion": "6.35.0.0",
             "fileVersion": "6.35.0.41201"
           }
+        }
+      },
+      "Microsoft.jQuery.Unobtrusive.Validation/2.0.20710": {
+        "dependencies": {
+          "jQuery.Validation": "1.8.0"
         }
       },
       "Microsoft.Net.Http.Headers/2.3.0": {
@@ -1466,7 +1482,8 @@
           "Microsoft.EntityFrameworkCore": "9.0.2",
           "Microsoft.EntityFrameworkCore.InMemory": "9.0.2",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.1",
-          "Moq.EntityFrameworkCore": "9.0.0.1"
+          "Moq.EntityFrameworkCore": "9.0.0.1",
+          "jQuery.Validation.Unobtrusive": "2.0.20710"
         },
         "runtime": {
           "TicketSystemWeb.dll": {}
@@ -1507,6 +1524,27 @@
       "sha512": "sha512-lkhqpF8Pu2Y7IiN7OntbsTtdbpR1syMsm2F3IgX6ootA4ffRqWL5jF7XipHuZQTdVuWG/gVAAcf8mjk8Tz0xPg==",
       "path": "coverlet.collector/6.0.4",
       "hashPath": "coverlet.collector.6.0.4.nupkg.sha512"
+    },
+    "jQuery/1.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-03J0RdIC52hnLJzZhRVLs2S6VrzQVysGRxwKLl0Pqsa/+ws+z53rmlM4w8WfWnHqZsZGWh0x4xBTxeJhOBtTRw==",
+      "path": "jquery/1.4.1",
+      "hashPath": "jquery.1.4.1.nupkg.sha512"
+    },
+    "jQuery.Validation/1.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HPul/Lqnn2ke6mQr9H5dbhaOItTgQwpZQhXEvFoADu/jVndJrjsZ7QQXTNyLjIZXmJkblqONKdhKc5hXvq1KrA==",
+      "path": "jquery.validation/1.8.0",
+      "hashPath": "jquery.validation.1.8.0.nupkg.sha512"
+    },
+    "jQuery.Validation.Unobtrusive/2.0.20710": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-b+1siHUyEjSM3fnPKFO4f19+frMy9JCw2vcOo2LFXfhkw/KTO9qOroDNmpi6TJUYUGIkffgPkNB8IGtph1DTQg==",
+      "path": "jquery.validation.unobtrusive/2.0.20710",
+      "hashPath": "jquery.validation.unobtrusive.2.0.20710.nupkg.sha512"
     },
     "Microsoft.ApplicationInsights/2.22.0": {
       "type": "package",
@@ -1885,6 +1923,13 @@
       "sha512": "sha512-RN7lvp7s3Boucg1NaNAbqDbxtlLj5Qeb+4uSS1TeK5FSBVM40P4DKaTKChT43sHyKfh7V0zkrMph6DdHvyA4bg==",
       "path": "microsoft.identitymodel.tokens/6.35.0",
       "hashPath": "microsoft.identitymodel.tokens.6.35.0.nupkg.sha512"
+    },
+    "Microsoft.jQuery.Unobtrusive.Validation/2.0.20710": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8UaBqHLsvWMp6Y2wHvQUzfghI+CruAN3lmgojl/hKHTD4NddEFHN9g/Q2j6l5PgczPOBA6LHHC5CqMIKxPC/hg==",
+      "path": "microsoft.jquery.unobtrusive.validation/2.0.20710",
+      "hashPath": "microsoft.jquery.unobtrusive.validation.2.0.20710.nupkg.sha512"
     },
     "Microsoft.Net.Http.Headers/2.3.0": {
       "type": "package",

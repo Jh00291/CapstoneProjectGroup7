@@ -124,6 +124,18 @@ namespace TicketSystemWeb.Data
                 .WithOne(c => c.KanbanBoard)
                 .HasForeignKey(c => c.KanbanBoardId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectManager)
+                .WithMany()
+                .HasForeignKey(p => p.ProjectManagerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Group>()
+                .HasOne(g => g.Manager)
+                .WithMany()
+                .HasForeignKey(g => g.ManagerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

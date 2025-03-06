@@ -497,7 +497,8 @@ namespace TicketSystemWeb.Migrations
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "Manager")
                         .WithMany()
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Manager");
                 });
@@ -506,7 +507,8 @@ namespace TicketSystemWeb.Migrations
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "ProjectManager")
                         .WithMany()
-                        .HasForeignKey("ProjectManagerId");
+                        .HasForeignKey("ProjectManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ProjectManager");
                 });

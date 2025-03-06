@@ -12,7 +12,7 @@ using TicketSystemWeb.Data;
 namespace TicketSystemWeb.Migrations
 {
     [DbContext(typeof(TicketDBContext))]
-    [Migration("20250306155846_Initial")]
+    [Migration("20250306164545_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -500,7 +500,8 @@ namespace TicketSystemWeb.Migrations
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "Manager")
                         .WithMany()
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Manager");
                 });
@@ -509,7 +510,8 @@ namespace TicketSystemWeb.Migrations
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "ProjectManager")
                         .WithMany()
-                        .HasForeignKey("ProjectManagerId");
+                        .HasForeignKey("ProjectManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ProjectManager");
                 });

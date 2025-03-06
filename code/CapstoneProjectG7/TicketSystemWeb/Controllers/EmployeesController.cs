@@ -153,19 +153,45 @@ namespace TicketSystemWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveEmployee(string employeeId)
         {
-            if (string.IsNullOrEmpty(employeeId)) return BadRequest("Invalid employee ID.");
+            if (string.IsNullOrEmpty(employeeId))
+                return BadRequest("Invalid employee ID.");
+
             var user = await _userManager.FindByIdAsync(employeeId);
-            if (user == null) return NotFound("Employee not found.");
-            var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded)
+            if (user == null)
+                return NotFound("Employee not found.");
+
+            bool isProjectManager = await _context.Projects.AnyAsync(p => p.ProjectManagerId == employeeId);
+            bool isGroupManager = await _context.Groups.AnyAsync(g => g.ManagerId == employeeId);
+
+            if (isProjectManager || isGroupManager)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                _logger.LogWarning($"Attempted to delete employee {employeeId}, but they are a manager.");
+                TempData["ErrorMessage"] = "Cannot remove user. They are assigned as a manager for a group or project.";
                 return RedirectToAction(nameof(Employees));
             }
+
+            try
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    TempData["ErrorMessage"] = "An error occurred while deleting the employee.";
+                    foreach (var error in result.Errors)
+                    {
+                        TempData["ErrorMessage"] += $" {error.Description}";
+                    }
+                    return RedirectToAction(nameof(Employees));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to delete employee {employeeId}: {ex.Message}");
+                TempData["ErrorMessage"] = "An unexpected error occurred while deleting the employee.";
+                return RedirectToAction(nameof(Employees));
+            }
+
             return RedirectToAction(nameof(Employees));
         }
+
     }
 }
