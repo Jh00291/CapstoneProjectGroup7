@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.Employee;
+using TicketSystemWeb.Models.KanbanBoard;
 using TicketSystemWeb.Models.ProjectManagement.Group;
 using TicketSystemWeb.Models.ProjectManagement.Project;
 using TicketSystemWeb.ViewModels;
@@ -64,7 +65,7 @@ namespace TicketSystemWeb.Controllers
         /// Creates the project.
         /// </summary>
         /// <param name="model">The model.</param>
-        /// <returns>the management page</returns>
+        /// <returns>Redirects to the management page.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateProject(AddProjectViewModel model)
@@ -93,6 +94,19 @@ namespace TicketSystemWeb.Controllers
                 ProjectManager = projectManager
             };
             _context.Projects.Add(project);
+            await _context.SaveChangesAsync();
+            var kanbanBoard = new KanbanBoard
+            {
+                ProjectId = project.Id,
+                ProjectName = project.Title
+            };
+            _context.KanbanBoards.Add(kanbanBoard);
+            await _context.SaveChangesAsync();
+            _context.KanbanColumns.AddRange(
+                new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = kanbanBoard.Id },
+                new KanbanColumn { Name = "In Progress", Order = 2, KanbanBoardId = kanbanBoard.Id },
+                new KanbanColumn { Name = "Done", Order = 3, KanbanBoardId = kanbanBoard.Id }
+            );
             await _context.SaveChangesAsync();
             if (model.GroupIds != null && model.GroupIds.Any())
             {
@@ -278,7 +292,6 @@ namespace TicketSystemWeb.Controllers
                 .Include(g => g.EmployeeGroups)
                 .ThenInclude(eg => eg.Employee)
                 .FirstOrDefaultAsync(g => g.Id == id);
-
             if (group == null) return NotFound();
             var employees = await _context.Users.ToListAsync();
             var viewModel = new EditGroupViewModel
