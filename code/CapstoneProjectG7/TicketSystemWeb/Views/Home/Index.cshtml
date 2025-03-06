@@ -11,58 +11,57 @@
 </head>
 <body>
     <div class="kanban-container">
-        <div class="project-selector">
-            <label for="projectDropdown">Select Project:</label>
-            <select id="projectDropdown" onchange="changeProject()">
-                @foreach (var project in ViewBag.UserProjects)
-                {
-                    <option value="@project.Id" selected="@(Model.ProjectId == project.Id ? "selected" : null)">
-                        @project.Title
-                    </option>
-                }
-            </select>
+        <div class="project-list">
+            @foreach (var project in ViewBag.UserProjects)
+            {
+                <div class="project-card @(Model.ProjectId == project.Id ? "active" : "")"
+                     onclick="loadProject(@project.Id)">
+                    <h4>@project.Title</h4>
+                    <p>@(project.Description.Length > 20 ? project.Description.Substring(0, 20) + "..." : project.Description)</p>
+                </div>
+            }
         </div>
 
         <div class="kanban-content">
             <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
-
-            <div class="kanban-board">
-                @foreach (var column in Model.Columns.OrderBy(c => c.Order))
-                {
-                    <div class="kanban-column" data-column-id="@column.Id" ondrop="dropColumn(event)" ondragover="allowDrop(event)">
-                        <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
-                            <h3>@column.Name</h3>
+            <div class="kanban-board-wrapper">
+                <div class="kanban-board">
+                    @foreach (var column in Model.Columns.OrderBy(c => c.Order))
+                    {
+                        <div class="kanban-column" data-column-id="@column.Id" ondrop="dropColumn(event)" ondragover="allowDrop(event)">
+                            <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
+                                <h3>@column.Name</h3>
+                            </div>
+                            <div class="kanban-cards" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                @if (!Model.Project.Tickets.Any(t => t.Status == column.Name))
+                                {
+                                    <div class="drop-placeholder"></div>
+                                }
+                                @foreach (var ticket in Model.Project.Tickets.Where(t => t.Status == column.Name))
+                                {
+                                    <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
+                                        <div class="card-header">
+                                            <strong>@ticket.Title</strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>@ticket.Description</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <span class="status">@ticket.Status</span>
+                                            <span class="date">@ticket.CreatedAt.ToShortDateString()</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        <div class="kanban-cards" ondrop="drop(event)" ondragover="allowDrop(event)">
-                            @if (!Model.Project.Tickets.Any(t => t.Status == column.Name))
-                            {
-                                <div class="drop-placeholder"></div>
-                            }
-                            @foreach (var ticket in Model.Project.Tickets.Where(t => t.Status == column.Name))
-                            {
-                                <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
-                                    <div class="card-header">
-                                        <strong>@ticket.Title</strong>
-                                    </div>
-                                    <div class="card-body">
-                                        <p>@ticket.Description</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <span class="status">@ticket.Status</span>
-                                        <span class="date">@ticket.CreatedAt.ToShortDateString()</span>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function changeProject() {
-            let projectId = document.getElementById("projectDropdown").value;
+        function loadProject(projectId) {
             window.location.href = `/Home/Index?projectId=${projectId}`;
         }
         function allowDrop(event) {

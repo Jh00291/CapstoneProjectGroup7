@@ -94,7 +94,7 @@ namespace TicketSystemWeb.Data
                     new KanbanColumn { Name = "Done", Order = 3, KanbanBoardId = kanbanBoard1.Id },
                     new KanbanColumn { Name = "Backlog", Order = 4, KanbanBoardId = kanbanBoard1.Id },
 
-                    new KanbanColumn { Name = "Backlog", Order = 1, KanbanBoardId = kanbanBoard2.Id },
+                    new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = kanbanBoard2.Id },
                     new KanbanColumn { Name = "Planned", Order = 2, KanbanBoardId = kanbanBoard2.Id },
                     new KanbanColumn { Name = "Completed", Order = 3, KanbanBoardId = kanbanBoard2.Id },
                     new KanbanColumn { Name = "Backlog", Order = 4, KanbanBoardId = kanbanBoard2.Id }

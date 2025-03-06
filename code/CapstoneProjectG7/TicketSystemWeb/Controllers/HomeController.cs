@@ -66,9 +66,8 @@ namespace TicketSystemWeb.Controllers
             {
                 return View(project.KanbanBoard);
             }
-            return View("Error"); // Error since the KanbanBoard is null
+            return View("Error");
         }
-
 
         private string GetLoggedInUserId()
         {
