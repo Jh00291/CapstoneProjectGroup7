@@ -1,0 +1,11 @@
+Context – Employee is the manager of selected project or admin with a project selected
+
+Primary Flow 
+	1. User Clicks the manage columns button
+	2a. User Adds A column name
+	3. User click add 
+	4. Modal closes with the new column on board
+
+	2b. User clicks add without column name
+	2b. Small modal opens with error saying please add a column name
+	2b. Returns to step 3
