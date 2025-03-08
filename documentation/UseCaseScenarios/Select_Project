@@ -1,0 +1,5 @@
+Context – Employee is the manager of selected project or admin with a project on the home page
+
+Primary Flow 
+	1. Employee Clicks any of the loaded projects on the home page
+	2. The project will replace the kanban board with the newly selected kanban board
