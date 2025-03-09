@@ -36,13 +36,28 @@ namespace TicketSystemWeb.Controllers
         /// <summary>
         /// Employeeses this instance.
         /// </summary>
-        /// <returns>the employees page</returns>
-        [HttpGet]
+        /// <returns>the view with the employees listed</returns>
         public async Task<IActionResult> Employees()
         {
             var employees = await _context.Users.ToListAsync();
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            var loggedInUserId = loggedInUser?.Id;
+            var loggedInUserRoles = await _userManager.GetRolesAsync(loggedInUser);
+            bool isAdmin = loggedInUserRoles.Contains("admin");
+            if (isAdmin)
+            {
+                ViewBag.CanManageEmployees = employees.Select(e => e.Id).ToList();
+            }
+            else
+            {
+                var managedEmployeeIds = await _context.EmployeeGroups
+                    .Where(eg => eg.Group.ManagerId == loggedInUserId)
+                    .Select(eg => eg.EmployeeId)
+                    .ToListAsync();
+                ViewBag.CanManageEmployees = managedEmployeeIds;
+            }
+            ViewBag.CurrentUserId = loggedInUserId;
             var viewModel = new AddEmployeeViewModel();
-
             return View(Tuple.Create(employees, viewModel));
         }
 
@@ -63,7 +78,6 @@ namespace TicketSystemWeb.Controllers
             var existingUser = await _userManager.FindByNameAsync(model.UserName);
             if (existingUser != null)
             {
-                ViewData["ErrorMessage"] = "This username is already taken. Please choose a different one.";
                 var employees = await _context.Users.ToListAsync();
                 return View("Employees", Tuple.Create(employees, model));
             }
@@ -76,15 +90,24 @@ namespace TicketSystemWeb.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                ViewData["ErrorMessage"] = "An error occurred while creating the employee.";
-                foreach (var error in result.Errors)
-                {
-                    ViewData["ErrorMessage"] += $" {error.Description}";
-                }
                 var employees = await _context.Users.ToListAsync();
                 return View("Employees", Tuple.Create(employees, model));
             }
             await _userManager.AddToRoleAsync(user, model.Role);
+            var loggedInUserId = _userManager.GetUserId(User);
+            var managedGroups = await _context.Groups
+                .Where(g => g.ManagerId == loggedInUserId)
+                .ToListAsync();
+            if (managedGroups.Any())
+            {
+                var employeeGroups = managedGroups.Select(g => new EmployeeGroup
+                {
+                    EmployeeId = user.Id,
+                    GroupId = g.Id
+                }).ToList();
+                _context.EmployeeGroups.AddRange(employeeGroups);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Employees));
         }
 
@@ -153,19 +176,26 @@ namespace TicketSystemWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveEmployee(string employeeId)
         {
-            if (string.IsNullOrEmpty(employeeId)) return BadRequest("Invalid employee ID.");
+            if (string.IsNullOrEmpty(employeeId))
+                return BadRequest("Invalid employee ID.");
             var user = await _userManager.FindByIdAsync(employeeId);
-            if (user == null) return NotFound("Employee not found.");
+            if (user == null)
+                return NotFound("Employee not found.");
+            var managedGroups = await _context.Groups
+                .Where(g => g.ManagerId == employeeId)
+                .Select(g => g.Name)
+                .ToListAsync();
+            if (managedGroups.Any())
+            {
+                string groupNames = string.Join(", ", managedGroups);
+                return BadRequest($"Please remove this user from {groupNames} before removing.");
+            }
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-                return RedirectToAction(nameof(Employees));
+                return BadRequest("Failed to remove the employee.");
             }
-            return RedirectToAction(nameof(Employees));
+            return Ok();
         }
     }
 }

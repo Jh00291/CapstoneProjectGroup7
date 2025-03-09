@@ -23,50 +23,57 @@
         </div>
 
         <div class="kanban-content">
-            <div class="kanban-board-header">
-                <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
-                @if (ViewBag.CanManageColumns != null && ViewBag.CanManageColumns)
-                {
-                    <button class="btn-add-column" onclick="openColumnModal()">Manage Columns</button>
-                }
-            </div>
-            <div class="kanban-board-wrapper">
-                <div class="kanban-board">
-                    @foreach (var column in Model.Columns.OrderBy(c => c.Order))
+            @if (Model == null || Model.Columns.Count == 0)
+            {
+                <h2 class="no-projects-message">No Available Projects</h2>
+            }
+            else
+            {
+                <div class="kanban-board-header">
+                    <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
+                    @if (ViewBag.CanManageColumns != null && ViewBag.CanManageColumns)
                     {
-                        <div class="kanban-column" data-column-id="@column.Id"
-                             ondrop="@(ViewBag.CanManageColumns ? "dropColumn(event)" : "")"
-                             ondragover="@(ViewBag.CanManageColumns ? "allowDrop(event)" : "")">
-                            <div class="column-header"
-                                 draggable="@(ViewBag.CanManageColumns ? "true" : "false")"
-                                 ondragstart="@(ViewBag.CanManageColumns ? "dragColumn(event)" : "")">
-                                <h3>@column.Name</h3>
-                            </div>
-                            <div class="kanban-cards" ondrop="drop(event)" ondragover="allowDrop(event)">
-                                @if (!Model.Project.Tickets.Any(t => t.Status == column.Name))
-                                {
-                                    <div class="drop-placeholder"></div>
-                                }
-                                @foreach (var ticket in Model.Project.Tickets.Where(t => t.Status == column.Name))
-                                {
-                                    <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
-                                        <div class="card-header">
-                                            <strong>@ticket.Title</strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p>@ticket.Description</p>
-                                        </div>
-                                        <div class="card-footer">
-                                            <span class="status">@ticket.Status</span>
-                                            <span class="date">@ticket.CreatedAt.ToShortDateString()</span>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
+                        <button class="btn-add-column" onclick="openColumnModal()">Manage Columns</button>
                     }
                 </div>
-            </div>
+                <div class="kanban-board-wrapper">
+                    <div class="kanban-board">
+                        @foreach (var column in Model.Columns.OrderBy(c => c.Order))
+                        {
+                            <div class="kanban-column" data-column-id="@column.Id"
+                                 ondrop="@(ViewBag.CanManageColumns ? "dropColumn(event)" : "")"
+                                 ondragover="@(ViewBag.CanManageColumns ? "allowDrop(event)" : "")">
+                                <div class="column-header"
+                                     draggable="@(ViewBag.CanManageColumns ? "true" : "false")"
+                                     ondragstart="@(ViewBag.CanManageColumns ? "dragColumn(event)" : "")">
+                                    <h3>@column.Name</h3>
+                                </div>
+                                <div class="kanban-cards">
+                                    @if (!Model.Project?.Tickets?.Any(t => t.Status == column.Name) ?? true)
+                                    {
+                                        <div class="drop-placeholder"></div>
+                                    }
+                                    @foreach (var ticket in Model.Project?.Tickets?.Where(t => t.Status == column.Name) ?? Enumerable.Empty<Ticket>())
+                                    {
+                                        <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
+                                            <div class="card-header">
+                                                <strong>@ticket.Title</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>@ticket.Description</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <span class="status">@ticket.Status</span>
+                                                <span class="date">@ticket.CreatedAt.ToShortDateString()</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
     </div>
 
