@@ -50,7 +50,12 @@ namespace TicketSystemWeb.Controllers
                         .Any(pg => pg.Group.EmployeeGroups.Any(eg => eg.EmployeeId == userId)))
                     .ToListAsync();
             }
-            if (!userProjects.Any()) return View("NoProjectFound");
+            if (!userProjects.Any())
+            {
+                ViewBag.UserProjects = new List<Project>();
+                ViewBag.CanManageColumns = false;
+                return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
+            }
             if (projectId == 0) projectId = userProjects.First().Id;
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
@@ -59,11 +64,10 @@ namespace TicketSystemWeb.Controllers
                 .FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
             {
-                return View("NoProjectFound");
+                return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             ViewBag.UserProjects = userProjects;
-            bool canManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
-            ViewBag.CanManageColumns = canManageColumns;
+            ViewBag.CanManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
             return View(project.KanbanBoard);
         }
 

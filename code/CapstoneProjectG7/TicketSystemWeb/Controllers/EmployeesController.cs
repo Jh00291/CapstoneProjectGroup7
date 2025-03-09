@@ -36,13 +36,29 @@ namespace TicketSystemWeb.Controllers
         /// <summary>
         /// Employeeses this instance.
         /// </summary>
-        /// <returns>the employees page</returns>
+        /// <returns>the view with the employees listed</returns>
         [HttpGet]
         public async Task<IActionResult> Employees()
         {
             var employees = await _context.Users.ToListAsync();
-            var viewModel = new AddEmployeeViewModel();
+            var loggedInUserId = _userManager.GetUserId(User);
+            var loggedInUserRoles = await _userManager.GetRolesAsync(await _userManager.GetUserAsync(User));
 
+            bool isAdmin = loggedInUserRoles.Contains("admin");
+            if (isAdmin)
+            {
+                ViewBag.CanManageEmployees = employees.Select(e => e.Id).ToList();
+            }
+            else
+            {
+                var managedEmployeeIds = await _context.EmployeeGroups
+                    .Where(eg => eg.Group.ManagerId == loggedInUserId)
+                    .Select(eg => eg.EmployeeId)
+                    .ToListAsync();
+
+                ViewBag.CanManageEmployees = managedEmployeeIds;
+            }
+            var viewModel = new AddEmployeeViewModel();
             return View(Tuple.Create(employees, viewModel));
         }
 
@@ -85,6 +101,20 @@ namespace TicketSystemWeb.Controllers
                 return View("Employees", Tuple.Create(employees, model));
             }
             await _userManager.AddToRoleAsync(user, model.Role);
+            var loggedInUserId = _userManager.GetUserId(User);
+            var managedGroups = await _context.Groups
+                .Where(g => g.ManagerId == loggedInUserId)
+                .ToListAsync();
+            if (managedGroups.Any())
+            {
+                var employeeGroups = managedGroups.Select(g => new EmployeeGroup
+                {
+                    EmployeeId = user.Id,
+                    GroupId = g.Id
+                }).ToList();
+                _context.EmployeeGroups.AddRange(employeeGroups);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Employees));
         }
 
@@ -156,16 +186,22 @@ namespace TicketSystemWeb.Controllers
             if (string.IsNullOrEmpty(employeeId)) return BadRequest("Invalid employee ID.");
             var user = await _userManager.FindByIdAsync(employeeId);
             if (user == null) return NotFound("Employee not found.");
+            var managedGroups = await _context.Groups
+                .Where(g => g.ManagerId == employeeId)
+                .Select(g => g.Name)
+                .ToListAsync();
+            if (managedGroups.Any())
+            {
+                string groupNames = string.Join(", ", managedGroups);
+                return BadRequest($"Please remove this user from {groupNames} before removing.");
+            }
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-                return RedirectToAction(nameof(Employees));
+                return BadRequest("Failed to remove the employee.");
             }
-            return RedirectToAction(nameof(Employees));
+            return Ok();
         }
+
     }
 }
