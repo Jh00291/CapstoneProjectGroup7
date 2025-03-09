@@ -45,5 +45,7 @@ namespace TicketSystemWeb.ViewModels
         /// </value>
         public bool CanManageGroups { get; set; }
 
+        public List<int> SelectedGroupIds { get; set; } = new();
+
     }
 }
