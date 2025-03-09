@@ -81,17 +81,17 @@
             <form asp-action="AddEmployee" asp-controller="Employees" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="username" name="UserName" required>
                         <span asp-validation-for="@Model.Item2.UserName" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="email" name="Email" required>
                         <span asp-validation-for="@Model.Item2.Email" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" id="password" name="Password" required>
                         <span asp-validation-for="@Model.Item2.Password" class="text-danger"></span>
                     </div>
@@ -123,15 +123,15 @@
                 <input type="hidden" id="editEmployeeId" name="Id" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editUsername" class="form-label">Username</label>
+                        <label for="editUsername" class="form-label">Username <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="editUsername" name="UserName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editEmail" class="form-label">Email</label>
+                        <label for="editEmail" class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="editEmail" name="Email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editRole" class="form-label">Role</label>
+                        <label for="editRole" class="form-label">Role </label>
                         <select class="form-select" id="editRole" name="Role">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>

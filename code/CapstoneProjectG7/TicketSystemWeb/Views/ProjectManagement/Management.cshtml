@@ -67,15 +67,15 @@
             <form asp-controller="ProjectManagement" asp-action="CreateProject" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="addTitle" class="form-label">Title</label>
+                        <label for="addTitle" class="form-label">Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="addTitle" name="Title" required>
                     </div>
                     <div class="mb-3">
-                        <label for="addDescription" class="form-label">Description</label>
+                        <label for="addDescription" class="form-label">Description <span class="text-danger">*</span></label>
                         <textarea class="form-control" id="addDescription" name="Description" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="addManager" class="form-label">Assign Manager</label>
+                        <label for="addManager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
                         <select class="form-control" id="addManager" name="ProjectManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
@@ -116,15 +116,15 @@
                 <input type="hidden" id="editProjectId" name="ProjectId" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editTitle" class="form-label">Title</label>
+                        <label for="editTitle" class="form-label">Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="editTitle" name="Title" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editDescription" class="form-label">Description</label>
+                        <label for="editDescription" class="form-label">Description <span class="text-danger">*</span></label>
                         <textarea class="form-control" id="editDescription" name="Description" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="editManager" class="form-label">Assign Manager</label>
+                        <label for="editManager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
                         <select class="form-control" id="editManager" name="ProjectManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
@@ -233,11 +233,11 @@
             <form asp-controller="ProjectManagement" asp-action="CreateGroup" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="groupName" class="form-label">Group Name</label>
+                        <label for="groupName" class="form-label">Group Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="Name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="manager" class="form-label">Assign Manager</label>
+                        <label for="manager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
                         <select class="form-control" name="SelectedManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
@@ -279,11 +279,11 @@
                 <input type="hidden" id="editGroupId" name="GroupId" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editGroupName" class="form-label">Group Name</label>
+                        <label for="editGroupName" class="form-label">Group Name <span class="text-danger">*</span> </label>
                         <input type="text" class="form-control" id="editGroupName" name="Name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editManager" class="form-label">Assign Manager</label>
+                        <label for="editManager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
                         <select class="form-control" id="editManager" name="SelectedManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)

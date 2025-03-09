@@ -1,4 +1,5 @@
-﻿using TicketSystemWeb.Models.Employee;
+﻿using System.ComponentModel.DataAnnotations;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.ViewModels
 {
@@ -20,6 +21,9 @@ namespace TicketSystemWeb.ViewModels
         /// <value>
         /// The name.
         /// </value>
+
+        [Required]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Group name must be between 3 and 100 characters.")]
         public string Name { get; set; } = string.Empty;
         /// <summary>
         /// Gets or sets the selected manager identifier.
@@ -27,6 +31,8 @@ namespace TicketSystemWeb.ViewModels
         /// <value>
         /// The selected manager identifier.
         /// </value>
+
+        [Required(ErrorMessage = "Please select a manager.")]
         public string? SelectedManagerId { get; set; }
         /// <summary>
         /// Gets or sets all employees.
