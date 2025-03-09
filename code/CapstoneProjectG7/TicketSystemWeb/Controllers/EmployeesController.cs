@@ -37,13 +37,12 @@ namespace TicketSystemWeb.Controllers
         /// Employeeses this instance.
         /// </summary>
         /// <returns>the view with the employees listed</returns>
-        [HttpGet]
         public async Task<IActionResult> Employees()
         {
             var employees = await _context.Users.ToListAsync();
-            var loggedInUserId = _userManager.GetUserId(User);
-            var loggedInUserRoles = await _userManager.GetRolesAsync(await _userManager.GetUserAsync(User));
-
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            var loggedInUserId = loggedInUser?.Id;
+            var loggedInUserRoles = await _userManager.GetRolesAsync(loggedInUser);
             bool isAdmin = loggedInUserRoles.Contains("admin");
             if (isAdmin)
             {
@@ -55,9 +54,9 @@ namespace TicketSystemWeb.Controllers
                     .Where(eg => eg.Group.ManagerId == loggedInUserId)
                     .Select(eg => eg.EmployeeId)
                     .ToListAsync();
-
                 ViewBag.CanManageEmployees = managedEmployeeIds;
             }
+            ViewBag.CurrentUserId = loggedInUserId;
             var viewModel = new AddEmployeeViewModel();
             return View(Tuple.Create(employees, viewModel));
         }
@@ -79,7 +78,6 @@ namespace TicketSystemWeb.Controllers
             var existingUser = await _userManager.FindByNameAsync(model.UserName);
             if (existingUser != null)
             {
-                ViewData["ErrorMessage"] = "This username is already taken. Please choose a different one.";
                 var employees = await _context.Users.ToListAsync();
                 return View("Employees", Tuple.Create(employees, model));
             }
@@ -92,11 +90,6 @@ namespace TicketSystemWeb.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                ViewData["ErrorMessage"] = "An error occurred while creating the employee.";
-                foreach (var error in result.Errors)
-                {
-                    ViewData["ErrorMessage"] += $" {error.Description}";
-                }
                 var employees = await _context.Users.ToListAsync();
                 return View("Employees", Tuple.Create(employees, model));
             }
@@ -183,9 +176,11 @@ namespace TicketSystemWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveEmployee(string employeeId)
         {
-            if (string.IsNullOrEmpty(employeeId)) return BadRequest("Invalid employee ID.");
+            if (string.IsNullOrEmpty(employeeId))
+                return BadRequest("Invalid employee ID.");
             var user = await _userManager.FindByIdAsync(employeeId);
-            if (user == null) return NotFound("Employee not found.");
+            if (user == null)
+                return NotFound("Employee not found.");
             var managedGroups = await _context.Groups
                 .Where(g => g.ManagerId == employeeId)
                 .Select(g => g.Name)
@@ -202,6 +197,5 @@ namespace TicketSystemWeb.Controllers
             }
             return Ok();
         }
-
     }
 }

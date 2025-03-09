@@ -77,14 +77,12 @@ namespace TicketSystemWeb.Controllers
             bool projectExists = await _context.Projects.AnyAsync(p => p.Title == model.Title);
             if (projectExists)
             {
-                ViewData["ProjectErrorMessage"] = "A project with this title already exists.";
-                return await Management();
+                return BadRequest("A project with this title already exists.");
             }
             var projectManager = await _context.Users.FindAsync(model.ProjectManagerId);
             if (projectManager == null)
             {
-                ViewData["ProjectErrorMessage"] = "Invalid Manager selected.";
-                return await Management();
+                return BadRequest("Invalid Project Manager");
             }
             var project = new Project
             {
@@ -135,7 +133,7 @@ namespace TicketSystemWeb.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
             var project = await _context.Projects.FindAsync(projectId);
-            if (project == null) return NotFound();
+            if (project == null) return NotFound("Project not found.");
             bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
             if (!isAdmin && project.ProjectManagerId != user.Id)
             {
@@ -157,7 +155,7 @@ namespace TicketSystemWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid project data.");
+                return BadRequest("Invalid project details.");
             }
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
@@ -243,14 +241,12 @@ namespace TicketSystemWeb.Controllers
             bool groupExists = await _context.Groups.AnyAsync(g => g.Name == model.Name);
             if (groupExists)
             {
-                ViewData["GroupErrorMessage"] = "A group with this name already exists.";
-                return await Management();
+                return BadRequest("A group with this name already exists.");
             }
             var manager = await _context.Users.FindAsync(model.SelectedManagerId);
             if (manager == null)
             {
-                ViewData["GroupErrorMessage"] = "Invalid Manager selected.";
-                return await Management();
+                return BadRequest("Please select a Manager.");
             }
             var group = new Group
             {
@@ -314,6 +310,10 @@ namespace TicketSystemWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateGroup(EditGroupViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid group details.");
+            }
             var group = await _context.Groups.FindAsync(model.GroupId);
             if (group == null) return NotFound();
             bool isAdmin = User.IsInRole("admin");
@@ -351,7 +351,7 @@ namespace TicketSystemWeb.Controllers
             var group = await _context.Groups
                 .Include(g => g.EmployeeGroups)
                 .FirstOrDefaultAsync(g => g.Id == groupId);
-            if (group == null) return NotFound();
+            if (group == null) return NotFound("Group not found.");
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
             bool isGroupManager = group.ManagerId == user.Id;
