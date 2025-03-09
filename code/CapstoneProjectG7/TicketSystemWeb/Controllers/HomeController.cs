@@ -50,7 +50,12 @@ namespace TicketSystemWeb.Controllers
                         .Any(pg => pg.Group.EmployeeGroups.Any(eg => eg.EmployeeId == userId)))
                     .ToListAsync();
             }
-            if (!userProjects.Any()) return View("NoProjectFound");
+            if (!userProjects.Any())
+            {
+                ViewBag.UserProjects = new List<Project>();
+                ViewBag.CanManageColumns = false;
+                return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
+            }
             if (projectId == 0) projectId = userProjects.First().Id;
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
@@ -59,14 +64,11 @@ namespace TicketSystemWeb.Controllers
                 .FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
             {
-                return View("NoProjectFound");
+                return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             ViewBag.UserProjects = userProjects;
-            if (project.KanbanBoard != null)
-            {
-                return View(project.KanbanBoard);
-            }
-            return View("Error");
+            ViewBag.CanManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
+            return View(project.KanbanBoard);
         }
 
         private string GetLoggedInUserId()
@@ -123,12 +125,104 @@ namespace TicketSystemWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> SwapColumns(int draggedColumnId, int targetColumnId)
         {
-            var draggedColumn = await _context.KanbanColumns.FindAsync(draggedColumnId);
-            var targetColumn = await _context.KanbanColumns.FindAsync(targetColumnId);
+            var kanbanBoard = await _context.KanbanColumns
+                .Where(c => c.Id == draggedColumnId || c.Id == targetColumnId)
+                .Select(c => c.KanbanBoardId)
+                .FirstOrDefaultAsync();
+            if (kanbanBoard == 0) return NotFound("Kanban board not found.");
+            var columns = await _context.KanbanColumns
+                .Where(c => c.KanbanBoardId == kanbanBoard)
+                .OrderBy(c => c.Order)
+                .ToListAsync();
+            var draggedColumn = columns.FirstOrDefault(c => c.Id == draggedColumnId);
+            var targetColumn = columns.FirstOrDefault(c => c.Id == targetColumnId);
             if (draggedColumn == null || targetColumn == null) return NotFound();
-            int tempOrder = draggedColumn.Order;
+            int draggedOrder = draggedColumn.Order;
             draggedColumn.Order = targetColumn.Order;
-            targetColumn.Order = tempOrder;
+            targetColumn.Order = draggedOrder;
+            columns = columns.OrderBy(c => c.Order).ToList();
+            for (int i = 0; i < columns.Count; i++)
+            {
+                columns[i].Order = i + 1;
+            }
+            await _context.SaveChangesAsync();
+            return new JsonResult(new { success = true });
+        }
+
+        /// <summary>
+        /// Renames the column.
+        /// </summary>
+        /// <param name="columnId">The column identifier.</param>
+        /// <param name="newName">The new name.</param>
+        /// <returns>the view with the renamed column</returns>
+        [HttpPost]
+        public async Task<IActionResult> RenameColumn(int columnId, string newName)
+        {
+            var column = await _context.KanbanColumns.FindAsync(columnId);
+            if (column == null) return NotFound();
+            column.Name = newName;
+            await _context.SaveChangesAsync();
+            return new JsonResult(new { success = true });
+        }
+
+        /// <summary>
+        /// Adds the column.
+        /// </summary>
+        /// <param name="projectId">The project identifier.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>the view with the added column</returns>
+        [HttpPost]
+        public async Task<IActionResult> AddColumn(int projectId, string name)
+        {
+            var project = await _context.Projects
+                .Include(p => p.KanbanBoard)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project == null || project.KanbanBoard == null) return NotFound();
+            int newOrder = await _context.KanbanColumns
+                .Where(c => c.KanbanBoardId == project.KanbanBoard.Id)
+                .MaxAsync(c => (int?)c.Order) ?? 0;
+            var newColumn = new KanbanColumn
+            {
+                Name = name,
+                Order = newOrder + 1,
+                KanbanBoardId = project.KanbanBoard.Id
+            };
+            _context.KanbanColumns.Add(newColumn);
+            await _context.SaveChangesAsync();
+            return new JsonResult(new { success = true });
+        }
+
+        /// <summary>
+        /// Deletes the column.
+        /// </summary>
+        /// <param name="columnId">The column identifier.</param>
+        /// <returns>the view with the deleted column</returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteColumn(int columnId)
+        {
+            var column = await _context.KanbanColumns
+                .Include(c => c.KanbanBoard)
+                .FirstOrDefaultAsync(c => c.Id == columnId);
+            if (column == null) return NotFound();
+            var kanbanBoard = column.KanbanBoard;
+            if (kanbanBoard == null) return BadRequest("Invalid Kanban Board.");
+            var firstColumn = kanbanBoard.Columns.OrderBy(c => c.Order).FirstOrDefault();
+            if (firstColumn == null) return BadRequest("No valid first column found.");
+            var tickets = await _context.Tickets.Where(t => t.Status == column.Name).ToListAsync();
+            foreach (var ticket in tickets)
+            {
+                ticket.Status = firstColumn.Name;
+            }
+            _context.KanbanColumns.Remove(column);
+            await _context.SaveChangesAsync();
+            var remainingColumns = await _context.KanbanColumns
+                .Where(c => c.KanbanBoardId == kanbanBoard.Id)
+                .OrderBy(c => c.Order)
+                .ToListAsync();
+            for (int i = 0; i < remainingColumns.Count; i++)
+            {
+                remainingColumns[i].Order = i + 1;
+            }
             await _context.SaveChangesAsync();
             return new JsonResult(new { success = true });
         }

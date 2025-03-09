@@ -4,22 +4,6 @@
 
 <h2>Employee Management</h2>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @TempData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
-@if (ViewData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @ViewData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -39,7 +23,7 @@
                 <td>@employee.Email</td>
                 <td>@(employee.EmailConfirmed ? "Yes" : "No")</td>
                 <td>
-                    @if (User.Identity.Name != employee.UserName || !User.IsInRole("admin"))
+                    @if (ViewBag.CanManageEmployees != null && ViewBag.CanManageEmployees.Contains(employee.Id) && employee.Id != ViewBag.CurrentUserId)
                     {
                         <button class="btn btn-warning btn-sm"
                                 onclick="openEditEmployeeModal('@employee.Id', '@employee.UserName', '@employee.Email')">
@@ -56,7 +40,7 @@
     </tbody>
 </table>
 
-@if (User.IsInRole("admin"))
+@if (User.IsInRole("admin") || (ViewBag.CanManageEmployees != null && ViewBag.CanManageEmployees.Count > 0))
 {
     <div class="d-flex justify-content-end mt-3">
         <button class="btn btn-primary text-white"
@@ -78,34 +62,35 @@
                 <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-action="AddEmployee" asp-controller="Employees" method="post">
+            <form id="addEmployeeForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                        <label for="username" class="form-label">Username*</label>
                         <input type="text" class="form-control" id="username" name="UserName" required>
-                        <span asp-validation-for="@Model.Item2.UserName" class="text-danger"></span>
+                        <div class="invalid-feedback">Username is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <label for="email" class="form-label">Email*</label>
                         <input type="email" class="form-control" id="email" name="Email" required>
-                        <span asp-validation-for="@Model.Item2.Email" class="text-danger"></span>
+                        <div class="invalid-feedback">A valid email is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                        <label for="password" class="form-label">Password*</label>
                         <input type="password" class="form-control" id="password" name="Password" required>
-                        <span asp-validation-for="@Model.Item2.Password" class="text-danger"></span>
+                        <div class="invalid-feedback">Password is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" id="role" name="Role">
+                        <label for="role" class="form-label">Role*</label>
+                        <select class="form-select" id="role" name="Role" required>
+                            <option value="">-- Select Role --</option>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
+                        <div class="invalid-feedback">Please select a role.</div>
                     </div>
-                    <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add Employee</button>
+                    <button type="button" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;" onclick="validateAndSubmitEmployeeForm()">Add Employee</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -119,27 +104,31 @@
                 <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-controller="Employees" asp-action="UpdateEmployee" method="post">
+            <form id="editEmployeeForm">
                 <input type="hidden" id="editEmployeeId" name="Id" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editUsername" class="form-label">Username <span class="text-danger">*</span></label>
+                        <label for="editUsername" class="form-label">Username*</label>
                         <input type="text" class="form-control" id="editUsername" name="UserName" required>
+                        <div class="invalid-feedback">Username is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="editEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                        <label for="editEmail" class="form-label">Email*</label>
                         <input type="email" class="form-control" id="editEmail" name="Email" required>
+                        <div class="invalid-feedback">A valid email is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="editRole" class="form-label">Role </label>
-                        <select class="form-select" id="editRole" name="Role">
+                        <label for="editRole" class="form-label">Role*</label>
+                        <select class="form-select" id="editRole" name="Role" required>
+                            <option value="">-- Select Role --</option>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
+                        <div class="invalid-feedback">Please select a role.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1;">Save Changes</button>
+                    <button type="button" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1;" onclick="validateAndSubmitEditEmployeeForm()">Save Changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -159,7 +148,7 @@
                     <p>Are you sure you want to remove <span id="removeEmployeeName"></span>?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Remove</button>
+                    <button type="button" class="btn btn-danger" onclick="removeEmployee()">Remove</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -193,6 +182,93 @@
             if (form) {
                 form.reset();
             }
+        }
+    }
+    function validateAndSubmitEmployeeForm() {
+        let form = document.getElementById("addEmployeeForm");
+        if (form.checkValidity()) {
+            addEmployee();
+        } else {
+            form.classList.add("was-validated");
+        }
+    }
+    function validateAndSubmitEditEmployeeForm() {
+        let form = document.getElementById("editEmployeeForm");
+        if (form.checkValidity()) {
+            updateEmployee();
+        } else {
+            form.classList.add("was-validated");
+        }
+    }
+    async function addEmployee() {
+        let username = document.getElementById("username").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let password = document.getElementById("password").value.trim();
+        let role = document.getElementById("role").value;
+        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let formData = new URLSearchParams();
+        formData.append("UserName", username);
+        formData.append("Email", email);
+        formData.append("Password", password);
+        formData.append("Role", role);
+        formData.append("__RequestVerificationToken", token);
+        let response = await fetch(`/Employees/AddEmployee`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            if (!errorMessage.trim()) {
+                errorMessage = "An error occurred. Please check the form and try again.";
+            }
+        }
+    }
+    async function updateEmployee() {
+        let employeeId = document.getElementById("editEmployeeId").value;
+        let username = document.getElementById("editUsername").value.trim();
+        let email = document.getElementById("editEmail").value.trim();
+        let role = document.getElementById("editRole").value;
+        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let formData = new URLSearchParams();
+        formData.append("Id", employeeId);
+        formData.append("UserName", username);
+        formData.append("Email", email);
+        formData.append("Role", role);
+        formData.append("__RequestVerificationToken", token);
+        let response = await fetch(`/Employees/UpdateEmployee`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
+    async function removeEmployee() {
+        let employeeId = document.getElementById("removeEmployeeId").value;
+        if (!employeeId) {
+            return;
+        }
+        let formData = new FormData();
+        formData.append("employeeId", employeeId);
+        let response = await fetch("/Employees/RemoveEmployee", {
+            method: "POST",
+            headers: {
+                "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
         }
     }
 </script>

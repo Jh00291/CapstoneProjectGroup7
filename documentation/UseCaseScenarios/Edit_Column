@@ -1,0 +1,16 @@
+Context – Employee is the manager of selected project or admin with a project selected
+
+Primary Flow 
+	1. Employee Clicks the manage columns button
+	2a. Employee Selects A column
+	3a. Employee input a valid column name
+	4. Employee clicks edit 
+	5. Modal closes with the edited column on board
+
+	2b. Employee clicks edit without column
+	2b. Small modal opens with error saying please select a column
+	2b. Returns to step 3a
+
+	3b. Employee clicks edit without column name
+	3b. Small modal opens with error saying please enter a column name
+	3b. Returns to step 4

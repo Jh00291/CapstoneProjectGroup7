@@ -1,0 +1,11 @@
+Context – Employee is the manager of selected project or admin with a project selected
+
+Primary Flow 
+	1. Employee Clicks the manage columns button
+	2a. Employee Selects A column
+	3. Employee clicks remove 
+	4. Modal closes with the removed column not on board
+
+	2b. Employee clicks remove without column
+	2b. Small modal opens with error saying please select a column
+	2b. Returns to step 3

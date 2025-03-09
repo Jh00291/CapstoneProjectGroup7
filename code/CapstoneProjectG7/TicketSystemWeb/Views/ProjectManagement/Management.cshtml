@@ -5,13 +5,6 @@
 }
 
 <h2>Project Management</h2>
-@if (ViewData["ProjectErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @ViewData["ProjectErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -64,18 +57,20 @@
                 <h5 class="modal-title" id="addProjectModalLabel">Add Project</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-controller="ProjectManagement" asp-action="CreateProject" method="post">
+            <form id="addProjectForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="addTitle" class="form-label">Title <span class="text-danger">*</span></label>
+                        <label for="addTitle" class="form-label">Title*</label>
                         <input type="text" class="form-control" id="addTitle" name="Title" required>
+                        <div class="invalid-feedback">Title is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="addDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                        <label for="addDescription" class="form-label">Description*</label>
                         <textarea class="form-control" id="addDescription" name="Description" required></textarea>
+                        <div class="invalid-feedback">Description is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="addManager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
+                        <label for="addManager" class="form-label">Assign Manager*</label>
                         <select class="form-control" id="addManager" name="ProjectManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
@@ -83,22 +78,21 @@
                                 <option value="@employee.Id">@employee.UserName</option>
                             }
                         </select>
+                        <div class="invalid-feedback">Please select a manager.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="addGroups" class="form-label">Assign Groups</label>
-                        <select multiple class="form-control" id="addGroups" name="GroupIds">
+                        <label for="addGroups" class="form-label">Assign Groups*</label>
+                        <select multiple class="form-control" id="addGroups" name="GroupIds" required>
                             @foreach (var group in Model.Groups)
                             {
                                 <option value="@group.Id">@group.Name</option>
                             }
                         </select>
+                        <div class="invalid-feedback">At least one group must be selected.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"
-                            style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
-                        Add
-                    </button>
+                    <button type="button" class="btn btn-primary" onclick="validateAndSubmitProjectForm()" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -116,15 +110,15 @@
                 <input type="hidden" id="editProjectId" name="ProjectId" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editTitle" class="form-label">Title <span class="text-danger">*</span></label>
+                        <label for="editTitle" class="form-label">Title*</label>
                         <input type="text" class="form-control" id="editTitle" name="Title" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                        <label for="editDescription" class="form-label">Description*</label>
                         <textarea class="form-control" id="editDescription" name="Description" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="editManager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
+                        <label for="editManager" class="form-label">Assign Manager*</label>
                         <select class="form-control" id="editManager" name="ProjectManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
@@ -134,7 +128,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="editGroups" class="form-label">Assigned Groups</label>
+                        <label for="editGroups" class="form-label">Assigned Groups*</label>
                         <select multiple class="form-control" id="editGroups" name="SelectedGroupIds">
                             @foreach (var group in Model.Groups)
                             {
@@ -184,13 +178,6 @@
 }
 
 <h2>Group Management</h2>
-@if (ViewData["GroupErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @ViewData["GroupErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -230,38 +217,37 @@
                 <h5 class="modal-title" id="addGroupModalLabel">Add Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-controller="ProjectManagement" asp-action="CreateGroup" method="post">
+            <form id="addGroupForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="groupName" class="form-label">Group Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="Name" required>
+                        <label for="groupName" class="form-label">Group Name*</label>
+                        <input type="text" class="form-control" id="groupName" name="Name" required>
+                        <div class="invalid-feedback">Group name is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="manager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
-                        <select class="form-control" name="SelectedManagerId" required>
+                        <label for="manager" class="form-label">Assign Manager*</label>
+                        <select class="form-control" id="manager" name="SelectedManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
                             {
                                 <option value="@employee.Id">@employee.UserName</option>
                             }
                         </select>
+                        <div class="invalid-feedback">Please select a manager.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="employees" class="form-label">Add Employees</label>
-                        <select multiple class="form-control" name="SelectedEmployeeIds">
+                        <label for="employees" class="form-label">Add Employees*</label>
+                        <select multiple class="form-control" id="employees" name="SelectedEmployeeIds" required>
                             @foreach (var employee in Model.AllEmployees)
                             {
                                 <option value="@employee.Id">@employee.UserName</option>
                             }
                         </select>
-                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple employees.</small>
+                        <div class="invalid-feedback">At least one employee must be selected.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"
-                            style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
-                        Add Group
-                    </button>
+                    <button type="button" class="btn btn-primary" onclick="validateAndSubmitGroupForm()" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -279,11 +265,11 @@
                 <input type="hidden" id="editGroupId" name="GroupId" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editGroupName" class="form-label">Group Name <span class="text-danger">*</span> </label>
+                        <label for="editGroupName" class="form-label">Group Name*</label>
                         <input type="text" class="form-control" id="editGroupName" name="Name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editManager" class="form-label">Assign Manager <span class="text-danger">*</span></label>
+                        <label for="editManager" class="form-label">Assign Manager*</label>
                         <select class="form-control" id="editManager" name="SelectedManagerId" required>
                             <option value="">-- Select Manager --</option>
                             @foreach (var employee in Model.AllEmployees)
@@ -293,7 +279,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="editEmployees" class="form-label">Add Employees</label>
+                        <label for="editEmployees" class="form-label">Add Employees*</label>
                         <select multiple class="form-control" id="editEmployees" name="SelectedEmployeeIds">
                             @foreach (var employee in Model.AllEmployees)
                             {
@@ -388,6 +374,140 @@
             $("#editGroupModal").modal("show");
         });
     });
+    function validateAndSubmitProjectForm() {
+        let form = document.getElementById("addProjectForm");
+        if (form.checkValidity()) {
+            addProject();
+        } else {
+            form.classList.add("was-validated");
+        }
+    }
+    function validateAndSubmitGroupForm() {
+        let form = document.getElementById("addGroupForm");
+        if (form.checkValidity()) {
+            addGroup();
+        } else {
+            form.classList.add("was-validated");
+        }
+    }
+    async function addProject() {
+        let title = document.getElementById("addTitle").value.trim();
+        let description = document.getElementById("addDescription").value.trim();
+        let managerId = document.getElementById("addManager").value;
+        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let groupIds = [...document.getElementById("addGroups").selectedOptions].map(opt => opt.value);
+        let formData = new URLSearchParams();
+        formData.append("Title", title);
+        formData.append("Description", description);
+        formData.append("ProjectManagerId", managerId);
+        groupIds.forEach(id => formData.append("GroupIds", id));
+        formData.append("__RequestVerificationToken", token);
+        let response = await fetch(`/ProjectManagement/CreateProject`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
+    async function updateProject() {
+        let projectId = document.getElementById("editProjectId").value;
+        let title = document.getElementById("editTitle").value.trim();
+        let description = document.getElementById("editDescription").value.trim();
+        let managerId = document.getElementById("editManager").value;
+        let groupIds = [...document.getElementById("editGroups").selectedOptions].map(opt => opt.value);
+        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let formData = new URLSearchParams();
+        formData.append("ProjectId", projectId);
+        formData.append("Title", title);
+        formData.append("Description", description);
+        formData.append("ProjectManagerId", managerId);
+        formData.append("__RequestVerificationToken", token);
+        groupIds.forEach(id => formData.append("SelectedGroupIds", id));
+        let response = await fetch(`/ProjectManagement/UpdateProject`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
+    async function deleteProject(projectId) {
+        let response = await fetch(`/ProjectManagement/DeleteProject?projectId=${projectId}`, {
+            method: "POST"
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
+    async function addGroup() {
+        let groupName = document.getElementById("groupName").value.trim();
+        let managerId = document.getElementById("manager").value;
+        let employeeIds = [...document.getElementById("employees").selectedOptions].map(opt => opt.value);
+        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let formData = new URLSearchParams();
+        formData.append("Name", groupName);
+        formData.append("SelectedManagerId", managerId);
+        formData.append("__RequestVerificationToken", token);
+        employeeIds.forEach(id => formData.append("SelectedEmployeeIds", id));
+        let response = await fetch(`/ProjectManagement/CreateGroup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
+    async function updateGroup() {
+        let groupId = document.getElementById("editGroupId").value;
+        let groupName = document.getElementById("editGroupName").value.trim();
+        let managerId = document.getElementById("editManager").value;
+        let employeeIds = [...document.getElementById("editEmployees").selectedOptions].map(opt => opt.value);
+        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let formData = new URLSearchParams();
+        formData.append("GroupId", groupId);
+        formData.append("Name", groupName);
+        formData.append("SelectedManagerId", managerId);
+        formData.append("__RequestVerificationToken", token);
+        employeeIds.forEach(id => formData.append("SelectedEmployeeIds", id));
+        let response = await fetch(`/ProjectManagement/UpdateGroup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
+    async function deleteGroup(groupId) {
+        let response = await fetch(`/ProjectManagement/DeleteGroup?groupId=${groupId}`, {
+            method: "POST"
+        });
+        if (response.ok) {
+            location.reload();
+        } else {
+            let errorMessage = await response.text();
+            alert(errorMessage);
+        }
+    }
     function openRemoveGroupModal(groupId) {
         document.getElementById("removeGroupId").value = groupId;
         var removeModal = new bootstrap.Modal(document.getElementById("removeGroupModal"));
