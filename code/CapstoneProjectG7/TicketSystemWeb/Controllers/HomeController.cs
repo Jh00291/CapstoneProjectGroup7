@@ -46,8 +46,10 @@ namespace TicketSystemWeb.Controllers
             else
             {
                 userProjects = await _context.Projects
-                    .Where(p => p.ProjectGroups
-                        .Any(pg => pg.Group.EmployeeGroups.Any(eg => eg.EmployeeId == userId)))
+                    .Where(p =>
+                        p.ProjectManagerId == userId ||
+                        p.ProjectGroups.Any(pg => pg.Group.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                    )
                     .ToListAsync();
             }
             if (!userProjects.Any())
@@ -68,6 +70,7 @@ namespace TicketSystemWeb.Controllers
             }
             ViewBag.UserProjects = userProjects;
             ViewBag.CanManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
+            ViewBag.CanMoveTickets = User.IsInRole("admin") || User.IsInRole("user") || project.ProjectManagerId == userId;
             return View(project.KanbanBoard);
         }
 
