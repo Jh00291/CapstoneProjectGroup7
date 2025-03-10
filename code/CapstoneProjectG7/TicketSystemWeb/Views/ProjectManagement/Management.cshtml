@@ -297,15 +297,42 @@
                         <div class="invalid-feedback">Please select a manager.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="employees" class="form-label">Add Employees*</label>
-                        <select multiple class="form-control" id="employees" name="SelectedEmployeeIds" required>
-                            @foreach (var employee in Model.AllEmployees)
-                            {
-                                <option value="@employee.Id">@employee.UserName</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">At least one employee must be selected.</div>
+                        <label class="form-label">Add Employees*</label>
+                        <div class="row">
+                            <!-- Available Employees -->
+                            <div class="col">
+                                <label class="form-label">Available Employees</label>
+                                <select id="availableEmployees" class="form-control" multiple>
+                                    @foreach (var employee in Model.AllEmployees)
+                                    {
+                                        <option value="@employee.Id">@employee.UserName</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Move Buttons -->
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-sm btn-primary mb-2"
+                                        onclick="moveSelected('availableEmployees', 'selectedEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    >>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="moveSelected('selectedEmployees', 'availableEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    <<
+                                </button>
+                            </div>
+
+                            <!-- Selected Employees -->
+                            <div class="col">
+                                <label class="form-label">Selected Employees</label>
+                                <select id="selectedEmployees" class="form-control" multiple name="SelectedEmployeeIds">
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="validateAndSubmitGroupForm()" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add</button>
@@ -340,15 +367,42 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="editEmployees" class="form-label">Add Employees*</label>
-                        <select multiple class="form-control" id="editEmployees" name="SelectedEmployeeIds">
-                            @foreach (var employee in Model.AllEmployees)
-                            {
-                                <option value="@employee.Id">@employee.UserName</option>
-                            }
-                        </select>
-                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple employees.</small>
+                        <label class="form-label">Add Employees*</label>
+                        <div class="row">
+                            <!-- Available Employees -->
+                            <div class="col">
+                                <label class="form-label">Available Employees</label>
+                                <select id="editAvailableEmployees" class="form-control" multiple>
+                                    @foreach (var employee in Model.AllEmployees)
+                                    {
+                                        <option value="@employee.Id">@employee.UserName</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Move Buttons -->
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-sm btn-primary mb-2"
+                                        onclick="moveSelected('editAvailableEmployees', 'editSelectedEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    >>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="moveSelected('editSelectedEmployees', 'editAvailableEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    <<
+                                </button>
+                            </div>
+
+                            <!-- Selected Employees -->
+                            <div class="col">
+                                <label class="form-label">Selected Employees</label>
+                                <select id="editSelectedEmployees" class="form-control" multiple name="SelectedEmployeeIds">
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"
@@ -457,7 +511,7 @@
     let titleInput = document.getElementById("addTitle");
     let descriptionInput = document.getElementById("addDescription");
     let managerInput = document.getElementById("addManager");
-    let groupSelect = document.getElementById("selectedGroups"); // Fixed reference
+    let groupSelect = document.getElementById("selectedGroups");
 
     if (!titleInput) console.error("Error: Element with ID 'addTitle' not found.");
     if (!descriptionInput) console.error("Error: Element with ID 'addDescription' not found.");
@@ -544,27 +598,51 @@
         }
     }
     async function addGroup() {
+        console.log("addGroup function called!");
+
         let groupName = document.getElementById("groupName").value.trim();
         let managerId = document.getElementById("manager").value;
-        let employeeIds = [...document.getElementById("employees").selectedOptions].map(opt => opt.value);
-        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let employeeSelect = document.getElementById("selectedEmployees");
+
+        if (!groupName || !managerId || !employeeSelect) {
+            console.error("One or more required form elements are missing.");
+            return;
+        }
+
+        let employeeIds = [...employeeSelect.selectedOptions].map(opt => opt.value);
+
+        let tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+        let token = tokenInput ? tokenInput.value : null;
+
+        if (!token) {
+            console.error("CSRF Token is missing.");
+            return;
+        }
+
         let formData = new URLSearchParams();
         formData.append("Name", groupName);
         formData.append("SelectedManagerId", managerId);
         formData.append("__RequestVerificationToken", token);
         employeeIds.forEach(id => formData.append("SelectedEmployeeIds", id));
-        let response = await fetch(`/ProjectManagement/CreateGroup`, {
+
+        console.log("Submitting form:", Object.fromEntries(formData));
+
+        let response = await fetch("/ProjectManagement/CreateGroup", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: formData
         });
+
         if (response.ok) {
+            console.log("Group created successfully!");
             location.reload();
         } else {
             let errorMessage = await response.text();
+            console.error("Error: " + errorMessage);
             alert(errorMessage);
         }
     }
+
     async function updateGroup() {
         let groupId = document.getElementById("editGroupId").value;
         let groupName = document.getElementById("editGroupName").value.trim();
@@ -633,7 +711,7 @@
         document.getElementById("editTitle").value = title;
         document.getElementById("editDescription").value = description;
 
-        let selectedGroupIds = groupIds.map(id => id.toString()); // Ensure string comparison
+        let selectedGroupIds = groupIds.map(id => id.toString());
 
         // Set the project manager dropdown selection
         let managerSelect = document.getElementById("editManager");
@@ -659,9 +737,9 @@
                 groups.forEach(group => {
                     let option = new Option(group.Name, group.Id);
                     if (selectedGroupIds.includes(group.Id.toString())) {
-                        selectedGroups.appendChild(option); // Add to selected groups
+                        selectedGroups.appendChild(option);
                     } else {
-                        availableGroups.appendChild(option); // Add to available groups
+                        availableGroups.appendChild(option);
                     }
                 });
 

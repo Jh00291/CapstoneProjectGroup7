@@ -33,7 +33,7 @@ namespace TicketSystemWeb.ViewModels
         /// </value>
 
         [Required(ErrorMessage = "Please select a manager.")]
-        public string? SelectedManagerId { get; set; }
+        public string SelectedManagerId { get; set; }
         /// <summary>
         /// Gets or sets all employees.
         /// </summary>
