@@ -48,14 +48,19 @@
                                      ondragstart="@(ViewBag.CanManageColumns ? "dragColumn(event)" : "")">
                                     <h3>@column.Name</h3>
                                 </div>
-                                <div class="kanban-cards">
+                                <div class="kanban-cards"
+                                     ondrop="@(ViewBag.CanMoveTickets ? "drop(event)" : "")"
+                                     ondragover="@(ViewBag.CanMoveTickets ? "allowDrop(event)" : "")">
                                     @if (!Model.Project?.Tickets?.Any(t => t.Status == column.Name) ?? true)
                                     {
                                         <div class="drop-placeholder"></div>
                                     }
                                     @foreach (var ticket in Model.Project?.Tickets?.Where(t => t.Status == column.Name) ?? Enumerable.Empty<Ticket>())
                                     {
-                                        <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="ticket-@ticket.TicketId">
+                                        <div class="kanban-card"
+                                             draggable="@(ViewBag.CanMoveTickets ? "true" : "false")"
+                                             ondragstart="@(ViewBag.CanMoveTickets ? "drag(event)" : "")"
+                                             id="ticket-@ticket.TicketId">
                                             <div class="card-header">
                                                 <strong>@ticket.Title</strong>
                                             </div>
@@ -213,8 +218,12 @@
             let dragType = event.dataTransfer.getData("dragType");
             if (dragType !== "column") return;
             let draggedColumnId = event.dataTransfer.getData("columnId");
-            let targetColumnId = event.target.closest(".kanban-column").getAttribute("data-column-id");
-            let response = await fetch(`/Home/SwapColumns?draggedColumnId=${draggedColumnId}&targetColumnId=${targetColumnId}`, { method: "POST" });
+            let targetColumn = event.target.closest(".kanban-column");
+            if (!targetColumn) return;
+            let targetColumnId = targetColumn.getAttribute("data-column-id");
+            let response = await fetch(`/Home/SwapColumns?draggedColumnId=${draggedColumnId}&targetColumnId=${targetColumnId}`, {
+                method: "POST"
+            });
             if (response.ok) {
                 location.reload();
             }
