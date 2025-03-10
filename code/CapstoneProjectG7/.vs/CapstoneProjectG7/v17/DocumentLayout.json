@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\views\\projectmanagement\\management.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\views\\employees\\employees.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\views\\employees\\employees.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\controllers\\projectmanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\controllers\\projectmanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -30,11 +34,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
+              "Title": "Employees.cshtml",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Views\\Employees\\Employees.cshtml",
+              "RelativeDocumentMoniker": "TicketSystemWeb\\Views\\Employees\\Employees.cshtml",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Views\\Employees\\Employees.cshtml",
+              "RelativeToolTip": "TicketSystemWeb\\Views\\Employees\\Employees.cshtml",
+              "ViewState": "AQIAAPYAAAAAAAAAAAAAACgBAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-10T13:18:24.413Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "EditGroupViewModel.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Models\\Management\\Group\\EditGroupViewModel.cs",
               "RelativeDocumentMoniker": "TicketSystemWeb\\Models\\Management\\Group\\EditGroupViewModel.cs",
@@ -46,7 +63,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ManagementViewModel.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Models\\Management\\ManagementViewModel.cs",
               "RelativeDocumentMoniker": "TicketSystemWeb\\Models\\Management\\ManagementViewModel.cs",
@@ -64,14 +81,14 @@
               "RelativeDocumentMoniker": "TicketSystemWeb\\Views\\ProjectManagement\\Management.cshtml",
               "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Views\\ProjectManagement\\Management.cshtml",
               "RelativeToolTip": "TicketSystemWeb\\Views\\ProjectManagement\\Management.cshtml",
-              "ViewState": "AQIAAGwCAAAAAAAAAAAuwIQCAAAAAAAA",
+              "ViewState": "AQIAAAQDAAAAAAAAAAAuwCcDAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-03-09T03:29:03.282Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ProjectManagementController.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Controllers\\ProjectManagementController.cs",
               "RelativeDocumentMoniker": "TicketSystemWeb\\Controllers\\ProjectManagementController.cs",
@@ -83,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "EmployeesController.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Controllers\\EmployeesController.cs",
               "RelativeDocumentMoniker": "TicketSystemWeb\\Controllers\\EmployeesController.cs",

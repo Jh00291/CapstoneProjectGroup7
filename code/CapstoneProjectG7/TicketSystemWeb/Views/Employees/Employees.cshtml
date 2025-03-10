@@ -4,6 +4,10 @@
 
 <h2>Employee Management</h2>
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" id="searchInput" class="form-control w-25" placeholder="Search employees..." onkeyup="filterTable()">
+</div>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -269,6 +273,25 @@
         } else {
             let errorMessage = await response.text();
             alert(errorMessage);
+        }
+    }
+    function filterTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let table = document.getElementById("tableBody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            let found = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(input)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            row.style.display = found ? "" : "none";
         }
     }
 </script>

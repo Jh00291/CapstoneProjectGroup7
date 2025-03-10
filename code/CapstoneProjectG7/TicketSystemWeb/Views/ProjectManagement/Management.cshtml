@@ -5,6 +5,11 @@
 }
 
 <h2>Project Management</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" id="searchProjects" class="form-control w-25" placeholder="Search projects..." onkeyup="filterProjects()">
+</div>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -239,6 +244,11 @@
 }
 
 <h2>Group Management</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" id="searchGroups" class="form-control w-25" placeholder="Search groups..." onkeyup="filterGroups()">
+</div>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -775,5 +785,44 @@
         }
         var editModal = new bootstrap.Modal(document.getElementById("editGroupModal"));
         editModal.show();
+    }
+    function filterProjects() {
+        let input = document.getElementById("searchProjects").value.toLowerCase();
+        let table = document.querySelector("table.table-bordered.table-striped:nth-of-type(1) tbody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            let found = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(input)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            row.style.display = found ? "" : "none";
+        }
+    }
+
+    function filterGroups() {
+        let input = document.getElementById("searchGroups").value.toLowerCase();
+        let table = document.querySelector("table.table-bordered.table-striped:nth-of-type(2) tbody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            let found = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(input)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            row.style.display = found ? "" : "none";
+        }
     }
 </script>
