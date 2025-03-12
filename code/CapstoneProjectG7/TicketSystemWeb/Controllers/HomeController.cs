@@ -209,13 +209,19 @@ namespace TicketSystemWeb.Controllers
             if (column == null) return NotFound();
             var kanbanBoard = column.KanbanBoard;
             if (kanbanBoard == null) return BadRequest("Invalid Kanban Board.");
-            var firstColumn = kanbanBoard.Columns.OrderBy(c => c.Order).FirstOrDefault();
+            var firstColumn = await _context.KanbanColumns
+                .Where(c => c.KanbanBoardId == kanbanBoard.Id && c.Id != columnId)
+                .OrderBy(c => c.Order)
+                .FirstOrDefaultAsync();
             if (firstColumn == null) return BadRequest("No valid first column found.");
-            var tickets = await _context.Tickets.Where(t => t.Status == column.Name).ToListAsync();
+            var tickets = await _context.Tickets
+                .Where(t => t.Status == column.Name)
+                .ToListAsync();
             foreach (var ticket in tickets)
             {
                 ticket.Status = firstColumn.Name;
             }
+            await _context.SaveChangesAsync();
             _context.KanbanColumns.Remove(column);
             await _context.SaveChangesAsync();
             var remainingColumns = await _context.KanbanColumns
