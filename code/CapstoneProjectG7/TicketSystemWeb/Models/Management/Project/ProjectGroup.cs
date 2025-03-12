@@ -34,6 +34,8 @@
         /// The group.
         /// </value>
         public Group.Group Group { get; set; } = null!;
+
+        public bool IsApproved { get; set; } = false;
     }
 
 }

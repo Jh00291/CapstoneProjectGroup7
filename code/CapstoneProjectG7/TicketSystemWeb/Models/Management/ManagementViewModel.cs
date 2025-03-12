@@ -47,5 +47,13 @@ namespace TicketSystemWeb.ViewModels
 
         public List<int> SelectedGroupIds { get; set; } = new();
 
+        /// <summary>
+        /// Gets or sets the pending group approvals.
+        /// </summary>
+        /// <value>
+        /// A list of ProjectGroup objects that are waiting for approval.
+        /// </value>
+        public List<ProjectGroup> PendingApprovals { get; set; } = new();
+
     }
 }

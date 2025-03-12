@@ -383,6 +383,9 @@ namespace TicketSystemWeb.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.HasKey("ProjectId", "GroupId");
 
                     b.HasIndex("GroupId");

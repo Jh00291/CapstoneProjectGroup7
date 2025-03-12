@@ -55,6 +55,12 @@ namespace TicketSystemWeb.Controllers
 
             var selectedGroupIds = new List<int>();
 
+            var pendingApprovals = await _context.ProjectGroups
+                .Include(pg => pg.Project)
+                .Include(pg => pg.Group)
+                .Where(pg => !pg.IsApproved && pg.Group.ManagerId == user.Id)
+                .ToListAsync();
+
             var viewModel = new ManagementViewModel
             {
                 Projects = projects,
@@ -62,7 +68,8 @@ namespace TicketSystemWeb.Controllers
                 AllEmployees = employees,
                 CanAddProject = isAdmin || isGroupManager,
                 CanManageGroups = isAdmin || isGroupManager,
-                SelectedGroupIds = selectedGroupIds
+                SelectedGroupIds = selectedGroupIds,
+                PendingApprovals = pendingApprovals
             };
             return View("Management", viewModel);
         }
@@ -116,14 +123,21 @@ namespace TicketSystemWeb.Controllers
             {
                 foreach (var groupId in model.GroupIds)
                 {
+                    var group = await _context.Groups.Include(g => g.Manager).FirstOrDefaultAsync(g => g.Id == groupId);
+                    if (group == null) continue;
+
+                    bool requiresApproval = group.ManagerId != project.ProjectManagerId;
+
                     _context.ProjectGroups.Add(new ProjectGroup
                     {
                         ProjectId = project.Id,
-                        GroupId = groupId
+                        GroupId = groupId,
+                        IsApproved = !requiresApproval // Auto-approve if same manager, else require approval
                     });
                 }
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction("Management");
         }
 
@@ -373,5 +387,41 @@ namespace TicketSystemWeb.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Management");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveGroupAddition(int projectId, int groupId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return BadRequest(new { success = false, message = "User not authenticated" });
+            }
+
+            var projectGroup = await _context.ProjectGroups
+                .Include(pg => pg.Group)
+                .FirstOrDefaultAsync(pg => pg.ProjectId == projectId && pg.GroupId == groupId);
+
+            if (projectGroup == null)
+            {
+                return NotFound(new { success = false, message = $"Group approval request not found for ProjectId {projectId}, GroupId {groupId}" });
+            }
+
+            if (projectGroup.Group.ManagerId != user.Id)
+            {
+                return ForbidJson(new { success = false, message = "Only the group manager can approve this request." });
+            }
+
+            projectGroup.IsApproved = true;
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Group approved successfully." });
+        }
+
+        private IActionResult ForbidJson(object value)
+        {
+            return new JsonResult(value) { StatusCode = StatusCodes.Status403Forbidden };
+        }
+
     }
 }
