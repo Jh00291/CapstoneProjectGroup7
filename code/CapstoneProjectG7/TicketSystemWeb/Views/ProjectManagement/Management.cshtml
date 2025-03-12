@@ -5,6 +5,39 @@
 }
 
 <h2>Project Management</h2>
+
+@if (Model.PendingApprovals.Any())
+{
+    <h2>Pending Group Approvals</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Group</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pg in Model.PendingApprovals)
+            {
+                <tr>
+                    <td>@pg.Project.Title</td>
+                    <td>@pg.Group.Name</td>
+                    <td>
+                        <button class="btn btn-success" onclick="approveGroup(@pg.ProjectId, @pg.GroupId)">
+                            Approve
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" id="searchProjects" class="form-control w-25" placeholder="Search projects..." onkeyup="filterProjects()">
+</div>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -23,9 +56,9 @@
                 <td>@project.Description</td>
                 <td>@(project.ProjectManager != null ? project.ProjectManager.UserName : "None")</td>
                 <td>
-                    @if (project.ProjectGroups != null && project.ProjectGroups.Any())
+                    @if (project.ProjectGroups != null && project.ProjectGroups.Any(pg => pg.IsApproved)) // Show only approved groups
                     {
-                        @foreach (var group in project.ProjectGroups.Select(pg => pg.Group))
+                        @foreach (var group in project.ProjectGroups.Where(pg => pg.IsApproved).Select(pg => pg.Group))
                         {
                             <span class="badge bg-secondary">@group.Name</span>
                         }
@@ -81,14 +114,44 @@
                         <div class="invalid-feedback">Please select a manager.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="addGroups" class="form-label">Assign Groups*</label>
-                        <select multiple class="form-control" id="addGroups" name="GroupIds" required>
-                            @foreach (var group in Model.Groups)
-                            {
-                                <option value="@group.Id">@group.Name</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">At least one group must be selected.</div>
+                        <label class="form-label">Assign Groups*</label>
+                        <div class="row">
+                            <!-- Available Groups -->
+                            <div class="col">
+                                <label class="form-label">Available Groups</label>
+                                <select id="availableGroups" class="form-control" multiple>
+                                    @foreach (var group in Model.Groups)
+                                    {
+                                        <option value="@group.Id">@group.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Move Buttons -->
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-sm btn-primary mb-2"
+                                        onclick="moveSelected('availableGroups', 'selectedGroups')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    >>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="moveSelected('selectedGroups', 'availableGroups')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    <<
+                                </button>
+                            </div>
+
+                            <!-- Selected Groups -->
+                            <div class="col">
+                                <label class="form-label">Selected Groups</label>
+                                <select id="selectedGroups" class="form-control" multiple name="SelectedGroupIds">
+                                    @foreach (var group in Model.Groups.Where(g => Model.SelectedGroupIds.Contains(g.Id)))
+                                    {
+                                        <option value="@group.Id">@group.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -128,15 +191,46 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="editGroups" class="form-label">Assigned Groups*</label>
-                        <select multiple class="form-control" id="editGroups" name="SelectedGroupIds">
-                            @foreach (var group in Model.Groups)
-                            {
-                                <option value="@group.Id">@group.Name</option>
-                            }
-                        </select>
-                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple groups.</small>
+                        <label class="form-label">Assigned Groups*</label>
+                        <div class="row">
+                            <!-- Available Groups -->
+                            <div class="col">
+                                <label class="form-label">Available Groups</label>
+                                <select id="editAvailableGroups" class="form-control" multiple>
+                                    @foreach (var group in Model.Groups)
+                                    {
+                                        <option value="@group.Id">@group.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Move Buttons -->
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-sm btn-primary mb-2"
+                                        onclick="moveSelected('editAvailableGroups', 'editSelectedGroups')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    >>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="moveSelected('editSelectedGroups', 'editAvailableGroups')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    <<
+                                </button>
+                            </div>
+
+                            <!-- Selected Groups -->
+                            <div class="col">
+                                <label class="form-label">Selected Groups</label>
+                                <select id="editSelectedGroups" class="form-control" multiple name="SelectedGroupIds">
+                                    @foreach (var group in Model.Groups.Where(g => Model.SelectedGroupIds.Contains(g.Id)))
+                                    {
+                                        <option value="@group.Id">@group.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Save Changes</button>
@@ -178,6 +272,11 @@
 }
 
 <h2>Group Management</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" id="searchGroups" class="form-control w-25" placeholder="Search groups..." onkeyup="filterGroups()">
+</div>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -236,15 +335,42 @@
                         <div class="invalid-feedback">Please select a manager.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="employees" class="form-label">Add Employees*</label>
-                        <select multiple class="form-control" id="employees" name="SelectedEmployeeIds" required>
-                            @foreach (var employee in Model.AllEmployees)
-                            {
-                                <option value="@employee.Id">@employee.UserName</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">At least one employee must be selected.</div>
+                        <label class="form-label">Add Employees*</label>
+                        <div class="row">
+                            <!-- Available Employees -->
+                            <div class="col">
+                                <label class="form-label">Available Employees</label>
+                                <select id="availableEmployees" class="form-control" multiple>
+                                    @foreach (var employee in Model.AllEmployees)
+                                    {
+                                        <option value="@employee.Id">@employee.UserName</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Move Buttons -->
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-sm btn-primary mb-2"
+                                        onclick="moveSelected('availableEmployees', 'selectedEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    >>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="moveSelected('selectedEmployees', 'availableEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    <<
+                                </button>
+                            </div>
+
+                            <!-- Selected Employees -->
+                            <div class="col">
+                                <label class="form-label">Selected Employees</label>
+                                <select id="selectedEmployees" class="form-control" multiple name="SelectedEmployeeIds">
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="validateAndSubmitGroupForm()" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Add</button>
@@ -279,15 +405,42 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="editEmployees" class="form-label">Add Employees*</label>
-                        <select multiple class="form-control" id="editEmployees" name="SelectedEmployeeIds">
-                            @foreach (var employee in Model.AllEmployees)
-                            {
-                                <option value="@employee.Id">@employee.UserName</option>
-                            }
-                        </select>
-                        <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple employees.</small>
+                        <label class="form-label">Add Employees*</label>
+                        <div class="row">
+                            <!-- Available Employees -->
+                            <div class="col">
+                                <label class="form-label">Available Employees</label>
+                                <select id="editAvailableEmployees" class="form-control" multiple>
+                                    @foreach (var employee in Model.AllEmployees)
+                                    {
+                                        <option value="@employee.Id">@employee.UserName</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Move Buttons -->
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <button type="button" class="btn btn-sm btn-primary mb-2"
+                                        onclick="moveSelected('editAvailableEmployees', 'editSelectedEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    >>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="moveSelected('editSelectedEmployees', 'editAvailableEmployees')"
+                                        style="background-color: #6f42c1; border-color: #6f42c1;">
+                                    <<
+                                </button>
+                            </div>
+
+                            <!-- Selected Employees -->
+                            <div class="col">
+                                <label class="form-label">Selected Employees</label>
+                                <select id="editSelectedEmployees" class="form-control" multiple name="SelectedEmployeeIds">
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"
@@ -391,29 +544,60 @@
         }
     }
     async function addProject() {
-        let title = document.getElementById("addTitle").value.trim();
-        let description = document.getElementById("addDescription").value.trim();
-        let managerId = document.getElementById("addManager").value;
-        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-        let groupIds = [...document.getElementById("addGroups").selectedOptions].map(opt => opt.value);
-        let formData = new URLSearchParams();
-        formData.append("Title", title);
-        formData.append("Description", description);
-        formData.append("ProjectManagerId", managerId);
-        groupIds.forEach(id => formData.append("GroupIds", id));
-        formData.append("__RequestVerificationToken", token);
-        let response = await fetch(`/ProjectManagement/CreateProject`, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: formData
-        });
-        if (response.ok) {
-            location.reload();
-        } else {
-            let errorMessage = await response.text();
-            alert(errorMessage);
-        }
+    console.log("addProject function called!");
+
+    let titleInput = document.getElementById("addTitle");
+    let descriptionInput = document.getElementById("addDescription");
+    let managerInput = document.getElementById("addManager");
+    let groupSelect = document.getElementById("selectedGroups");
+
+    if (!titleInput) console.error("Error: Element with ID 'addTitle' not found.");
+    if (!descriptionInput) console.error("Error: Element with ID 'addDescription' not found.");
+    if (!managerInput) console.error("Error: Element with ID 'addManager' not found.");
+    if (!groupSelect) console.error("Error: Element with ID 'selectedGroups' not found.");
+
+    if (!titleInput || !descriptionInput || !managerInput || !groupSelect) {
+        console.error("One or more required form elements are missing.");
+        return;
     }
+
+    let title = titleInput.value.trim();
+    let description = descriptionInput.value.trim();
+    let managerId = managerInput.value;
+    let groupIds = [...groupSelect.selectedOptions].map(opt => opt.value);
+
+    let tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+    let token = tokenInput ? tokenInput.value : null;
+
+    if (!token) {
+        console.error("CSRF Token is missing.");
+        return;
+    }
+
+    let formData = new URLSearchParams();
+    formData.append("Title", title);
+    formData.append("Description", description);
+    formData.append("ProjectManagerId", managerId);
+    formData.append("__RequestVerificationToken", token);
+    groupIds.forEach(id => formData.append("GroupIds", id));
+
+    console.log("Submitting form:", Object.fromEntries(formData));
+
+    let response = await fetch("/ProjectManagement/CreateProject", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData
+    });
+
+    if (response.ok) {
+        console.log("Project created successfully!");
+        location.reload();
+    } else {
+        let errorMessage = await response.text();
+        console.error("Error: " + errorMessage);
+        alert(errorMessage);
+    }
+}
     async function updateProject() {
         let projectId = document.getElementById("editProjectId").value;
         let title = document.getElementById("editTitle").value.trim();
@@ -452,27 +636,51 @@
         }
     }
     async function addGroup() {
+        console.log("addGroup function called!");
+
         let groupName = document.getElementById("groupName").value.trim();
         let managerId = document.getElementById("manager").value;
-        let employeeIds = [...document.getElementById("employees").selectedOptions].map(opt => opt.value);
-        let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        let employeeSelect = document.getElementById("selectedEmployees");
+
+        if (!groupName || !managerId || !employeeSelect) {
+            console.error("One or more required form elements are missing.");
+            return;
+        }
+
+        let employeeIds = [...employeeSelect.selectedOptions].map(opt => opt.value);
+
+        let tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+        let token = tokenInput ? tokenInput.value : null;
+
+        if (!token) {
+            console.error("CSRF Token is missing.");
+            return;
+        }
+
         let formData = new URLSearchParams();
         formData.append("Name", groupName);
         formData.append("SelectedManagerId", managerId);
         formData.append("__RequestVerificationToken", token);
         employeeIds.forEach(id => formData.append("SelectedEmployeeIds", id));
-        let response = await fetch(`/ProjectManagement/CreateGroup`, {
+
+        console.log("Submitting form:", Object.fromEntries(formData));
+
+        let response = await fetch("/ProjectManagement/CreateGroup", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: formData
         });
+
         if (response.ok) {
+            console.log("Group created successfully!");
             location.reload();
         } else {
             let errorMessage = await response.text();
+            console.error("Error: " + errorMessage);
             alert(errorMessage);
         }
     }
+
     async function updateGroup() {
         let groupId = document.getElementById("editGroupId").value;
         let groupName = document.getElementById("editGroupName").value.trim();
@@ -527,30 +735,62 @@
         var removeModal = new bootstrap.Modal(document.getElementById("removeProjectModal"));
         removeModal.show();
     }
+    function moveSelected(fromId, toId) {
+        var from = document.getElementById(fromId);
+        var to = document.getElementById(toId);
+        var selectedOptions = [...from.selectedOptions];
+
+        selectedOptions.forEach(option => {
+            to.appendChild(option);
+        });
+    }
     function openEditProjectModal(projectId, title, description, groupIds, projectManagerId) {
         document.getElementById("editProjectId").value = projectId;
         document.getElementById("editTitle").value = title;
         document.getElementById("editDescription").value = description;
-        var managerSelect = document.getElementById("editManager");
+
+        let selectedGroupIds = groupIds.map(id => id.toString());
+
+        // Set the project manager dropdown selection
+        let managerSelect = document.getElementById("editManager");
         if (managerSelect) {
-            for (var i = 0; i < managerSelect.options.length; i++) {
+            for (let i = 0; i < managerSelect.options.length; i++) {
                 if (managerSelect.options[i].value == projectManagerId) {
                     managerSelect.options[i].selected = true;
                     break;
                 }
             }
         }
-        var groupSelect = document.getElementById("editGroups");
-        if (groupSelect) {
-            let selectedGroups = groupIds.map(id => parseInt(id));
-            for (var i = 0; i < groupSelect.options.length; i++) {
-                let optionValue = parseInt(groupSelect.options[i].value);
-                groupSelect.options[i].selected = selectedGroups.includes(optionValue);
-            }
-        }
+
+        // Get references to select lists
+        let availableGroups = document.getElementById("editAvailableGroups");
+        let selectedGroups = document.getElementById("editSelectedGroups");
+
+        // Fetch all groups from the server
+        fetch('/ProjectManagement/GetGroups')
+            .then(response => response.json())
+            .then(groups => {
+                console.log("Fetched groups:", groups);
+
+                groups.forEach(group => {
+                    let option = new Option(group.Name, group.Id);
+                    if (selectedGroupIds.includes(group.Id.toString())) {
+                        selectedGroups.appendChild(option);
+                    } else {
+                        availableGroups.appendChild(option);
+                    }
+                });
+
+                console.log("Updated Available Groups:", availableGroups);
+                console.log("Updated Selected Groups:", selectedGroups);
+            })
+            .catch(error => console.error("Error loading groups:", error));
+
         var editModal = new bootstrap.Modal(document.getElementById("editProjectModal"));
         editModal.show();
     }
+
+
     function openEditGroupModal(groupId, groupName, managerId, employeeIds) {
         document.getElementById("editGroupId").value = groupId;
         document.getElementById("editGroupName").value = groupName;
@@ -574,4 +814,88 @@
         var editModal = new bootstrap.Modal(document.getElementById("editGroupModal"));
         editModal.show();
     }
+    function filterProjects() {
+        let input = document.getElementById("searchProjects").value.toLowerCase();
+        let table = document.querySelector("table.table-bordered.table-striped:nth-of-type(1) tbody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            let found = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(input)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            row.style.display = found ? "" : "none";
+        }
+    }
+
+    function filterGroups() {
+        let input = document.getElementById("searchGroups").value.toLowerCase();
+        let table = document.querySelector("table.table-bordered.table-striped:nth-of-type(2) tbody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            let found = false;
+
+            for (let cell of cells) {
+                if (cell.innerText.toLowerCase().includes(input)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            row.style.display = found ? "" : "none";
+        }
+    }
+    
+    async function approveGroup(projectId, groupId) {
+        console.log(`Attempting approval: ProjectId=${projectId}, GroupId=${groupId}`);
+
+        let tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+        let token = tokenInput ? tokenInput.value : null;
+
+        if (!token) {
+            alert("CSRF token missing. Please refresh the page and try again.");
+            return;
+        }
+
+        let formData = new URLSearchParams();
+        formData.append("__RequestVerificationToken", token);
+
+        let response;
+        try {
+            response = await fetch(`/ProjectManagement/ApproveGroupAddition?projectId=${projectId}&groupId=${groupId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: formData
+            });
+
+            if (!response.ok) {
+                let errorMessage = await response.text();
+                throw new Error(`Server Error: ${errorMessage}`);
+            }
+
+            let result = await response.json();
+
+            if (result.success) {
+                location.reload();
+            } else {
+                alert("Approval failed: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error during approval:", error);
+            alert("Unexpected response from server: " + error.message);
+        }
+    }
+
+
+
+
+
 </script>

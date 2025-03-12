@@ -24,7 +24,7 @@ namespace TicketSystemWeb.ViewModels
         /// The selected manager identifier.
         /// </value>
         [Required(ErrorMessage = "Please select a manager.")]
-        public string SelectedManagerId { get; set; }
+        public string? SelectedManagerId { get; set; }
         /// <summary>
         /// Gets or sets the selected employee ids.
         /// </summary>

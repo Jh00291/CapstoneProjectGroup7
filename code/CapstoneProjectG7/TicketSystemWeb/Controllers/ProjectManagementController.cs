@@ -44,19 +44,32 @@ namespace TicketSystemWeb.Controllers
                 .Include(p => p.ProjectGroups)
                 .ThenInclude(pg => pg.Group)
                 .ToListAsync();
+
             var groups = await _context.Groups.Include(g => g.Manager).ToListAsync();
             var employees = await _context.Users.ToListAsync();
+
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
             bool isGroupManager = _context.Groups.Any(g => g.ManagerId == user.Id);
             bool isProjectManager = _context.Projects.Any(p => p.ProjectManagerId == user.Id);
+
+            var selectedGroupIds = new List<int>();
+
+            var pendingApprovals = await _context.ProjectGroups
+                .Include(pg => pg.Project)
+                .Include(pg => pg.Group)
+                .Where(pg => !pg.IsApproved && pg.Group.ManagerId == user.Id)
+                .ToListAsync();
+
             var viewModel = new ManagementViewModel
             {
                 Projects = projects,
                 Groups = groups,
                 AllEmployees = employees,
                 CanAddProject = isAdmin || isGroupManager,
-                CanManageGroups = isAdmin || isGroupManager
+                CanManageGroups = isAdmin || isGroupManager,
+                SelectedGroupIds = selectedGroupIds,
+                PendingApprovals = pendingApprovals
             };
             return View("Management", viewModel);
         }
@@ -110,14 +123,21 @@ namespace TicketSystemWeb.Controllers
             {
                 foreach (var groupId in model.GroupIds)
                 {
+                    var group = await _context.Groups.Include(g => g.Manager).FirstOrDefaultAsync(g => g.Id == groupId);
+                    if (group == null) continue;
+
+                    bool requiresApproval = group.ManagerId != project.ProjectManagerId;
+
                     _context.ProjectGroups.Add(new ProjectGroup
                     {
                         ProjectId = project.Id,
-                        GroupId = groupId
+                        GroupId = groupId,
+                        IsApproved = !requiresApproval // Auto-approve if same manager, else require approval
                     });
                 }
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction("Management");
         }
 
@@ -181,9 +201,11 @@ namespace TicketSystemWeb.Controllers
             }
             var existingGroupIds = project.ProjectGroups.Select(pg => pg.GroupId).ToList();
             var newGroupIds = model.SelectedGroupIds ?? new List<int>();
+
             _context.ProjectGroups.RemoveRange(
                 project.ProjectGroups.Where(pg => !newGroupIds.Contains(pg.GroupId))
             );
+
             foreach (var groupId in newGroupIds.Except(existingGroupIds))
             {
                 _context.ProjectGroups.Add(new ProjectGroup
@@ -192,6 +214,7 @@ namespace TicketSystemWeb.Controllers
                     GroupId = groupId
                 });
             }
+
             _context.Projects.Update(project);
             await _context.SaveChangesAsync();
             return RedirectToAction("Management", "ProjectManagement");
@@ -364,5 +387,41 @@ namespace TicketSystemWeb.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Management");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveGroupAddition(int projectId, int groupId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return BadRequest(new { success = false, message = "User not authenticated" });
+            }
+
+            var projectGroup = await _context.ProjectGroups
+                .Include(pg => pg.Group)
+                .FirstOrDefaultAsync(pg => pg.ProjectId == projectId && pg.GroupId == groupId);
+
+            if (projectGroup == null)
+            {
+                return NotFound(new { success = false, message = $"Group approval request not found for ProjectId {projectId}, GroupId {groupId}" });
+            }
+
+            if (projectGroup.Group.ManagerId != user.Id)
+            {
+                return ForbidJson(new { success = false, message = "Only the group manager can approve this request." });
+            }
+
+            projectGroup.IsApproved = true;
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Group approved successfully." });
+        }
+
+        private IActionResult ForbidJson(object value)
+        {
+            return new JsonResult(value) { StatusCode = StatusCodes.Status403Forbidden };
+        }
+
     }
 }

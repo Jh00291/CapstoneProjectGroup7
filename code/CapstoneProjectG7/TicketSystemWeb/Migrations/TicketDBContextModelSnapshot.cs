@@ -383,6 +383,9 @@ namespace TicketSystemWeb.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.HasKey("ProjectId", "GroupId");
 
                     b.HasIndex("GroupId");
@@ -497,7 +500,8 @@ namespace TicketSystemWeb.Migrations
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "Manager")
                         .WithMany()
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Manager");
                 });
@@ -506,7 +510,8 @@ namespace TicketSystemWeb.Migrations
                 {
                     b.HasOne("TicketSystemWeb.Models.Employee.Employee", "ProjectManager")
                         .WithMany()
-                        .HasForeignKey("ProjectManagerId");
+                        .HasForeignKey("ProjectManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ProjectManager");
                 });
