@@ -1,0 +1,12 @@
+Context: The user has an existing login to the system, has access to the database and application.
+
+Primary Flow
+	1. User navigates to the "Employee Management" section.
+	2. User selects the "Create Employee" option.
+	3. User enters new employee details 
+	4. System validates the input fields.
+	5. If validation succeeds, the system creates the employee record in the database.
+System updates the employee list to reflect the new entry.
+
+ALT FLOWS
+	4a. If validation fails, the system displays an error message and prompts the user to correct the input.

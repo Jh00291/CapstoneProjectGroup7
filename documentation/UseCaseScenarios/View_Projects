@@ -1,11 +1,5 @@
-Context – User has an existing login to the system, has the ability to access the database and application.
+Context – User is logged into the system
 
 Primary Flow
-User launches application.
-System presents login screen.
-User inputs given username and password.
-System verifies entered credentials against the database.
-If valid credentials, the system authenticates the user and grants access to the application.
-User is redirected to the employee dashboard.
-User navigates to the "Projects" section.
-System retrieves and displays projects associated with the user’s assigned group(s).
+	1. User navigates to the "Project Management" section.
+

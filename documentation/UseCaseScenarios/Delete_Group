@@ -1,0 +1,10 @@
+Context: User is logged in as an Admin or Project Manager on the management page
+
+Primary Flow
+	1. User selects the "Delete Group" option on a group in the table
+	2. System prompts the user to confirm the deletion.
+	3. If confirmed, the system removes the group from the database.
+	4. System updates the group list accordingly.
+
+ALT FLOW
+	3a. System prevents deletion and notifies the user to reassign the group before deleting.

@@ -1,0 +1,19 @@
+Restricted columns
+	what everyone on proj is doing 
+	employees can see/view but can't edit or move if not in column
+	Strictly show process 
+
+Add Task
+	if group is assigned to column only show employee that have access to the group
+	any ticket made goes to the todo
+	anyone on project can make ticket 
+	
+
+When updating task state you should be able to see ticket "history"
+
+Comments in task are open --------- DO LAST
+
+Assign Stages to groups
+
+Project lead can assign task to anyone
+

@@ -1,0 +1,5 @@
+Context: user is logged in on the management page
+
+Primary Flow
+	1. System retrieves existing groups from the database.
+	2. System displays the list of groups to the user.
