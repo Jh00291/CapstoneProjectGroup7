@@ -1,0 +1,16 @@
+Context – User is logged in as an Admin or project manager
+
+Primary Flow 
+	1. User is redirected to the management tab
+	2. User clicks add project
+	3. User fills in information
+	4. User click add
+	5. User is redirected back to management page with new project
+
+ATL FLOWS
+	3a. User doesn't fill in all information
+	4a. User is notified what is required and why the add fails
+	5a. Process is resumed at step 5
+
+	4b. User clicks cancel
+	5b. User is redirected back to management tab with no new tab

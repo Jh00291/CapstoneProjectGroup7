@@ -1,0 +1,13 @@
+Context – User is logged in as an Admin
+
+Primary Flow 
+	1. User is redirected to the employees page
+	2. User selects an employee to promote.
+	3. User assigns admin role to select user
+	4. System updates the employee's role and access permissions accordingly.
+
+Alternate Flow(s)
+
+DEMOTION FAILURE
+b1 - User attempts to demote a manager who is the only supervisor for an active group.
+b2 - System prevents the demotion and prompts the user to assign a new manager first.

@@ -1,0 +1,6 @@
+Context: The user is logged in
+
+Primary Flow
+	1. User is redirected to the employees page
+	2. System retrieves employee records from the database.
+	3. System displays the employee records to the user.

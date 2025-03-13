@@ -1,0 +1,6 @@
+Context – User is logged in as an Admin or project manager
+
+Primary Flow 
+	1. User is redirected to the management tab
+	2. User selects an project to delete
+	3. User deletes project

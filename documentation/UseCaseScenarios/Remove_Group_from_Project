@@ -1,0 +1,10 @@
+Context – Logged In user is Admin Or project manager
+
+Primary Flow 
+	1. User selects a project to edit.
+	2. User removes group 
+	3. User applies changes
+	4. User is redirected to management page
+
+	2a. User clicks cancel
+	3a. User is redirected back to management page with no changes

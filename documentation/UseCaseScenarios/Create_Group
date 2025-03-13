@@ -1,0 +1,11 @@
+Context: User is logged in as an Admin or Project Manager on the management page
+
+Primary Flow
+	1. User selects the "Create Group" button.
+	2. User enters new group details 
+	3. System validates the input fields.
+	4. If validation succeeds, the system creates the group in the database.
+	5. System updates the group list to reflect the new entry.
+
+ALT FLOWS
+	4a. If validation fails, the system displays an error message and prompts the user to correct the input.

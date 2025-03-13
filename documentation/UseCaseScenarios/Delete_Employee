@@ -1,0 +1,12 @@
+Context: The user has an existing login to the system, has access to the database and application.
+
+Primary Flow
+	1. User navigates to the "Employee Management" section.
+	2. User selects the employee to delete.
+	3. System prompts the user to confirm the deletion.
+	4. System updates the employee list accordingly.
+
+Alternate Flow - Deletion Failure
+	3a. User attempts to delete an employee who is assigned to an active project or group.
+	4a. System prevents deletion and displays a message explaining why the deletion is restricted.
+	5a. User must reassign or remove the employee from active projects/groups before proceeding.
