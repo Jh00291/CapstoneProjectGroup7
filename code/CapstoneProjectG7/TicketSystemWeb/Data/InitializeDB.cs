@@ -23,7 +23,7 @@ namespace TicketSystemWeb.Data
             var dbContext = serviceProvider.GetRequiredService<TicketDBContext>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<Employee>>();
-            await dbContext.Database.EnsureCreatedAsync();
+            await dbContext.Database.MigrateAsync();
             string adminRole = "admin";
             string userRole = "user";
             if (!await roleManager.RoleExistsAsync(adminRole))
