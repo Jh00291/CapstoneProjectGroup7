@@ -32,14 +32,14 @@ namespace TicketSystemWeb.Data
         /// <value>
         /// The groups.
         /// </value>
-        public DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
         /// <summary>
         /// Gets or sets the employee groups.
         /// </summary>
         /// <value>
         /// The employee groups.
         /// </value>
-        public DbSet<EmployeeGroup> EmployeeGroups { get; set; }
+        public virtual DbSet<EmployeeGroup> EmployeeGroups { get; set; }
         /// <summary>
         /// Gets or sets the projects.
         /// </summary>

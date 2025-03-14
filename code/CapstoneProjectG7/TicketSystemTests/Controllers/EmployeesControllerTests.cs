@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using NUnit.Framework;
 using TicketSystemWeb.Controllers;
 using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.Employee;
+using TicketSystemWeb.Models.ProjectManagement.Group;
 using TicketSystemWeb.ViewModels;
 
 namespace TicketSystemWeb.Tests.Controllers
@@ -49,27 +51,52 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task Employees_ReturnsViewWithEmployees()
+        public async Task Employees_ReturnsViewWithEmployeesList()
         {
-            var employees = new List<Employee> { new Employee { Id = "1", UserName = "testuser" } };
+            var employees = new List<Employee>
+            {
+                new Employee { Id = "1", UserName = "user1" },
+                new Employee { Id = "2", UserName = "user2" }
+            };
             _contextMock.Setup(c => c.Users).ReturnsDbSet(employees);
+            _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new Employee { Id = "1" });
+            _userManagerMock.Setup(u => u.GetRolesAsync(It.IsAny<Employee>())).ReturnsAsync(new List<string> { "admin" });
 
             var result = await _controller.Employees();
+            var viewResult = result as ViewResult;
 
-            Assert.That(result, Is.TypeOf<ViewResult>());
+            Assert.That(viewResult, Is.Not.Null);
+            Assert.That(viewResult.Model, Is.TypeOf<Tuple<List<Employee>, AddEmployeeViewModel>>());
         }
 
         [Test]
-        public async Task AddEmployee_ValidModel_RedirectsToEmployees()
+        public async Task RemoveEmployee_UserHasManagedGroups_ReturnsBadRequest()
         {
-            var model = new AddEmployeeViewModel { UserName = "testuser", Email = "test@example.com", Password = "password123", Role = "User" };
-            _userManagerMock.Setup(u => u.FindByNameAsync(model.UserName)).ReturnsAsync((Employee)null!);
-            _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<Employee>(), model.Password)).ReturnsAsync(IdentityResult.Success);
-            _userManagerMock.Setup(u => u.AddToRoleAsync(It.IsAny<Employee>(), model.Role)).ReturnsAsync(IdentityResult.Success);
+            _userManagerMock.Setup(u => u.FindByIdAsync("1")).ReturnsAsync(new Employee { Id = "1", UserName = "testuser" });
+            var groups = new List<Group> { new Group { ManagerId = "1", Name = "Group1" } };
+            _contextMock.Setup(c => c.Groups).ReturnsDbSet(groups);
 
-            var result = await _controller.AddEmployee(model);
+            var result = await _controller.RemoveEmployee("1");
+            var badRequestResult = result as BadRequestObjectResult;
 
-            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
+            Assert.That(badRequestResult, Is.Not.Null);
+            Assert.That(badRequestResult.Value, Is.EqualTo("Please remove this user from Group1 before removing."));
+        }
+
+        [Test]
+        public async Task RemoveEmployee_DeletionFails_ReturnsBadRequest()
+        {
+            var employee = new Employee { Id = "1", UserName = "testuser" };
+            _userManagerMock.Setup(u => u.FindByIdAsync("1")).ReturnsAsync(employee);
+            var groups = new List<Group>();
+            _contextMock.Setup(c => c.Groups).ReturnsDbSet(groups);
+            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Deletion failed" }));
+
+            var result = await _controller.RemoveEmployee("1");
+            var badRequestResult = result as BadRequestObjectResult;
+
+            Assert.That(badRequestResult, Is.Not.Null);
+            Assert.That(badRequestResult.Value, Is.EqualTo("Failed to remove the employee."));
         }
 
         [Test]
@@ -153,18 +180,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task RemoveEmployee_DeleteFails_ReturnsEmployeesPage()
-        {
-            var employee = new Employee { Id = "1", UserName = "testuser" };
-            _userManagerMock.Setup(u => u.FindByIdAsync(employee.Id)).ReturnsAsync(employee);
-            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Delete failed" }));
-
-            var result = await _controller.RemoveEmployee(employee.Id);
-
-            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
-        }
-
-        [Test]
         public async Task AddEmployee_InvalidModelState_ReturnsViewWithEmployees()
         {
             var model = new AddEmployeeViewModel();
@@ -224,19 +239,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task RemoveEmployee_DeleteFails_AddsModelErrorAndRedirects()
-        {
-            var employee = new Employee { Id = "1", UserName = "testuser" };
-            _userManagerMock.Setup(u => u.FindByIdAsync(employee.Id)).ReturnsAsync(employee);
-            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Delete failed" }));
-
-            var result = await _controller.RemoveEmployee(employee.Id);
-
-            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
-            Assert.That(_controller.ModelState[string.Empty].Errors, Is.Not.Empty);
-        }
-
-        [Test]
         public async Task UpdateEmployee_RoleChangeFails_ReturnsPartialViewWithErrors()
         {
             var employee = new Employee { Id = "1", UserName = "testuser", Email = "test@example.com" };
@@ -251,18 +253,6 @@ namespace TicketSystemWeb.Tests.Controllers
 
             Assert.That(result, Is.TypeOf<PartialViewResult>());
             Assert.That(_controller.ModelState[string.Empty].Errors, Is.Not.Empty);
-        }
-
-        [Test]
-        public async Task RemoveEmployee_DeleteSuccessful_RedirectsToEmployees()
-        {
-            var employee = new Employee { Id = "1", UserName = "testuser" };
-            _userManagerMock.Setup(u => u.FindByIdAsync(employee.Id)).ReturnsAsync(employee);
-            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Success);
-
-            var result = await _controller.RemoveEmployee(employee.Id);
-
-            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
         }
 
         [Test]

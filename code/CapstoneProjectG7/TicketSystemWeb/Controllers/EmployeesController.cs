@@ -90,6 +90,7 @@ namespace TicketSystemWeb.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
+                ViewData["ErrorMessage"] = string.Join(", ", result.Errors.Select(e => e.Description));
                 var employees = await _context.Users.ToListAsync();
                 return View("Employees", Tuple.Create(employees, model));
             }

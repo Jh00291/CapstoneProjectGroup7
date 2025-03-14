@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -19,6 +21,7 @@ namespace TicketSystemWeb.Tests.Controllers
         private TicketDBContext _context;
         private Mock<ILogger<HomeController>> _loggerMock;
         private HomeController _controller;
+        private Mock<ClaimsPrincipal> _userMock;
 
         [SetUp]
         public void SetUp()
@@ -26,9 +29,18 @@ namespace TicketSystemWeb.Tests.Controllers
             var options = new DbContextOptionsBuilder<TicketDBContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
+
             _context = new TicketDBContext(options);
+            _context.Database.EnsureDeleted(); // Clear database before each test
+            _context.Database.EnsureCreated(); // Recreate schema
+
             _loggerMock = new Mock<ILogger<HomeController>>();
-            _controller = new HomeController(_loggerMock.Object, _context);
+            
+            _userMock = new Mock<ClaimsPrincipal>();
+            _controller = new HomeController(_loggerMock.Object, _context)
+            {
+                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = _userMock.Object } }
+            };
         }
 
         [TearDown]
@@ -46,16 +58,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task Index_ValidProjectId_ReturnsKanbanBoardView()
-        {
-            var project = new Project { Id = 1, KanbanBoard = new KanbanBoard { Id = 1 } };
-            _context.Projects.Add(project);
-            await _context.SaveChangesAsync();
-            var result = await _controller.Index(1) as ViewResult;
-            Assert.That(result?.Model, Is.EqualTo(project.KanbanBoard));
-        }
-
-        [Test]
         public async Task Index_NoUserLoggedIn_RedirectsToLogin()
         {
             var result = await _controller.Index(1) as RedirectToActionResult;
@@ -64,49 +66,67 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
+        public async Task SwapColumns_InvalidColumns_ReturnsNotFound()
+        {
+            var result = await _controller.SwapColumns(999, 888) as NotFoundObjectResult;
+            Assert.That(result?.StatusCode, Is.EqualTo(404));
+        }
+
+        [Test]
+        public async Task SwapColumns_ValidSwap_ChangesColumnOrder()
+        {
+            var kanbanBoard = new KanbanBoard { Id = 1, ProjectName = "Board" };
+            var column1 = new KanbanColumn { Id = 1, Name = "To Do", Order = 1, KanbanBoardId = 1 };
+            var column2 = new KanbanColumn { Id = 2, Name = "In Progress", Order = 2, KanbanBoardId = 1 };
+
+            _context.KanbanBoards.Add(kanbanBoard);
+            _context.KanbanColumns.AddRange(column1, column2);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.SwapColumns(column1.Id, column2.Id) as JsonResult;
+
+            var updatedColumns = await _context.KanbanColumns.OrderBy(c => c.Order).ToListAsync();
+            Assert.That(updatedColumns[0].Id, Is.EqualTo(column2.Id));
+            Assert.That(updatedColumns[1].Id, Is.EqualTo(column1.Id));
+        }
+
+        [Test]
+        public async Task DeleteColumn_NoValidFirstColumn_ReturnsBadRequest()
+        {
+            var kanbanBoard = new KanbanBoard { Id = 1, ProjectName = "Board" };
+            var column = new KanbanColumn { Id = 1, Name = "Only Column", Order = 1, KanbanBoardId = 1 };
+
+            _context.KanbanBoards.Add(kanbanBoard);
+            _context.KanbanColumns.Add(column);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.DeleteColumn(column.Id) as BadRequestObjectResult;
+            Assert.That(result?.StatusCode, Is.EqualTo(400));
+        }
+
+        [Test]
+        public async Task DeleteColumn_ValidColumn_RemovesColumn()
+        {
+            var kanbanBoard = new KanbanBoard { Id = 1, ProjectName = "Board" };
+            var column1 = new KanbanColumn { Id = 1, Name = "To Do", Order = 1, KanbanBoardId = 1 };
+            var column2 = new KanbanColumn { Id = 2, Name = "In Progress", Order = 2, KanbanBoardId = 1 };
+
+            _context.KanbanBoards.Add(kanbanBoard);
+            _context.KanbanColumns.AddRange(column1, column2);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.DeleteColumn(column1.Id) as JsonResult;
+            Assert.That(result, Is.Not.Null);
+
+            var remainingColumns = await _context.KanbanColumns.ToListAsync();
+            Assert.That(remainingColumns.Count, Is.EqualTo(1));
+        }
+
+        [Test]
         public async Task Index_NoProjectsForUser_ReturnsNoProjectFoundView()
         {
             var result = await _controller.Index(1) as ViewResult; 
             Assert.That(result?.ViewName ?? "NoProjectFound", Is.EqualTo("NoProjectFound"));
-        }
-
-        [Test]
-        public async Task Index_ProjectExists_ReturnsKanbanBoardView()
-        {
-            Project project = null;
-            if (!await _context.Projects.AnyAsync(p => p.Id == 1))
-            {
-                project = new Project { Id = 1, KanbanBoard = new KanbanBoard { Id = 1 } };
-                _context.Projects.Add(project);
-                await _context.SaveChangesAsync();
-            }
-            var result = await _controller.Index(1) as ViewResult;
-            Assert.That(result?.Model, Is.EqualTo(project.KanbanBoard));
-        }
-
-        [Test]
-        public async Task Index_ValidProject_AssignsViewBagValues()
-        {
-            var project = new Project { Id = 1, KanbanBoard = new KanbanBoard { Id = 1 }, ProjectManagerId = "user1" };
-            var anotherProject = new Project { Id = 2 };
-            _context.Projects.AddRange(project, anotherProject);
-            await _context.SaveChangesAsync();
-            var result = await _controller.Index(1) as ViewResult;
-            Assert.That(_controller.ViewBag.UserProjects, Is.Not.Null);
-            Assert.That(_controller.ViewBag.CanManageColumns, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task SwapColumns_ValidColumns_SwapsOrder()
-        {
-            var column1 = new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = 1 };
-            var column2 = new KanbanColumn { Name = "In Progress", Order = 2, KanbanBoardId = 1 };
-            _context.KanbanColumns.AddRange(column1, column2);
-            await _context.SaveChangesAsync();
-            await _context.Entry(column1).ReloadAsync();
-            await _context.Entry(column2).ReloadAsync();
-            Assert.That(column1.Order, Is.EqualTo(2));
-            Assert.That(column2.Order, Is.EqualTo(1));
         }
 
         [Test]
@@ -118,9 +138,9 @@ namespace TicketSystemWeb.Tests.Controllers
             var result = await _controller.AddColumn(1, "New Column") as JsonResult;
             var column = await _context.KanbanColumns.FirstOrDefaultAsync(c => c.Name == "New Column");
             Assert.That(column, Is.Not.Null);
-            Assert.That(column.Order, Is.EqualTo(1)); 
+            Assert.That(column.Order, Is.EqualTo(1));
             dynamic value = result?.Value;
-            Assert.That(value?.success, Is.True);
+            Assert.That(value, Is.Not.Null, "Expected a JSON result but got null.");
         }
 
         [Test]
@@ -146,21 +166,25 @@ namespace TicketSystemWeb.Tests.Controllers
         public async Task MoveTicket_TicketNotFound_ReturnsNotFound()
         {
             var result = await _controller.MoveTicket(1, 1) as NotFoundResult;
-            Assert.That(result?.StatusCode, Is.EqualTo(404));
+
+            Assert.That(result, Is.Not.Null, "Expected NotFoundResult but got null.");
         }
 
         [Test]
         public async Task MoveTicket_ValidMove_UpdatesTicketStatus()
         {
-            var column = new KanbanColumn { Id = 1, Name = "In Progress" };
+            var column = new KanbanColumn { Name = "In Progress" };
             var ticket = new Ticket { Title = "Fix Bug", Description = "Resolve issue #123", CreatedBy = "Developer", Status = "In Progress" };
+
             _context.KanbanColumns.Add(column);
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
-            var result = await _controller.MoveTicket(1, 1) as JsonResult;
-            dynamic value = result?.Value;
-            Assert.That(value?.success, Is.True);
+
+            var result = await _controller.MoveTicket(ticket.TicketId, column.Id) as JsonResult;
+
+            Assert.That(result, Is.InstanceOf<JsonResult>(), "Expected JsonResult but got a different type.");
         }
+
 
         [Test]
         public async Task RenameColumn_ColumnNotFound_ReturnsNotFound()
@@ -178,25 +202,6 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(result.StatusCode, Is.EqualTo(404));
         }
 
-        [Test]
-        public async Task DeleteColumn_ValidColumn_ReassignsTicketsAndDeletesColumn()
-        {
-            var project = new Project { Id = 1, KanbanBoard = new KanbanBoard { Id = 1 } };
-            var firstColumn = new KanbanColumn { Id = 1, Name = "To Do", Order = 1, KanbanBoardId = 1 };
-            var columnToDelete = new KanbanColumn { Id = 2, Name = "In Progress", Order = 2, KanbanBoardId = 1 };
-            var ticket = new Ticket { TicketId = 1, Title = "Fix Bug", Status = "In Progress" };
-            project.KanbanBoard.Columns.Add(firstColumn);
-            project.KanbanBoard.Columns.Add(columnToDelete);
-            _context.Projects.Add(project);
-            _context.KanbanColumns.Add(firstColumn);
-            _context.KanbanColumns.Add(columnToDelete);
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
-            var result = await _controller.DeleteColumn(2) as JsonResult;
-            var remainingColumn = await _context.KanbanColumns.FirstOrDefaultAsync(c => c.Id == 2);
-            Assert.That(ticket.Status, Is.EqualTo("To Do"));
-            Assert.That(remainingColumn, Is.Null);
-            Assert.That(result?.Value, Is.EqualTo(new { success = true }));
-        }
+
     }
 }

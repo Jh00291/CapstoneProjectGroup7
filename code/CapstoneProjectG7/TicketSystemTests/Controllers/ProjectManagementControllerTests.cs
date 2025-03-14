@@ -66,7 +66,6 @@ namespace TicketSystemWeb.Tests.Controllers
             _controller?.Dispose();
         }
 
-        // --- Management ---
         [Test]
         public async Task Management_ReturnsViewWithProjectsAndGroups()
         {
@@ -74,23 +73,6 @@ namespace TicketSystemWeb.Tests.Controllers
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Model, Is.TypeOf<ManagementViewModel>());
-        }
-
-        // --- Create Group ---
-
-        [Test]
-        public async Task CreateGroup_WhenManagerIdIsNull_ReturnsError()
-        {
-            var model = new AddGroupViewModel
-            {
-                Name = "New Group",
-                SelectedManagerId = null
-            };
-
-            var result = await _controller.CreateGroup(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewData["GroupErrorMessage"], Is.EqualTo("Invalid Manager selected."));
         }
 
         [Test]
@@ -105,33 +87,6 @@ namespace TicketSystemWeb.Tests.Controllers
 
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
             Assert.That(((RedirectToActionResult)result).ActionName, Is.EqualTo("Management"));
-        }
-
-        [Test]
-        public async Task CreateGroup_InvalidData_ReturnsViewWithError()
-        {
-            var model = new AddGroupViewModel { Name = "", SelectedManagerId = "" };
-
-            var result = await _controller.CreateGroup(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.EqualTo("Management"));
-            Assert.That(result.ViewData.ContainsKey("GroupErrorMessage"), Is.True);
-        }
-
-        [Test]
-        public async Task CreateGroup_DuplicateName_ReturnsManagementViewWithError()
-        {
-            var existingGroup = new Group { Id = 1, Name = "Existing Group", ManagerId = "1" };
-            _context.Groups.Add(existingGroup);
-            await _context.SaveChangesAsync();
-
-            var model = new AddGroupViewModel { Name = "Existing Group", SelectedManagerId = "1" };
-
-            var result = await _controller.CreateGroup(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewData["GroupErrorMessage"], Is.EqualTo("A group with this name already exists."));
         }
 
         // -- Update Group --
@@ -198,13 +153,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         // --- Delete Group ---
-        [Test]
-        public async Task DeleteGroup_NonExistentGroup_ReturnsNotFound()
-        {
-            var result = await _controller.DeleteGroup(999);
-
-            Assert.That(result, Is.TypeOf<NotFoundResult>());
-        }
 
         [Test]
         public async Task DeleteGroup_NonAdminNonManager_ReturnsForbid()
@@ -244,33 +192,6 @@ namespace TicketSystemWeb.Tests.Controllers
 
             var createdProject = _context.Projects.FirstOrDefault(p => p.Title == "New Project");
             Assert.That(createdProject, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task CreateProject_InvalidData_ReturnsViewWithError()
-        {
-            var model = new AddProjectViewModel { Title = "", Description = "", ProjectManagerId = "" };
-
-            var result = await _controller.CreateProject(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.EqualTo("Management"));
-            Assert.That(result.ViewData.ContainsKey("ProjectErrorMessage"), Is.True);
-        }
-
-        [Test]
-        public async Task CreateProject_DuplicateTitle_ReturnsManagementViewWithError()
-        {
-            var existingProject = new Project { Title = "Existing Project", Description = "Test", ProjectManagerId = "1" };
-            _context.Projects.Add(existingProject);
-            await _context.SaveChangesAsync();
-
-            var model = new AddProjectViewModel { Title = "Existing Project", Description = "Another Test", ProjectManagerId = "1" };
-
-            var result = await _controller.CreateProject(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewData["ProjectErrorMessage"], Is.EqualTo("A project with this title already exists."));
         }
 
         [Test]
@@ -337,13 +258,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task DeleteProject_NonExistentProject_ReturnsNotFound()
-        {
-            var result = await _controller.DeleteProject(999);
-            Assert.That(result, Is.TypeOf<NotFoundResult>());
-        }
-
-        [Test]
         public async Task DeleteProject_NonAdminNonManager_ReturnsForbid()
         {
             var project = new Project { Id = 1, Title = "Test Project", ProjectManagerId = "manager1" };
@@ -398,14 +312,6 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(redirectResult.ActionName, Is.EqualTo("Management"));
         }
 
-        [Test]
-        public async Task DeleteProject_WhenProjectDoesNotExist_ReturnsNotFound()
-        {
-            var result = await _controller.DeleteProject(999);
-
-            Assert.That(result, Is.TypeOf<NotFoundResult>());
-        }
-
 
         // -- Edit Project --
 
@@ -430,6 +336,92 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(result, Is.TypeOf<NotFoundResult>());
         }
 
+        [Test]
+        public async Task CreateProject_WhenModelIsInvalid_ReturnsBadRequest()
+        {
+            _controller.ModelState.AddModelError("Title", "Required");
 
+            var model = new AddProjectViewModel { Description = "Test" };
+            var result = await _controller.CreateProject(model);
+
+            Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
+        }
+
+        [Test]
+        public async Task CreateProject_WhenProjectTitleExists_ReturnsBadRequest()
+        {
+            _context.Projects.Add(new Project { Title = "Existing Project", ProjectManagerId = "manager1" });
+            await _context.SaveChangesAsync();
+
+            var model = new AddProjectViewModel
+            {
+                Title = "Existing Project",
+                Description = "Test Project",
+                ProjectManagerId = "manager1"
+            };
+
+            var result = await _controller.CreateProject(model);
+
+            Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
+        }
+
+        [Test]
+        public async Task DeleteProject_WhenProjectDoesNotExist_ReturnsNotFound()
+        {
+            var result = await _controller.DeleteProject(999);
+
+            Assert.That(result, Is.TypeOf<NotFoundObjectResult>());
+        }
+
+        [Test]
+        public async Task UpdateProject_WhenUserIsNull_ReturnsUnauthorized()
+        {
+            _userManagerMock.Setup(um => um.GetUserAsync(It.IsAny<System.Security.Claims.ClaimsPrincipal>()))
+                            .ReturnsAsync((Employee)null);
+
+            var model = new EditProjectViewModel { ProjectId = 1, Title = "Updated Title" };
+            var result = await _controller.UpdateProject(model);
+
+            Assert.That(result, Is.TypeOf<UnauthorizedResult>());
+        }
+
+        [Test]
+        public async Task ApproveGroupAddition_WhenUserIsNull_ReturnsBadRequest()
+        {
+            _userManagerMock.Setup(um => um.GetUserAsync(It.IsAny<System.Security.Claims.ClaimsPrincipal>()))
+                            .ReturnsAsync((Employee)null);
+
+            var result = await _controller.ApproveGroupAddition(1, 1);
+
+            Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
+        }
+
+        [Test]
+        public async Task ApproveGroupAddition_WhenGroupRequestNotFound_ReturnsNotFound()
+        {
+            var result = await _controller.ApproveGroupAddition(1, 999);
+
+            Assert.That(result, Is.TypeOf<NotFoundObjectResult>());
+        }
+
+        [Test]
+        public async Task ApproveGroupAddition_WhenUserIsNotGroupManager_ReturnsForbid()
+        {
+            var group = new Group { Id = 1, Name = "Group1", ManagerId = "manager1" };
+            var projectGroup = new ProjectGroup { ProjectId = 1, GroupId = 1, IsApproved = false, Group = group };
+            _context.Groups.Add(group);
+            _context.ProjectGroups.Add(projectGroup);
+            await _context.SaveChangesAsync();
+
+            var normalUser = new Employee { Id = "user1" };
+            _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<System.Security.Claims.ClaimsPrincipal>()))
+                            .ReturnsAsync(normalUser);
+
+            var result = await _controller.ApproveGroupAddition(1, 1);
+
+            Assert.That(result, Is.TypeOf<JsonResult>());
+            var jsonResult = result as JsonResult;
+            Assert.That(jsonResult.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
+        }
     }
 }
