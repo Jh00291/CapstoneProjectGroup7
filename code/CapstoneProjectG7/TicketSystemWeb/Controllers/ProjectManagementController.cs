@@ -44,23 +44,22 @@ namespace TicketSystemWeb.Controllers
                 .Include(p => p.ProjectGroups)
                 .ThenInclude(pg => pg.Group)
                 .ToListAsync();
-
-            var groups = await _context.Groups.Include(g => g.Manager).ToListAsync();
+            var groups = await _context.Groups
+                .Include(g => g.Manager)
+                .Include(g => g.EmployeeGroups)
+                .ThenInclude(eg => eg.Employee)
+                .ToListAsync();
             var employees = await _context.Users.ToListAsync();
-
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
             bool isGroupManager = _context.Groups.Any(g => g.ManagerId == user.Id);
             bool isProjectManager = _context.Projects.Any(p => p.ProjectManagerId == user.Id);
-
             var selectedGroupIds = new List<int>();
-
             var pendingApprovals = await _context.ProjectGroups
                 .Include(pg => pg.Project)
                 .Include(pg => pg.Group)
                 .Where(pg => !pg.IsApproved && pg.Group.ManagerId == user.Id)
                 .ToListAsync();
-
             var viewModel = new ManagementViewModel
             {
                 Projects = projects,
@@ -299,32 +298,6 @@ namespace TicketSystemWeb.Controllers
         }
 
         /// <summary>
-        /// Edits the group.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>to the management page</returns>
-        [HttpGet]
-        public async Task<IActionResult> EditGroup(int id)
-        {
-            var group = await _context.Groups
-                .Include(g => g.Manager)
-                .Include(g => g.EmployeeGroups)
-                .ThenInclude(eg => eg.Employee)
-                .FirstOrDefaultAsync(g => g.Id == id);
-            if (group == null) return NotFound();
-            var employees = await _context.Users.ToListAsync();
-            var viewModel = new EditGroupViewModel
-            {
-                GroupId = group.Id,
-                Name = group.Name,
-                SelectedManagerId = group.ManagerId,
-                SelectedEmployeeIds = group.EmployeeGroups.Select(eg => eg.EmployeeId).ToList(),
-                AllEmployees = employees
-            };
-            return PartialView("EditGroup", viewModel);
-        }
-
-        /// <summary>
         /// Updates the group.
         /// </summary>
         /// <param name="model">The model.</param>
@@ -388,6 +361,32 @@ namespace TicketSystemWeb.Controllers
             return RedirectToAction("Management");
         }
 
+        /// <summary>
+        /// Gets the groups.
+        /// </summary>
+        /// <returns>the view with the groups loaded</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetGroups()
+        {
+            var groups = await _context.Groups
+                .Select(g => new { g.Id, g.Name })
+                .ToListAsync();
+            return Json(groups);
+        }
+
+        /// <summary>
+        /// Gets the employees.
+        /// </summary>
+        /// <returns>the view with employees loaded</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetEmployees()
+        {
+            var employees = await _context.Users
+                .Select(e => new { e.Id, e.UserName })
+                .ToListAsync();
+            return Json(employees);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveGroupAddition(int projectId, int groupId)
@@ -397,24 +396,19 @@ namespace TicketSystemWeb.Controllers
             {
                 return BadRequest(new { success = false, message = "User not authenticated" });
             }
-
             var projectGroup = await _context.ProjectGroups
                 .Include(pg => pg.Group)
                 .FirstOrDefaultAsync(pg => pg.ProjectId == projectId && pg.GroupId == groupId);
-
             if (projectGroup == null)
             {
                 return NotFound(new { success = false, message = $"Group approval request not found for ProjectId {projectId}, GroupId {groupId}" });
             }
-
             if (projectGroup.Group.ManagerId != user.Id)
             {
                 return ForbidJson(new { success = false, message = "Only the group manager can approve this request." });
             }
-
             projectGroup.IsApproved = true;
             await _context.SaveChangesAsync();
-
             return Json(new { success = true, message = "Group approved successfully." });
         }
 
