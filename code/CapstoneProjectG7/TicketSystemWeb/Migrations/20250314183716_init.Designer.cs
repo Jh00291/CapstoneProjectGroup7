@@ -12,8 +12,8 @@ using TicketSystemWeb.Data;
 namespace TicketSystemWeb.Migrations
 {
     [DbContext(typeof(TicketDBContext))]
-    [Migration("20250313203137_Initial")]
-    partial class Initial
+    [Migration("20250314183716_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

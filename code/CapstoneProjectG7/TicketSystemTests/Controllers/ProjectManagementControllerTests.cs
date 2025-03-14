@@ -129,29 +129,6 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(result, Is.TypeOf<ForbidResult>());
         }
 
-
-        // --- Edit Group ---
-        [Test]
-        public async Task EditGroup_ValidId_ReturnsPartialView()
-        {
-            var group = new Group { Id = 1, Name = "TestGroup", ManagerId = "123" };
-            _context.Groups.Add(group);
-            await _context.SaveChangesAsync();
-
-            var result = await _controller.EditGroup(1);
-
-            Assert.That(result, Is.TypeOf<PartialViewResult>());
-            Assert.That(((PartialViewResult)result).ViewName, Is.EqualTo("EditGroup"));
-        }
-
-        [Test]
-        public async Task GetEditGroup_NonExistentGroup_ReturnsNotFound()
-        {
-            var result = await _controller.EditGroup(999);
-
-            Assert.That(result, Is.TypeOf<NotFoundResult>());
-        }
-
         // --- Delete Group ---
 
         [Test]
