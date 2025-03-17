@@ -86,21 +86,27 @@ namespace TicketSystemWeb.Controllers
         /// <param name="ticket">The new ticket.</param>
         /// <returns>Redirects to the Kanban board.</returns>
         [HttpPost]
-        public async Task<IActionResult> AddTicket(int projectId, Ticket ticket)
+        public async Task<IActionResult> AddTicket([FromBody] Ticket ticket)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (ticket == null || string.IsNullOrWhiteSpace(ticket.Title) || string.IsNullOrWhiteSpace(ticket.Description))
+                return BadRequest("Invalid ticket data.");
+
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
-                .FirstOrDefaultAsync(p => p.Id == projectId);
+                .FirstOrDefaultAsync(p => p.Id == ticket.ProjectId);
+
             if (project == null) return NotFound("Project not found.");
+
             ticket.CreatedAt = DateTime.UtcNow;
-            ticket.CreatedBy = "System";
-            ticket.ProjectId = projectId;
+            ticket.CreatedBy = User.Identity.Name ?? "System";
             ticket.Status = "To Do";
+
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", new { projectId });
+
+            return Ok(new { success = true });
         }
+
 
         /// <summary>
         /// Moves a ticket between Kanban columns.

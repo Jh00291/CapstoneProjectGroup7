@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanban Board</title>
     <link rel="stylesheet" href="~/css/kanban.css">
+    <link rel="stylesheet" href="~/css/ticketModal.css">
 </head>
 <body>
     <div class="kanban-container">
@@ -29,8 +30,12 @@
             }
             else
             {
-                <div class="kanban-board-header">
-                    <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
+                <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
+                <div class="button-group">
+                    @if (ViewBag.CanMoveTickets != null && ViewBag.CanMoveTickets)
+                    {
+                        <button class="btn-add-column" onclick="openTicketModal()">Add Ticket</button>
+                    }
                     @if (ViewBag.CanManageColumns != null && ViewBag.CanManageColumns)
                     {
                         <button class="btn-add-column" onclick="openColumnModal()">Manage Columns</button>
@@ -120,6 +125,24 @@
             </div>
         </div>
     </div>
+
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTicketModal()">&times;</span>
+            <h2>Add New Ticket</h2>
+            <input type="hidden" id="projectId" value="@Model.ProjectId" />
+            <div class="input-group">
+                <label for="ticketTitle">Title:</label>
+                <input type="text" id="ticketTitle" placeholder="Enter ticket title">
+            </div>
+            <div class="input-group">
+                <label for="ticketDescription">Description:</label>
+                <textarea id="ticketDescription" placeholder="Enter ticket description"></textarea>
+            </div>
+            <button class="btn-purple" onclick="submitTicket()">Add Ticket</button>
+        </div>
+    </div>
+
 
     <script>
         function openColumnModal() {
@@ -228,6 +251,44 @@
                 location.reload();
             }
         }
+
+        function openTicketModal() {
+            document.getElementById("ticketModal").style.display = "block";
+        }
+
+        function closeTicketModal() {
+            document.getElementById("ticketModal").style.display = "none";
+        }
+
+        async function submitTicket() {
+            let projectId = document.getElementById("projectId").value;
+            let title = document.getElementById("ticketTitle").value.trim();
+            let description = document.getElementById("ticketDescription").value.trim();
+
+            if (!title || !description) {
+                alert("Please enter a title and description for the ticket.");
+                return;
+            }
+
+            let response = await fetch("/Home/AddTicket", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    projectId: projectId,
+                    title: title,
+                    description: description
+                })
+            });
+
+            if (response.ok) {
+                location.reload(); // Refresh the page to show the new ticket
+            } else {
+                alert("Failed to add ticket.");
+            }
+        }
+
     </script>
 </body>
 </html>

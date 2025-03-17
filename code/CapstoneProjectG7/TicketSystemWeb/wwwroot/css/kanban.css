@@ -178,9 +178,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .btn-add-column {
+    background-color: #6f42c1;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-add-ticket {
     background-color: #6f42c1;
     color: white;
     padding: 10px 15px;
@@ -258,6 +273,13 @@ input, select {
     margin-top: 20px;
 }
 
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+
 button {
     width: 100%;
     padding: 12px;
@@ -266,6 +288,7 @@ button {
     font-weight: bold;
     cursor: pointer;
     font-size: 14px;
+    margin: 0;
 }
 
 .btn-purple {
