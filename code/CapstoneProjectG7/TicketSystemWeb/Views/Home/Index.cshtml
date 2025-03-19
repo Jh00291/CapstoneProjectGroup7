@@ -69,13 +69,33 @@
                                             <div class="card-header">
                                                 <strong>@ticket.Title</strong>
                                             </div>
-                                            <div class="card-body">
+                                            <div class="card-body" style="word-wrap: break-word; white-space: normal; overflow: hidden; text-overflow: ellipsis; max-height: 100px;">
                                                 <p>@ticket.Description</p>
                                             </div>
                                             <div class="card-footer">
                                                 <span class="status">@ticket.Status</span>
                                                 <span class="date">@ticket.CreatedAt.ToShortDateString()</span>
                                             </div>
+                                            <div class="card-actions"
+                                                 style="display: flex; justify-content: center; gap: 8px; align-items: center; width: 100%;">
+                                                <button class="button-ticket button-ticket-details"
+                                                        onclick="viewTicketDetails(@ticket.TicketId)"
+                                                        style="width:auto !important; display:inline-block !important; padding:5px 10px; background:transparent; border:1px solid #ccc; font-size:inherit; cursor:pointer;">
+                                                    🔍
+                                                </button>
+                                                <button class="button-ticket button-ticket-edit"
+                                                        onclick="editTicket(@ticket.TicketId)"
+                                                        style="width:auto !important; display:inline-block !important; padding:5px 10px; background:transparent; border:1px solid #ccc; font-size:inherit; cursor:pointer;">
+                                                    ✏️
+                                                </button>
+                                                <button class="button-ticket button-ticket-delete"
+                                                        onclick="deleteTicket(@ticket.TicketId)"
+                                                        style="width:auto !important; display:inline-block !important; padding:5px 10px; background:transparent; border:1px solid #ccc; font-size:inherit; cursor:pointer;">
+                                                    ❌
+                                                </button>
+                                            </div>
+
+
                                         </div>
                                     }
                                 </div>
@@ -126,10 +146,12 @@
         </div>
     </div>
 
+    <!-- Add Ticket Modal -->
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeTicketModal()">&times;</span>
             <h2>Add New Ticket</h2>
+            <div id="addTicketError" class="error-message" style="color: red; display: none;"></div>
             <input type="hidden" id="projectId" value="@Model.ProjectId" />
             <div class="input-group">
                 <label for="ticketTitle">Title:</label>
@@ -142,6 +164,64 @@
             <button class="btn-purple" onclick="submitTicket()">Add Ticket</button>
         </div>
     </div>
+
+    <!-- View Ticket Modal -->
+    <div id="viewTicketModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeViewTicketModal()">&times;</span>
+            <h2>Ticket Details</h2>
+            <div class="input-group">
+                <label><strong>Title:</strong></label>
+                <div id="ticketViewTitle"></div>
+            </div>
+            <div class="input-group">
+                <label><strong>Description:</strong></label>
+                <div id="ticketViewDescription"></div>
+            </div>
+            <div class="input-group">
+                <label><strong>Status:</strong></label>
+                <div id="ticketViewStatus"></div>
+            </div>
+            <div class="input-group">
+                <label><strong>Created At:</strong></label>
+                <div id="ticketViewCreatedAt"></div>
+            </div>
+            <button class="btn-purple" onclick="closeViewTicketModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Edit Ticket Modal -->
+    <div id="editTicketModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditTicketModal()">&times;</span>
+            <h2>Edit Ticket</h2>
+            <div id="editTicketError" class="error-message" style="color: red; display: none;"></div>
+            <input type="hidden" id="editTicketId">
+            <div class="input-group">
+                <label for="editTicketTitle">Title:</label>
+                <input type="text" id="editTicketTitle">
+            </div>
+            <div class="input-group">
+                <label for="editTicketDescription">Description:</label>
+                <textarea id="editTicketDescription"></textarea>
+            </div>
+            <button class="btn-purple" onclick="submitEditTicket()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Delete Ticket Modal -->
+    <div id="deleteTicketModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteTicketModal()">&times;</span>
+            <h2>Delete Ticket</h2>
+            <div id="deleteTicketError" class="error-message" style="color: red; display: none;"></div>
+            <p>Are you sure you want to delete this ticket?</p>
+            <input type="hidden" id="deleteTicketId">
+            <button class="btn-red" onclick="confirmDeleteTicket()">Delete</button>
+            <button class="btn-purple" onclick="closeDeleteTicketModal()">Cancel</button>
+        </div>
+    </div>
+
 
 
     <script>
@@ -264,30 +344,136 @@
             let projectId = document.getElementById("projectId").value;
             let title = document.getElementById("ticketTitle").value.trim();
             let description = document.getElementById("ticketDescription").value.trim();
+            let errorDiv = document.getElementById("addTicketError");
+
+            errorDiv.style.display = "none";
+            errorDiv.innerText = "";
 
             if (!title || !description) {
-                alert("Please enter a title and description for the ticket.");
+                errorDiv.innerText = "Title and description are required.";
+                errorDiv.style.display = "block";
                 return;
             }
 
             let response = await fetch("/Home/AddTicket", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    projectId: projectId,
-                    title: title,
-                    description: description
-                })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ projectId, title, description })
             });
 
             if (response.ok) {
-                location.reload(); // Refresh the page to show the new ticket
+                location.reload();
             } else {
-                alert("Failed to add ticket.");
+                let result = await response.json();
+                errorDiv.innerText = result.error || "Failed to add ticket.";
+                errorDiv.style.display = "block";
             }
         }
+
+
+        // Open View Ticket Modal
+        async function viewTicketDetails(ticketId) {
+            let response = await fetch(`/Home/ViewTicketDetails?ticketId=${ticketId}`);
+            let data = await response.json();
+
+            if (data.success) {
+                document.getElementById("ticketViewTitle").innerText = data.ticket.title;
+                document.getElementById("ticketViewDescription").innerText = data.ticket.description;
+                document.getElementById("ticketViewStatus").innerText = data.ticket.status;
+                document.getElementById("ticketViewCreatedAt").innerText = data.ticket.createdAt;
+                document.getElementById("viewTicketModal").style.display = "block";
+            } else {
+                alert("Failed to fetch ticket details.");
+            }
+        }
+
+        function closeViewTicketModal() {
+            document.getElementById("viewTicketModal").style.display = "none";
+        }
+
+        // Open Edit Ticket Modal
+        async function editTicket(ticketId) {
+            let response = await fetch(`/Home/ViewTicketDetails?ticketId=${ticketId}`);
+            let data = await response.json();
+
+            if (data.success) {
+                document.getElementById("editTicketId").value = ticketId;
+                document.getElementById("editTicketTitle").value = data.ticket.title;
+                document.getElementById("editTicketDescription").value = data.ticket.description;
+                document.getElementById("editTicketModal").style.display = "block";
+            } else {
+                alert("Failed to fetch ticket details.");
+            }
+        }
+
+        function closeEditTicketModal() {
+            document.getElementById("editTicketModal").style.display = "none";
+        }
+
+        // Submit Edit Ticket
+        async function submitEditTicket() {
+            let ticketId = document.getElementById("editTicketId").value;
+            let newTitle = document.getElementById("editTicketTitle").value.trim();
+            let newDescription = document.getElementById("editTicketDescription").value.trim();
+            let errorDiv = document.getElementById("editTicketError");
+
+            errorDiv.style.display = "none";
+            errorDiv.innerText = "";
+
+            if (!newTitle || !newDescription) {
+                errorDiv.innerText = "Title and description cannot be empty.";
+                errorDiv.style.display = "block";
+                return;
+            }
+
+            let response = await fetch(`/Home/EditTicket`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `ticketId=${ticketId}&title=${encodeURIComponent(newTitle)}&description=${encodeURIComponent(newDescription)}`
+            });
+
+            let result = await response.json();
+            if (result.success) {
+                location.reload();
+            } else {
+                errorDiv.innerText = result.error || "Failed to update ticket.";
+                errorDiv.style.display = "block";
+            }
+        }
+
+
+        // Open Delete Ticket Modal
+        function deleteTicket(ticketId) {
+            document.getElementById("deleteTicketId").value = ticketId;
+            document.getElementById("deleteTicketModal").style.display = "block";
+        }
+
+        function closeDeleteTicketModal() {
+            document.getElementById("deleteTicketModal").style.display = "none";
+        }
+
+        async function confirmDeleteTicket() {
+            let ticketId = document.getElementById("deleteTicketId").value;
+            let errorDiv = document.getElementById("deleteTicketError");
+
+            errorDiv.style.display = "none";
+            errorDiv.innerText = "";
+
+            let response = await fetch(`/Home/DeleteTicket`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `ticketId=${ticketId}`
+            });
+
+            let result = await response.json();
+            if (result.success) {
+                location.reload();
+            } else {
+                errorDiv.innerText = result.error || "Failed to delete ticket.";
+                errorDiv.style.display = "block";
+            }
+        }
+
 
     </script>
 </body>

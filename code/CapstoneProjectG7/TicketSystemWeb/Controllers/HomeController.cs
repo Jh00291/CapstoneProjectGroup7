@@ -241,5 +241,67 @@ namespace TicketSystemWeb.Controllers
             await _context.SaveChangesAsync();
             return new JsonResult(new { success = true });
         }
+
+        /// <summary>
+        /// Retrieves details of a specific ticket.
+        /// </summary>
+        /// <param name="ticketId">The ticket ID.</param>
+        /// <returns>JSON response with ticket details.</returns>
+        [HttpGet]
+        public async Task<IActionResult> ViewTicketDetails(int ticketId)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket == null) return NotFound();
+
+            return Json(new
+            {
+                success = true,
+                ticket = new
+                {
+                    id = ticket.TicketId,
+                    title = ticket.Title,
+                    description = ticket.Description,
+                    status = ticket.Status,
+                    createdAt = ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                }
+            });
+        }
+
+        /// <summary>
+        /// Edits a ticket.
+        /// </summary>
+        /// <param name="ticketId">The ticket ID.</param>
+        /// <param name="title">The new title.</param>
+        /// <param name="description">The new description.</param>
+        /// <returns>Success response if edited.</returns>
+        [HttpPost]
+        public async Task<IActionResult> EditTicket(int ticketId, string title, string description)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket == null) return NotFound();
+
+            ticket.Title = title;
+            ticket.Description = description;
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        /// <summary>
+        /// Deletes a ticket.
+        /// </summary>
+        /// <param name="ticketId">The ticket ID.</param>
+        /// <returns>Success response if deleted.</returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteTicket(int ticketId)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket == null) return NotFound();
+
+            _context.Tickets.Remove(ticket);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
     }
 }
