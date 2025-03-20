@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
-using TicketSystemWeb.Models;
+using System.Collections.Generic;
 using TicketSystemWeb.Models.KanbanBoard;
+using TicketSystemWeb.Models.ProjectManagement.Project;
 
 namespace TicketSystemWeb.Tests.Models
 {
@@ -39,6 +40,34 @@ namespace TicketSystemWeb.Tests.Models
 
             // Assert
             Assert.That(ticket.ClosedAt, Is.Not.Null);
+        }
+
+        [Test]
+        public void Ticket_CanAssignAndRetrieveProject()
+        {
+            // Arrange
+            var project = new Project
+            {
+                Id = 1,
+                Title = "Test Project",
+                Description = "This is a test project",
+                ProjectManagerId = "PM001",
+                ProjectGroups = new List<ProjectGroup>(), // Assuming ProjectGroup is properly defined
+                Tickets = new List<Ticket>()
+            };
+
+            var ticket = new Ticket
+            {
+                Project = project,
+                ProjectId = project.Id
+            };
+
+            // Assert
+            Assert.That(ticket.Project, Is.Not.Null);
+            Assert.That(ticket.Project.Id, Is.EqualTo(1));
+            Assert.That(ticket.Project.Title, Is.EqualTo("Test Project"));
+            Assert.That(ticket.Project.Description, Is.EqualTo("This is a test project"));
+            Assert.That(ticket.Project.ProjectManagerId, Is.EqualTo("PM001"));
         }
     }
 }
