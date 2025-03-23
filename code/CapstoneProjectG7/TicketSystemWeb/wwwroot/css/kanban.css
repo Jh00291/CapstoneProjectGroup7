@@ -19,9 +19,9 @@
     border: 2px solid #f8f9fa;
 }
 
-    .kanban-board-wrapper::-webkit-scrollbar-thumb:hover {
-        background: #bbb;
-    }
+.kanban-board-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
 
 .kanban-board-wrapper {
     width: 100%;
@@ -56,39 +56,39 @@
     overflow: hidden;
 }
 
-    .project-card:hover {
-        background: #e9ecef;
-        transform: scale(1.02);
-    }
+.project-card:hover {
+    background: #e9ecef;
+    transform: scale(1.02);
+}
 
-    .project-card.active {
-        background: #6f42c1;
-        color: white;
-        border-color: #6f42c1;
-    }
-        .project-card.active p {
-            color: white;
-        }
+.project-card.active {
+    background: #6f42c1;
+    color: white;
+    border-color: #6f42c1;
+}
+.project-card.active p {
+    color: white;
+}
 
-    .project-card h4 {
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.project-card h4 {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .project-card p {
-        font-size: 12px;
-        color: #555;
-        text-align: center;
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.project-card p {
+    font-size: 12px;
+    color: #555;
+    text-align: center;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .kanban-content {
     flex-grow: 1;
@@ -166,21 +166,36 @@
     transition: transform 0.2s ease-in-out;
 }
 
-    .kanban-card:active {
-        cursor: grabbing;
-    }
+.kanban-card:active {
+    cursor: grabbing;
+}
 
-    .kanban-card:hover {
-        transform: scale(1.03);
-    }
+.kanban-card:hover {
+    transform: scale(1.03);
+}
 
 .kanban-board-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .btn-add-column {
+    background-color: #6f42c1;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-add-ticket {
     background-color: #6f42c1;
     color: white;
     padding: 10px 15px;
@@ -258,14 +273,10 @@ input, select {
     margin-top: 20px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
 .btn-purple {
@@ -273,18 +284,18 @@ button {
     color: white;
 }
 
-    .btn-purple:hover {
-        background-color: #5932a6;
-    }
+.btn-purple:hover {
+    background-color: #5932a6;
+}
 
 .btn-red {
     background-color: red;
     color: white;
 }
 
-    .btn-red:hover {
-        background-color: darkred;
-    }
+.btn-red:hover {
+    background-color: darkred;
+}
 
 .close {
     position: absolute;
@@ -295,9 +306,9 @@ button {
     font-weight: bold;
 }
 
-    .close:hover {
-        color: red;
-    }
+.close:hover {
+    color: red;
+}
 
 .card-header {
     font-weight: bold;
@@ -324,14 +335,32 @@ button {
     border-radius: 4px;
 }
 
-    .status[data-status="Open"] {
-        background-color: #f9a825;
-    }
+.status[data-status="Open"] {
+    background-color: #f9a825;
+}
 
-    .status[data-status="In Progress"] {
-        background-color: #1976d2;
-    }
+.status[data-status="In Progress"] {
+    background-color: #1976d2;
+}
 
-    .status[data-status="Done"] {
-        background-color: #388e3c;
-    }
+.status[data-status="Done"] {
+    background-color: #388e3c;
+}
+
+.kanban-card .card-actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
