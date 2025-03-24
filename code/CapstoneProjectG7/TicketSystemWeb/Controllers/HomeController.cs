@@ -93,13 +93,21 @@ namespace TicketSystemWeb.Controllers
 
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
+                    .ThenInclude(b => b.Columns)
                 .FirstOrDefaultAsync(p => p.Id == ticket.ProjectId);
 
             if (project == null) return NotFound("Project not found.");
 
+            var firstColumn = project.KanbanBoard.Columns
+                .OrderBy(c => c.Order)
+                .FirstOrDefault();
+
+            if (firstColumn == null)
+                return BadRequest("No columns available in the Kanban board.");
+
             ticket.CreatedAt = DateTime.UtcNow;
             ticket.CreatedBy = User.Identity.Name ?? "System";
-            ticket.Status = "To Do";
+            ticket.Status = firstColumn.Name;
 
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
