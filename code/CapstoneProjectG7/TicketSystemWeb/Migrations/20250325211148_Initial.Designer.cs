@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketSystemWeb.Data;
 
@@ -11,9 +12,11 @@ using TicketSystemWeb.Data;
 namespace TicketSystemWeb.Migrations
 {
     [DbContext(typeof(TicketDBContext))]
-    partial class TicketDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250325211148_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,9 +296,6 @@ namespace TicketSystemWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
 
-                    b.Property<string>("AssignedToId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("ClosedAt")
                         .HasColumnType("datetime2");
 
@@ -324,8 +324,6 @@ namespace TicketSystemWeb.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("TicketId");
-
-                    b.HasIndex("AssignedToId");
 
                     b.HasIndex("ProjectId");
 
@@ -550,18 +548,11 @@ namespace TicketSystemWeb.Migrations
 
             modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.Ticket", b =>
                 {
-                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", "AssignedTo")
-                        .WithMany()
-                        .HasForeignKey("AssignedToId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("TicketSystemWeb.Models.ProjectManagement.Project.Project", "Project")
                         .WithMany("Tickets")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AssignedTo");
 
                     b.Navigation("Project");
                 });
