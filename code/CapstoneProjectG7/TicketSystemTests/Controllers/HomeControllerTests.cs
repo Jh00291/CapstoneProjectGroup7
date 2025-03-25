@@ -424,8 +424,5 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(savedTicket.Description, Is.EqualTo("Valid Description"));
             Assert.That(savedTicket.Status, Is.EqualTo("To Do"));
         }
-
-
-
     }
 }

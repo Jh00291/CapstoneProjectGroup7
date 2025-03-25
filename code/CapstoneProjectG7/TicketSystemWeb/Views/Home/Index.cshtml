@@ -145,8 +145,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Ticket Modal -->
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeTicketModal()">&times;</span>
@@ -164,8 +162,6 @@
             <button class="btn-purple" onclick="submitTicket()">Add Ticket</button>
         </div>
     </div>
-
-    <!-- View Ticket Modal -->
     <div id="viewTicketModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeViewTicketModal()">&times;</span>
@@ -186,11 +182,21 @@
                 <label><strong>Created At:</strong></label>
                 <div id="ticketViewCreatedAt"></div>
             </div>
-            <button class="btn-purple" onclick="closeViewTicketModal()">Close</button>
+            <div class="input-group">
+                <label><strong>Comments:</strong></label>
+                <div id="ticketComments" style="white-space: pre-line; border: 1px solid #ccc; padding: 8px; max-height: 150px; overflow-y: auto;"></div>
+            </div>
+            <div class="input-group">
+                <label><strong>History:</strong></label>
+                <ul id="ticketViewHistory" style="max-height: 200px; overflow-y: auto; padding-left: 1em;"></ul>
+            </div>
+            <div class="input-group">
+                <textarea id="newComment" placeholder="Add a comment..."></textarea>
+                <button class="btn btn-purple" onclick="submitComment()">Post Comment</button>
+            </div>
+            <button class="btn btn-warning" onclick="closeViewTicketModal()">Close</button>
         </div>
     </div>
-
-    <!-- Edit Ticket Modal -->
     <div id="editTicketModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeEditTicketModal()">&times;</span>
@@ -208,8 +214,6 @@
             <button class="btn-purple" onclick="submitEditTicket()">Save Changes</button>
         </div>
     </div>
-
-    <!-- Delete Ticket Modal -->
     <div id="deleteTicketModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeDeleteTicketModal()">&times;</span>
@@ -221,8 +225,6 @@
             <button class="btn-purple" onclick="closeDeleteTicketModal()">Cancel</button>
         </div>
     </div>
-
-
 
     <script>
         function openColumnModal() {
@@ -331,36 +333,29 @@
                 location.reload();
             }
         }
-
         function openTicketModal() {
             document.getElementById("ticketModal").style.display = "block";
         }
-
         function closeTicketModal() {
             document.getElementById("ticketModal").style.display = "none";
         }
-
         async function submitTicket() {
             let projectId = document.getElementById("projectId").value;
             let title = document.getElementById("ticketTitle").value.trim();
             let description = document.getElementById("ticketDescription").value.trim();
             let errorDiv = document.getElementById("addTicketError");
-
             errorDiv.style.display = "none";
             errorDiv.innerText = "";
-
             if (!title || !description) {
                 errorDiv.innerText = "Title and description are required.";
                 errorDiv.style.display = "block";
                 return;
             }
-
             let response = await fetch("/Home/AddTicket", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ projectId, title, description })
             });
-
             if (response.ok) {
                 location.reload();
             } else {
@@ -369,33 +364,62 @@
                 errorDiv.style.display = "block";
             }
         }
-
-
-        // Open View Ticket Modal
         async function viewTicketDetails(ticketId) {
             let response = await fetch(`/Home/ViewTicketDetails?ticketId=${ticketId}`);
             let data = await response.json();
-
             if (data.success) {
                 document.getElementById("ticketViewTitle").innerText = data.ticket.title;
                 document.getElementById("ticketViewDescription").innerText = data.ticket.description;
                 document.getElementById("ticketViewStatus").innerText = data.ticket.status;
                 document.getElementById("ticketViewCreatedAt").innerText = data.ticket.createdAt;
+                let historyList = document.getElementById("ticketViewHistory");
+                historyList.innerHTML = "";
+                data.ticket.history?.forEach(h => {
+                    let li = document.createElement("li");
+                    li.innerText = `[${h.timestamp}] ${h.performedBy} - ${h.action}`;
+                    historyList.appendChild(li);
+                });
+                let commentsDiv = document.getElementById("ticketComments");
+                commentsDiv.innerText = "";
+                data.ticket.comments?.forEach(c => {
+                    let line = document.createElement("div");
+                    line.innerText = `${c.author} - "${c.text}"`;
+                    commentsDiv.appendChild(line);
+                });
+                commentsDiv.setAttribute("data-ticket-id", ticketId);
+
                 document.getElementById("viewTicketModal").style.display = "block";
             } else {
                 alert("Failed to fetch ticket details.");
             }
         }
-
+        async function submitComment() {
+            let commentsDiv = document.getElementById("ticketComments");
+            let ticketId = commentsDiv.getAttribute("data-ticket-id");
+            let commentText = document.getElementById("newComment").value.trim();
+            if (!commentText) {
+                alert("Comment cannot be empty.");
+                return;
+            }
+            let response = await fetch(`/Home/AddTicketComment`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `ticketId=${ticketId}&commentText=${encodeURIComponent(commentText)}`
+            });
+            let result = await response.json();
+            if (result.success) {
+                viewTicketDetails(ticketId);
+                document.getElementById("newComment").value = "";
+            } else {
+                alert("Failed to add comment.");
+            }
+        }
         function closeViewTicketModal() {
             document.getElementById("viewTicketModal").style.display = "none";
         }
-
-        // Open Edit Ticket Modal
         async function editTicket(ticketId) {
             let response = await fetch(`/Home/ViewTicketDetails?ticketId=${ticketId}`);
             let data = await response.json();
-
             if (data.success) {
                 document.getElementById("editTicketId").value = ticketId;
                 document.getElementById("editTicketTitle").value = data.ticket.title;
@@ -405,27 +429,21 @@
                 alert("Failed to fetch ticket details.");
             }
         }
-
         function closeEditTicketModal() {
             document.getElementById("editTicketModal").style.display = "none";
         }
-
-        // Submit Edit Ticket
         async function submitEditTicket() {
             let ticketId = document.getElementById("editTicketId").value;
             let newTitle = document.getElementById("editTicketTitle").value.trim();
             let newDescription = document.getElementById("editTicketDescription").value.trim();
             let errorDiv = document.getElementById("editTicketError");
-
             errorDiv.style.display = "none";
             errorDiv.innerText = "";
-
             if (!newTitle || !newDescription) {
                 errorDiv.innerText = "Title and description cannot be empty.";
                 errorDiv.style.display = "block";
                 return;
             }
-
             let response = await fetch(`/Home/EditTicket`, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -440,31 +458,23 @@
                 errorDiv.style.display = "block";
             }
         }
-
-
-        // Open Delete Ticket Modal
         function deleteTicket(ticketId) {
             document.getElementById("deleteTicketId").value = ticketId;
             document.getElementById("deleteTicketModal").style.display = "block";
         }
-
         function closeDeleteTicketModal() {
             document.getElementById("deleteTicketModal").style.display = "none";
         }
-
         async function confirmDeleteTicket() {
             let ticketId = document.getElementById("deleteTicketId").value;
             let errorDiv = document.getElementById("deleteTicketError");
-
             errorDiv.style.display = "none";
             errorDiv.innerText = "";
-
             let response = await fetch(`/Home/DeleteTicket`, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `ticketId=${ticketId}`
             });
-
             let result = await response.json();
             if (result.success) {
                 location.reload();
@@ -473,8 +483,6 @@
                 errorDiv.style.display = "block";
             }
         }
-
-
     </script>
 </body>
 </html>
