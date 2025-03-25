@@ -104,14 +104,18 @@ namespace TicketSystemWeb.Controllers
 
             if (firstColumn == null)
                 return BadRequest("No columns available in the Kanban board.");
-
+            var history = new TicketHistory
+            {
+                Ticket = ticket,
+                Action = $"Ticket created in column '{firstColumn.Name}'",
+                PerformedBy = User.Identity.Name ?? "System"
+            };
+            ticket.History.Add(history);
             ticket.CreatedAt = DateTime.UtcNow;
             ticket.CreatedBy = User.Identity.Name ?? "System";
             ticket.Status = firstColumn.Name;
-
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
-
             return Ok(new { success = true });
         }
 
@@ -129,6 +133,13 @@ namespace TicketSystemWeb.Controllers
             var column = await _context.KanbanColumns.FindAsync(columnId);
             if (ticket == null || column == null) return NotFound();
             ticket.Status = column.Name;
+            var history = new TicketHistory
+            {
+                TicketId = ticketId,
+                Action = $"Moved to column '{column.Name}'",
+                PerformedBy = User.Identity.Name ?? "System"
+            };
+            _context.TicketHistories.Add(history);
             await _context.SaveChangesAsync();
             return new JsonResult(new { success = true });
         }
@@ -258,9 +269,11 @@ namespace TicketSystemWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewTicketDetails(int ticketId)
         {
-            var ticket = await _context.Tickets.FindAsync(ticketId);
+            var ticket = await _context.Tickets
+                .Include(t => t.History.OrderByDescending(h => h.Timestamp))
+                .Include(t => t.Comments.OrderBy(c => c.CreatedAt))
+                .FirstOrDefaultAsync(t => t.TicketId == ticketId);
             if (ticket == null) return NotFound();
-
             return Json(new
             {
                 success = true,
@@ -270,7 +283,16 @@ namespace TicketSystemWeb.Controllers
                     title = ticket.Title,
                     description = ticket.Description,
                     status = ticket.Status,
-                    createdAt = ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                    createdAt = ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
+                    history = ticket.History.Select(h => new {
+                        action = h.Action,
+                        timestamp = h.Timestamp.ToString("yyyy-MM-dd HH:mm"),
+                        performedBy = h.PerformedBy
+                    }),
+                    comments = ticket.Comments.Select(c => new {
+                        author = c.AuthorName,
+                        text = c.CommentText
+                    })
                 }
             });
         }
@@ -311,5 +333,28 @@ namespace TicketSystemWeb.Controllers
 
             return Json(new { success = true });
         }
+
+        /// <summary>
+        /// Adds the ticket comment.
+        /// </summary>
+        /// <param name="ticketId">The ticket identifier.</param>
+        /// <param name="commentText">The comment text.</param>
+        /// <returns>adds a ticket comments</returns>
+        [HttpPost]
+        public async Task<IActionResult> AddTicketComment(int ticketId, string commentText)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket == null) return NotFound();
+            var comment = new TicketComment
+            {
+                TicketId = ticketId,
+                CommentText = commentText,
+                AuthorName = User.Identity.Name ?? "System"
+            };
+            _context.TicketComments.Add(comment);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
+        }
+
     }
 }

@@ -87,6 +87,23 @@ namespace TicketSystemWeb.Models.KanbanBoard
         /// The project.
         /// </value>
         public Project Project { get; set; }
+
+        /// <summary>
+        /// Gets or sets the history.
+        /// </summary>
+        /// <value>
+        /// The history.
+        /// </value>
+        public ICollection<TicketHistory> History { get; set; } = new List<TicketHistory>();
+
+        /// <summary>
+        /// Gets or sets the comments.
+        /// </summary>
+        /// <value>
+        /// The comments.
+        /// </value>
+        public ICollection<TicketComment> Comments { get; set; } = new List<TicketComment>();
+
     }
 
 }

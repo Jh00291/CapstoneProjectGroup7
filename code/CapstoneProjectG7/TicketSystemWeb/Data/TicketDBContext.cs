@@ -68,6 +68,22 @@ namespace TicketSystemWeb.Data
         /// The kanban columns.
         /// </value>
         public DbSet<KanbanColumn> KanbanColumns { get; set; }
+        /// <summary>
+        /// Gets or sets the ticket histories.
+        /// </summary>
+        /// <value>
+        /// The ticket histories.
+        /// </value>
+        public DbSet<TicketHistory> TicketHistories { get; set; }
+        /// <summary>
+        /// Gets or sets the ticket comments.
+        /// </summary>
+        /// <value>
+        /// The ticket comments.
+        /// </value>
+        public DbSet<TicketComment> TicketComments { get; set; }
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
