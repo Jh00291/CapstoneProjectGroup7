@@ -12,8 +12,8 @@ using TicketSystemWeb.Data;
 namespace TicketSystemWeb.Migrations
 {
     [DbContext(typeof(TicketDBContext))]
-    [Migration("20250325014523_init")]
-    partial class init
+    [Migration("20250325212956_UpdateTicket")]
+    partial class UpdateTicket
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,6 +296,9 @@ namespace TicketSystemWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
 
+                    b.Property<string>("AssignedToId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("ClosedAt")
                         .HasColumnType("datetime2");
 
@@ -324,6 +327,8 @@ namespace TicketSystemWeb.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("TicketId");
+
+                    b.HasIndex("AssignedToId");
 
                     b.HasIndex("ProjectId");
 
@@ -548,11 +553,18 @@ namespace TicketSystemWeb.Migrations
 
             modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.Ticket", b =>
                 {
+                    b.HasOne("TicketSystemWeb.Models.Employee.Employee", "AssignedTo")
+                        .WithMany()
+                        .HasForeignKey("AssignedToId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("TicketSystemWeb.Models.ProjectManagement.Project.Project", "Project")
                         .WithMany("Tickets")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssignedTo");
 
                     b.Navigation("Project");
                 });

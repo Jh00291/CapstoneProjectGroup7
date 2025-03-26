@@ -152,6 +152,13 @@ namespace TicketSystemWeb.Data
                 .WithMany()
                 .HasForeignKey(g => g.ManagerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.AssignedTo)
+                .WithMany()
+                .HasForeignKey(t => t.AssignedToId)
+                .OnDelete(DeleteBehavior.SetNull);
+
         }
     }
 }

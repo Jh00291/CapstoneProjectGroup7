@@ -183,6 +183,10 @@
                 <div id="ticketViewCreatedAt"></div>
             </div>
             <div class="input-group">
+                <label><strong>Assigned To:</strong></label>
+                <div id="ticketViewAssignedTo">—</div>
+            </div>
+            <div class="input-group">
                 <label><strong>Comments:</strong></label>
                 <div id="ticketComments" style="white-space: pre-line; border: 1px solid #ccc; padding: 8px; max-height: 150px; overflow-y: auto;"></div>
             </div>
@@ -372,6 +376,7 @@
                 document.getElementById("ticketViewDescription").innerText = data.ticket.description;
                 document.getElementById("ticketViewStatus").innerText = data.ticket.status;
                 document.getElementById("ticketViewCreatedAt").innerText = data.ticket.createdAt;
+                document.getElementById("ticketViewAssignedTo").innerText = data.ticket.assignedTo || "Unassigned";
                 let historyList = document.getElementById("ticketViewHistory");
                 historyList.innerHTML = "";
                 data.ticket.history?.forEach(h => {

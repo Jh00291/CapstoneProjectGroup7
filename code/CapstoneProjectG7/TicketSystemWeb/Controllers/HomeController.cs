@@ -132,6 +132,20 @@ namespace TicketSystemWeb.Controllers
             var ticket = await _context.Tickets.FindAsync(ticketId);
             var column = await _context.KanbanColumns.FindAsync(columnId);
             if (ticket == null || column == null) return NotFound();
+
+            var kanbanBoard = await _context.KanbanBoards
+                .Include(b => b.Columns)
+                .FirstOrDefaultAsync(b => b.Id == column.KanbanBoardId);
+
+            var firstColumn = kanbanBoard?.Columns.OrderBy(c => c.Order).FirstOrDefault();
+            var userId = GetLoggedInUserId();
+
+            // Only assign user if moving FROM first column AND no one is assigned yet
+            if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
+            {
+                ticket.AssignedToId = userId;
+            }
+
             ticket.Status = column.Name;
             var history = new TicketHistory
             {
@@ -270,6 +284,7 @@ namespace TicketSystemWeb.Controllers
         public async Task<IActionResult> ViewTicketDetails(int ticketId)
         {
             var ticket = await _context.Tickets
+                .Include(t => t.AssignedTo)
                 .Include(t => t.History.OrderByDescending(h => h.Timestamp))
                 .Include(t => t.Comments.OrderBy(c => c.CreatedAt))
                 .FirstOrDefaultAsync(t => t.TicketId == ticketId);
@@ -284,6 +299,7 @@ namespace TicketSystemWeb.Controllers
                     description = ticket.Description,
                     status = ticket.Status,
                     createdAt = ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
+                    assignedTo = ticket.AssignedTo?.UserName,
                     history = ticket.History.Select(h => new {
                         action = h.Action,
                         timestamp = h.Timestamp.ToString("yyyy-MM-dd HH:mm"),

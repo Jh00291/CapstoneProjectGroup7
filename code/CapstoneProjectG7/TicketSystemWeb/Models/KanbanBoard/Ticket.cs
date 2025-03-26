@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TicketSystemWeb.Models.ProjectManagement.Project;
 
 namespace TicketSystemWeb.Models.KanbanBoard
@@ -103,6 +104,9 @@ namespace TicketSystemWeb.Models.KanbanBoard
         /// The comments.
         /// </value>
         public ICollection<TicketComment> Comments { get; set; } = new List<TicketComment>();
+
+        public string? AssignedToId { get; set; }
+        public Employee.Employee? AssignedTo { get; set; }
 
     }
 
