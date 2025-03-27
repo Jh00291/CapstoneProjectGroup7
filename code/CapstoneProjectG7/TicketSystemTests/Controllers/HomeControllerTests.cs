@@ -447,7 +447,6 @@ namespace TicketSystemWeb.Tests.Controllers
         [Test]
         public async Task AddTicket_ValidTicket_AddsSuccessfully()
         {
-            // Arrange project and Kanban board
             var board = new KanbanBoard { Id = 1, ProjectName = "Test Board", Columns = new List<KanbanColumn>() };
             var column = new KanbanColumn { Id = 1, Name = "To Do", Order = 1, KanbanBoardId = 1, KanbanBoard = board };
             board.Columns.Add(column);
@@ -464,17 +463,15 @@ namespace TicketSystemWeb.Tests.Controllers
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
 
-            // Act
             var ticket = new Ticket { ProjectId = 1, Title = "New Ticket", Description = "Valid Description" };
             var result = await _controller.AddTicket(ticket) as OkObjectResult;
 
-            // Assert
             Assert.That(result, Is.Not.Null, "AddTicket did not return a successful result");
             var savedTicket = await _context.Tickets.FirstOrDefaultAsync(t => t.Title == "New Ticket");
 
             Assert.That(savedTicket, Is.Not.Null);
             Assert.That(savedTicket.Description, Is.EqualTo("Valid Description"));
-            Assert.That(savedTicket.Status, Is.EqualTo("To Do")); // Should match first column name
+            Assert.That(savedTicket.Status, Is.EqualTo("To Do"));
             Assert.That(savedTicket.CreatedBy, Is.EqualTo("TestUser"));
         }
 
