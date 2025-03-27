@@ -83,6 +83,14 @@ namespace TicketSystemWeb.Data
         /// </value>
         public DbSet<TicketComment> TicketComments { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Employees.
+        /// </summary>
+        /// <value>
+        /// The employees.
+        /// </value>
+        public DbSet<Employee> Employees { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

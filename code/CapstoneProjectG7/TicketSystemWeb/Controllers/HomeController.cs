@@ -380,6 +380,11 @@ namespace TicketSystemWeb.Controllers
             return Json(new { success = true });
         }
 
+        /// <summary>
+        /// Gets the employees associated with a particular project.
+        /// </summary>
+        /// <param name="projectId">The project identifier.</param>
+        /// <returns>List of employees on a project</returns>
         [HttpGet]
         public async Task<IActionResult> GetProjectEmployees(int projectId)
         {

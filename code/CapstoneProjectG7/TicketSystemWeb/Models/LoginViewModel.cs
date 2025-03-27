@@ -14,7 +14,7 @@ namespace TicketSystemWeb.Models
         /// The username.
         /// </value>
         [Required(ErrorMessage = "Username is required.")]
-        [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters.")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be at least 3 characters long")]
         public required string Username { get; set; }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace TicketSystemWeb.Models
         /// </value>
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
-        [StringLength(255, ErrorMessage = "Password cannot exceed 255 characters.")]
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Password cannot exceed 255 characters.")]
         public required string Password { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using TicketSystemWeb.Data;
 using TicketSystemWeb.Models.KanbanBoard;
 using TicketSystemWeb.Models.ProjectManagement.Project;
 using Newtonsoft.Json.Linq;
+using TicketSystemWeb.Models.Employee;
 
 namespace TicketSystemWeb.Tests.Controllers
 {
@@ -41,6 +42,7 @@ namespace TicketSystemWeb.Tests.Controllers
             _userMock = new Mock<ClaimsPrincipal>();
             _testUserId = "user123";
             _userMock.Setup(u => u.Identity.IsAuthenticated).Returns(true);
+            _userMock.Setup(u => u.Identity.Name).Returns("TestUser");
             _userMock.Setup(u => u.FindFirst(ClaimTypes.NameIdentifier))
                      .Returns(new Claim(ClaimTypes.NameIdentifier, _testUserId));
 
@@ -318,26 +320,68 @@ namespace TicketSystemWeb.Tests.Controllers
 
 
         [Test]
-        public async Task EditTicket_ValidTicket_UpdatesDetails()
+        public async Task EditTicket_ValidTicket_UpdatesDetails_AndAssignment()
         {
+            var employee = new Employee
+            {
+                Id = "user123",
+                UserName = "EmployeeUser"
+            };
+            _context.Employees.Add(employee);
+
             var ticket = new Ticket
             {
                 TicketId = 1,
                 Title = "Original Title",
                 Description = "Original Description",
-                CreatedBy = "TestUser", 
-                Status = "To Do" 
+                CreatedBy = "TestUser",
+                Status = "To Do",
+                AssignedToId = null
             };
-
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
 
-            var result = await _controller.EditTicket(1, "Updated Title", "Updated Description") as JsonResult;
+            
+            var result = await _controller.EditTicket(1, "Updated Title", "Updated Description", employee.Id) as JsonResult;
 
+           
             Assert.That(result, Is.Not.Null);
             Assert.That(ticket.Title, Is.EqualTo("Updated Title"));
             Assert.That(ticket.Description, Is.EqualTo("Updated Description"));
+            Assert.That(ticket.AssignedToId, Is.EqualTo(employee.Id));
         }
+
+        [Test]
+        public async Task EditTicket_WithNullAssignedToId_UnassignsTheTicket()
+        {
+            var employee = new Employee
+            {
+                Id = "user123",
+                UserName = "EmployeeUser"
+            };
+            _context.Employees.Add(employee);
+
+            var ticket = new Ticket
+            {
+                TicketId = 2,
+                Title = "Assigned Ticket",
+                Description = "This ticket has an assignee",
+                CreatedBy = "TestUser",
+                Status = "To Do",
+                AssignedToId = employee.Id
+            };
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.EditTicket(2, "New Title", "New Description", null) as JsonResult;
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(ticket.Title, Is.EqualTo("New Title"));
+            Assert.That(ticket.Description, Is.EqualTo("New Description"));
+            Assert.That(ticket.AssignedToId, Is.Null);
+        }
+
+
 
         [Test]
         public async Task DeleteTicket_ValidTicket_DeletesSuccessfully()
@@ -403,26 +447,36 @@ namespace TicketSystemWeb.Tests.Controllers
         [Test]
         public async Task AddTicket_ValidTicket_AddsSuccessfully()
         {
+            // Arrange project and Kanban board
+            var board = new KanbanBoard { Id = 1, ProjectName = "Test Board", Columns = new List<KanbanColumn>() };
+            var column = new KanbanColumn { Id = 1, Name = "To Do", Order = 1, KanbanBoardId = 1, KanbanBoard = board };
+            board.Columns.Add(column);
+
             var project = new Project
             {
                 Id = 1,
                 Title = "Test Project",
-                KanbanBoard = new KanbanBoard { Id = 1, ProjectName = "Test Board" }
+                KanbanBoard = board
             };
 
+            await _context.KanbanBoards.AddAsync(board);
+            await _context.KanbanColumns.AddAsync(column);
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
 
+            // Act
             var ticket = new Ticket { ProjectId = 1, Title = "New Ticket", Description = "Valid Description" };
-
             var result = await _controller.AddTicket(ticket) as OkObjectResult;
 
-            Assert.That(result, Is.Not.Null);
+            // Assert
+            Assert.That(result, Is.Not.Null, "AddTicket did not return a successful result");
             var savedTicket = await _context.Tickets.FirstOrDefaultAsync(t => t.Title == "New Ticket");
 
             Assert.That(savedTicket, Is.Not.Null);
             Assert.That(savedTicket.Description, Is.EqualTo("Valid Description"));
-            Assert.That(savedTicket.Status, Is.EqualTo("To Do"));
+            Assert.That(savedTicket.Status, Is.EqualTo("To Do")); // Should match first column name
+            Assert.That(savedTicket.CreatedBy, Is.EqualTo("TestUser"));
         }
+
     }
 }

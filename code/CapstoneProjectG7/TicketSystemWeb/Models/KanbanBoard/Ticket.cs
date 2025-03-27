@@ -105,7 +105,20 @@ namespace TicketSystemWeb.Models.KanbanBoard
         /// </value>
         public ICollection<TicketComment> Comments { get; set; } = new List<TicketComment>();
 
+        /// <summary>
+        /// Gets or sets the Id of employee a ticket is assigned to.
+        /// </summary>
+        /// <value>
+        /// The assigned to Employee Id
+        /// </value>
         public string? AssignedToId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the assigned employee of a ticket.
+        /// </summary>
+        /// <value>
+        /// The employee
+        /// </value>
         public Employee.Employee? AssignedTo { get; set; }
 
     }
