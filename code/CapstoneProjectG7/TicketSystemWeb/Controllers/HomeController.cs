@@ -140,10 +140,14 @@ namespace TicketSystemWeb.Controllers
             var firstColumn = kanbanBoard?.Columns.OrderBy(c => c.Order).FirstOrDefault();
             var userId = GetLoggedInUserId();
 
-            // Only assign user if moving FROM first column AND no one is assigned yet
             if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
             {
                 ticket.AssignedToId = userId;
+            }
+
+            if (column.Name == firstColumn?.Name && ticket.AssignedToId != null)
+            {
+                ticket.AssignedToId = null;
             }
 
             ticket.Status = column.Name;
@@ -300,12 +304,15 @@ namespace TicketSystemWeb.Controllers
                     status = ticket.Status,
                     createdAt = ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
                     assignedTo = ticket.AssignedTo?.UserName,
-                    history = ticket.History.Select(h => new {
+                    assignedToId = ticket.AssignedToId,
+                    history = ticket.History.Select(h => new
+                    {
                         action = h.Action,
                         timestamp = h.Timestamp.ToString("yyyy-MM-dd HH:mm"),
                         performedBy = h.PerformedBy
                     }),
-                    comments = ticket.Comments.Select(c => new {
+                    comments = ticket.Comments.Select(c => new
+                    {
                         author = c.AuthorName,
                         text = c.CommentText
                     })
@@ -321,13 +328,14 @@ namespace TicketSystemWeb.Controllers
         /// <param name="description">The new description.</param>
         /// <returns>Success response if edited.</returns>
         [HttpPost]
-        public async Task<IActionResult> EditTicket(int ticketId, string title, string description)
+        public async Task<IActionResult> EditTicket(int ticketId, string title, string description, string? assignedToId)
         {
             var ticket = await _context.Tickets.FindAsync(ticketId);
             if (ticket == null) return NotFound();
 
             ticket.Title = title;
             ticket.Description = description;
+            ticket.AssignedToId = string.IsNullOrWhiteSpace(assignedToId) ? null : assignedToId;
             await _context.SaveChangesAsync();
 
             return Json(new { success = true });
@@ -370,6 +378,26 @@ namespace TicketSystemWeb.Controllers
             _context.TicketComments.Add(comment);
             await _context.SaveChangesAsync();
             return Json(new { success = true });
+        }
+
+        /// <summary>
+        /// Gets the employees associated with a particular project.
+        /// </summary>
+        /// <param name="projectId">The project identifier.</param>
+        /// <returns>List of employees on a project</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetProjectEmployees(int projectId)
+        {
+            var employees = await _context.EmployeeGroups
+                .Where(eg => eg.Group.ProjectGroups.Any(pg => pg.ProjectId == projectId))
+                .Select(eg => new {
+                    id = eg.Employee.Id,
+                    name = eg.Employee.UserName
+                })
+                .Distinct()
+                .ToListAsync();
+
+            return Json(employees);
         }
 
     }

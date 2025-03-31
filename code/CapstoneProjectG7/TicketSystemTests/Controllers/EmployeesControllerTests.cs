@@ -277,5 +277,79 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
         }
 
+        [Test]
+        public async Task Employees_NonAdminUser_ReturnsViewWithManagedEmployeeIds()
+        {
+            var currentUser = new Employee { Id = "1", UserName = "managerUser" };
+            var employees = new List<Employee>
+            {
+                currentUser,
+                new Employee { Id = "2", UserName = "user2" }
+            };
+
+            var group = new Group { Id = 10, ManagerId = "1", Name = "Group1" };
+            var employeeGroups = new List<EmployeeGroup>
+            {
+                new EmployeeGroup { EmployeeId = "2", GroupId = 10, Group = group }
+            };
+
+            _contextMock.Setup(c => c.Users).ReturnsDbSet(employees);
+            _contextMock.Setup(c => c.EmployeeGroups).ReturnsDbSet(employeeGroups);
+            _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(currentUser);
+            _userManagerMock.Setup(u => u.GetRolesAsync(currentUser)).ReturnsAsync(new List<string> { "user" });
+
+            var result = await _controller.Employees();
+            var viewResult = result as ViewResult;
+
+            var canManageEmployees = _controller.ViewBag.CanManageEmployees as List<string>;
+            Assert.That(canManageEmployees, Is.EqualTo(new List<string> { "2" }));
+        }
+
+        [Test]
+        public async Task AddEmployee_UserCreatedAndAssignedToManagedGroups_ReturnsRedirect()
+        {
+            var model = new AddEmployeeViewModel
+            {
+                UserName = "newuser",
+                Email = "newuser@example.com",
+                Password = "securepass",
+                Role = "User"
+            };
+
+            var manager = new Employee { Id = "manager1", UserName = "managerUser" };
+
+            _userManagerMock.Setup(u => u.FindByNameAsync(model.UserName)).ReturnsAsync((Employee)null!);
+            _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<Employee>(), model.Password)).ReturnsAsync(IdentityResult.Success);
+            _userManagerMock.Setup(u => u.AddToRoleAsync(It.IsAny<Employee>(), model.Role)).ReturnsAsync(IdentityResult.Success);
+            _userManagerMock.Setup(u => u.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(manager.Id);
+            _contextMock.Setup(c => c.Groups).ReturnsDbSet(new List<Group>
+            {
+                new Group { Id = 5, ManagerId = "manager1", Name = "Team A" }
+            });
+            _contextMock.Setup(c => c.Users).ReturnsDbSet(new List<Employee>());
+            _contextMock.Setup(c => c.EmployeeGroups).ReturnsDbSet(new List<EmployeeGroup>());
+            _contextMock.Setup(c => c.SaveChangesAsync(default)).ReturnsAsync(1);
+
+            var result = await _controller.AddEmployee(model);
+
+            _contextMock.Verify(c => c.EmployeeGroups.AddRange(It.IsAny<IEnumerable<EmployeeGroup>>()), Times.Once);
+            _contextMock.Verify(c => c.SaveChangesAsync(default), Times.Once);
+
+            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
+        }
+
+        [Test]
+        public async Task RemoveEmployee_ValidUserAndDeletionSuccessful_ReturnsOk()
+        {
+            var employee = new Employee { Id = "1", UserName = "testuser" };
+            _userManagerMock.Setup(u => u.FindByIdAsync("1")).ReturnsAsync(employee);
+            _contextMock.Setup(c => c.Groups).ReturnsDbSet(new List<Group>());
+            _userManagerMock.Setup(u => u.DeleteAsync(employee)).ReturnsAsync(IdentityResult.Success);
+
+            var result = await _controller.RemoveEmployee("1");
+
+            Assert.That(result, Is.TypeOf<OkResult>());
+        }
+
     }
 }
