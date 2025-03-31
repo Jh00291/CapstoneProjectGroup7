@@ -1,4 +1,5 @@
-﻿@using TicketSystemWeb.Models.KanbanBoard
+﻿@using TicketSystemWeb.Models.KanbanBoard\
+@using System.Text.Json
 @model TicketSystemWeb.Models.KanbanBoard.KanbanBoard
 
 <!DOCTYPE html>
@@ -60,16 +61,25 @@
                                     {
                                         <div class="drop-placeholder"></div>
                                     }
+                                    @{
+                                        var isAdmin = User.IsInRole("admin");
+                                        var isManager = Model.Project?.ProjectManagerId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                                        var isPrivileged = isAdmin || isManager;
+                                        var canEditColumn = ViewBag.AccessibleColumnIds.Contains(column.Id);
+                                    }
                                     @foreach (var ticket in Model.Project?.Tickets?.Where(t => t.Status == column.Name) ?? Enumerable.Empty<Ticket>())
                                     {
+                                        var isAccessible = ViewBag.AccessibleColumnIds.Contains(column.Id);
                                         <div class="kanban-card"
                                              draggable="@(ViewBag.CanMoveTickets ? "true" : "false")"
                                              ondragstart="@(ViewBag.CanMoveTickets ? "drag(event)" : "")"
-                                             id="ticket-@ticket.TicketId">
+                                             id="ticket-@ticket.TicketId"
+                                             data-column-id="@column.Id"
+                                             data-editable="@isAccessible.ToString().ToLower()">
                                             <div class="card-header">
                                                 <strong>@ticket.Title</strong>
                                             </div>
-                                            <div class="card-body" style="word-wrap: break-word; white-space: normal; overflow: hidden; text-overflow: ellipsis; max-height: 100px;">
+                                            <div class="card-body">
                                                 <p>@ticket.Description</p>
                                             </div>
                                             <div class="card-footer">
@@ -79,23 +89,22 @@
                                             <div class="card-actions"
                                                  style="display: flex; justify-content: center; gap: 8px; align-items: center; width: 100%;">
                                                 <button class="button-ticket button-ticket-details"
-                                                        onclick="viewTicketDetails(@ticket.TicketId)"
-                                                        style="width:auto !important; display:inline-block !important; padding:5px 10px; background:transparent; border:1px solid #ccc; font-size:inherit; cursor:pointer;">
+                                                        onclick="viewTicketDetails(@ticket.TicketId)">
                                                     🔍
                                                 </button>
-                                                <button class="button-ticket button-ticket-edit"
-                                                        onclick="editTicket(@ticket.TicketId)"
-                                                        style="width:auto !important; display:inline-block !important; padding:5px 10px; background:transparent; border:1px solid #ccc; font-size:inherit; cursor:pointer;">
-                                                    ✏️
-                                                </button>
-                                                <button class="button-ticket button-ticket-delete"
-                                                        onclick="deleteTicket(@ticket.TicketId)"
-                                                        style="width:auto !important; display:inline-block !important; padding:5px 10px; background:transparent; border:1px solid #ccc; font-size:inherit; cursor:pointer;">
-                                                    ❌
-                                                </button>
+
+                                                @if (isPrivileged || canEditColumn)
+                                                {
+                                                    <button class="button-ticket button-ticket-edit"
+                                                            onclick="editTicket(@ticket.TicketId)">
+                                                        ✏️
+                                                    </button>
+                                                    <button class="button-ticket button-ticket-delete"
+                                                            onclick="deleteTicket(@ticket.TicketId)">
+                                                        ❌
+                                                    </button>
+                                                }
                                             </div>
-
-
                                         </div>
                                     }
                                 </div>
@@ -126,6 +135,19 @@
                         }
                     </select>
                     <input type="text" id="editColumnName" placeholder="Enter new column name">
+                    <h3>Column Group Access</h3>
+                    <label>Current Group:</label>
+                    <div id="currentColumnGroup">—</div>
+
+                    <label for="columnGroupSelect">Change Group:</label>
+                    <select id="columnGroupSelect">
+                        <option value="">-- Select Group --</option>
+                        @using TicketSystemWeb.Models.ProjectManagement.Group
+                        @foreach (var group in ViewBag.ProjectGroups as List<Group>)
+                        {
+                            <option value="@group.Id">@group.Name</option>
+                        }
+                    </select>
                 </div>
                 <div class="column-action">
                     <h3>Delete Column</h3>
@@ -238,6 +260,7 @@
     </div>
 
     <script>
+        const accessibleColumnIds = @Html.Raw(JsonSerializer.Serialize(ViewBag.AccessibleColumnIds));
         function openColumnModal() {
             document.getElementById("columnModal").style.display = "block";
         }
@@ -260,17 +283,51 @@
         async function saveColumnChanges() {
             let columnId = document.getElementById("editColumnSelect").value;
             let columnName = document.getElementById("editColumnName").value.trim();
-            if (!columnId || !columnName) {
-                alert("Please select a column and enter a new name.");
+            let groupId = document.getElementById("columnGroupSelect").value;
+            if (!columnId) {
+                alert("Please select a column to edit.");
                 return;
             }
-            let response = await fetch(`/Home/RenameColumn?columnId=${columnId}&newName=${columnName}`, { method: "POST" });
-            if (response.ok) {
+            let hasChanges = false;
+            let renameSuccess = true;
+            if (columnName) {
+                const renameRes = await fetch(`/Home/RenameColumn?columnId=${columnId}&newName=${columnName}`, { method: "POST" });
+                if (!renameRes.ok) {
+                    alert("Failed to rename column.");
+                    renameSuccess = false;
+                } else {
+                    hasChanges = true;
+                }
+            }
+            if (groupId) {
+                const groupRes = await fetch(`/Home/UpdateColumnGroupAccess?columnId=${columnId}&groupId=${groupId}`, { method: "POST" });
+                if (groupRes.ok) {
+                    hasChanges = true;
+                } else {
+                    alert("Failed to update group access.");
+                }
+            }
+            if (!hasChanges) {
+                alert("Please change the column name or select a group to update.");
+                return;
+            }
+            if (renameSuccess) {
                 location.reload();
-            } else {
-                alert("Failed to rename column.");
             }
         }
+        document.getElementById("editColumnSelect").addEventListener("change", async function () {
+            const columnId = this.value;
+            if (!columnId) return;
+            const res = await fetch(`/Home/GetColumnGroup?columnId=${columnId}`);
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById("currentColumnGroup").innerText = data.groupName || "—";
+                document.getElementById("columnGroupSelect").value = data.groupId || "";
+            } else {
+                document.getElementById("currentColumnGroup").innerText = "—";
+                document.getElementById("columnGroupSelect").value = "";
+            }
+        });
         async function deleteColumn() {
             let columnId = document.getElementById("deleteColumnSelect").value;
             if (!columnId) {
@@ -437,8 +494,6 @@
                 document.getElementById("editTicketId").value = ticketId;
                 document.getElementById("editTicketTitle").value = ticket.title;
                 document.getElementById("editTicketDescription").value = ticket.description;
-
-                // Fetch and populate employee dropdown
                 const employeeRes = await fetch(`/Home/GetProjectEmployees?projectId=@Model.ProjectId`);
                 const employees = await employeeRes.json();
                 const dropdown = document.getElementById("editAssignedTo");
@@ -450,7 +505,6 @@
                     if (emp.id === ticket.assignedToId) option.selected = true;
                     dropdown.appendChild(option);
                 });
-
                 document.getElementById("editTicketModal").style.display = "block";
             } else {
                 alert("Failed to fetch ticket details.");

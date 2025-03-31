@@ -35,9 +35,7 @@ namespace TicketSystemWeb.Controllers
         {
             var userId = GetLoggedInUserId();
             if (string.IsNullOrEmpty(userId))
-            {
                 return RedirectToAction("Login", "Account");
-            }
             List<Project> userProjects;
             if (User.IsInRole("admin"))
             {
@@ -62,6 +60,7 @@ namespace TicketSystemWeb.Controllers
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
                     .ThenInclude(b => b.Columns)
+                        .ThenInclude(c => c.GroupAccess)
                 .Include(p => p.Tickets)
                 .FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
@@ -71,6 +70,20 @@ namespace TicketSystemWeb.Controllers
             ViewBag.UserProjects = userProjects;
             ViewBag.CanManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
             ViewBag.CanMoveTickets = User.IsInRole("admin") || User.IsInRole("user") || project.ProjectManagerId == userId;
+            var projectGroups = await _context.ProjectGroups
+                .Where(pg => pg.ProjectId == project.Id)
+                .Select(pg => pg.Group)
+                .ToListAsync();
+            ViewBag.ProjectGroups = projectGroups;
+            var userGroupIds = await _context.EmployeeGroups
+                .Where(e => e.EmployeeId == userId)
+                .Select(e => e.GroupId)
+                .ToListAsync();
+            var accessibleColumnIds = project.KanbanBoard.Columns
+                .Where(c => c.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId)))
+                .Select(c => c.Id)
+                .ToList();
+            ViewBag.AccessibleColumnIds = accessibleColumnIds;
             return View(project.KanbanBoard);
         }
 
@@ -130,26 +143,44 @@ namespace TicketSystemWeb.Controllers
         public async Task<IActionResult> MoveTicket(int ticketId, int columnId)
         {
             var ticket = await _context.Tickets.FindAsync(ticketId);
-            var column = await _context.KanbanColumns.FindAsync(columnId);
+            var column = await _context.KanbanColumns
+                .Include(c => c.GroupAccess)
+                .FirstOrDefaultAsync(c => c.Id == columnId);
             if (ticket == null || column == null) return NotFound();
-
-            var kanbanBoard = await _context.KanbanBoards
-                .Include(b => b.Columns)
-                .FirstOrDefaultAsync(b => b.Id == column.KanbanBoardId);
-
+            var project = await _context.Projects
+                .Include(p => p.KanbanBoard)
+                    .ThenInclude(b => b.Columns)
+                .FirstOrDefaultAsync(p => p.Id == ticket.ProjectId);
+            if (project == null) return NotFound();
+            var kanbanBoard = project.KanbanBoard;
             var firstColumn = kanbanBoard?.Columns.OrderBy(c => c.Order).FirstOrDefault();
             var userId = GetLoggedInUserId();
-
-            if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
+            var isAdmin = User.IsInRole("admin");
+            var isManager = project.ProjectManagerId == userId;
+            var isPrivileged = isAdmin || isManager;
+            if (!isPrivileged)
             {
-                ticket.AssignedToId = userId;
+                var userGroupIds = await _context.EmployeeGroups
+                    .Where(e => e.EmployeeId == userId)
+                    .Select(e => e.GroupId)
+                    .ToListAsync();
+                var hasAccess = column.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId));
+                if (!hasAccess)
+                {
+                    ticket.AssignedToId = null;
+                }
+                else if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
+                {
+                    ticket.AssignedToId = userId;
+                }
             }
-
-            if (column.Name == firstColumn?.Name && ticket.AssignedToId != null)
+            else
             {
-                ticket.AssignedToId = null;
+                if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
+                {
+                    ticket.AssignedToId = userId;
+                }
             }
-
             ticket.Status = column.Name;
             var history = new TicketHistory
             {
@@ -159,7 +190,7 @@ namespace TicketSystemWeb.Controllers
             };
             _context.TicketHistories.Add(history);
             await _context.SaveChangesAsync();
-            return new JsonResult(new { success = true });
+            return Json(new { success = true });
         }
 
         /// <summary>
@@ -388,16 +419,68 @@ namespace TicketSystemWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProjectEmployees(int projectId)
         {
+            var userId = GetLoggedInUserId();
+            var userGroupIds = await _context.EmployeeGroups
+                .Where(eg => eg.EmployeeId == userId)
+                .Select(eg => eg.GroupId)
+                .ToListAsync();
             var employees = await _context.EmployeeGroups
-                .Where(eg => eg.Group.ProjectGroups.Any(pg => pg.ProjectId == projectId))
+                .Where(eg => userGroupIds.Contains(eg.GroupId) &&
+                             eg.Group.ProjectGroups.Any(pg => pg.ProjectId == projectId))
                 .Select(eg => new {
                     id = eg.Employee.Id,
                     name = eg.Employee.UserName
                 })
                 .Distinct()
                 .ToListAsync();
-
             return Json(employees);
+        }
+
+        /// <summary>
+        /// Gets the column group.
+        /// </summary>
+        /// <param name="columnId">The column identifier.</param>
+        /// <returns> the column group access</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetColumnGroup(int columnId)
+        {
+            var access = await _context.ColumnGroupAccesses
+                .Include(c => c.Group)
+                .FirstOrDefaultAsync(c => c.KanbanColumnId == columnId);
+
+            if (access == null)
+                return Json(new { success = false });
+
+            return Json(new
+            {
+                success = true,
+                groupId = access.GroupId,
+                groupName = access.Group.Name
+            });
+        }
+
+        /// <summary>
+        /// Updates the column group access.
+        /// </summary>
+        /// <param name="columnId">The column identifier.</param>
+        /// <param name="groupId">The group identifier.</param>
+        /// <returns>the updated column group access</returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateColumnGroupAccess(int columnId, int groupId)
+        {
+            var existing = await _context.ColumnGroupAccesses
+                .Where(a => a.KanbanColumnId == columnId)
+                .ToListAsync();
+
+            _context.ColumnGroupAccesses.RemoveRange(existing);
+            _context.ColumnGroupAccesses.Add(new ColumnGroupAccess
+            {
+                KanbanColumnId = columnId,
+                GroupId = groupId
+            });
+
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
         }
 
     }

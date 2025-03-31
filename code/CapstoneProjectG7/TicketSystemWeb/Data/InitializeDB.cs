@@ -165,6 +165,29 @@ namespace TicketSystemWeb.Data
                     }
                 );
                 await dbContext.SaveChangesAsync();
+                var allColumns = await dbContext.KanbanColumns.ToListAsync();
+                var devGroup = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "Development Team");
+                var qaGroup = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "QA Team");
+                var supportGroup = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "Support Team");
+                var uxGroup = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "UX Designers");
+                var secGroup = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "Cyber Security");
+                var devOpsGroup = await dbContext.Groups.FirstOrDefaultAsync(g => g.Name == "DevOps Team");
+                dbContext.ColumnGroupAccesses.AddRange(
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "To Do" && c.KanbanBoard.ProjectId == ticketSystemProject.Id).Id, GroupId = devGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "In Progress" && c.KanbanBoard.ProjectId == ticketSystemProject.Id).Id, GroupId = devGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Done" && c.KanbanBoard.ProjectId == ticketSystemProject.Id).Id, GroupId = qaGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Backlog" && c.KanbanBoard.ProjectId == ticketSystemProject.Id).Id, GroupId = devGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "To Do" && c.KanbanBoard.ProjectId == bugTrackingProject.Id).Id, GroupId = supportGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Planned" && c.KanbanBoard.ProjectId == bugTrackingProject.Id).Id, GroupId = supportGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Completed" && c.KanbanBoard.ProjectId == bugTrackingProject.Id).Id, GroupId = uxGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Backlog" && c.KanbanBoard.ProjectId == bugTrackingProject.Id).Id, GroupId = supportGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "To Do" && c.KanbanBoard.ProjectId == ecommerceProject.Id).Id, GroupId = secGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Review" && c.KanbanBoard.ProjectId == ecommerceProject.Id).Id, GroupId = secGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Testing" && c.KanbanBoard.ProjectId == ecommerceProject.Id).Id, GroupId = devOpsGroup.Id },
+                    new ColumnGroupAccess { KanbanColumnId = allColumns.First(c => c.Name == "Deployment" && c.KanbanBoard.ProjectId == ecommerceProject.Id).Id, GroupId = devOpsGroup.Id }
+                );
+                await dbContext.SaveChangesAsync();
+
             }
         }
 

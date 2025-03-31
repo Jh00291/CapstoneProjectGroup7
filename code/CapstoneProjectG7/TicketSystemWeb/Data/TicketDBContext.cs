@@ -69,6 +69,13 @@ namespace TicketSystemWeb.Data
         /// </value>
         public DbSet<KanbanColumn> KanbanColumns { get; set; }
         /// <summary>
+        /// Gets or sets the column group accesses.
+        /// </summary>
+        /// <value>
+        /// The column group accesses.
+        /// </value>
+        public DbSet<ColumnGroupAccess> ColumnGroupAccesses { get; set; }
+        /// <summary>
         /// Gets or sets the ticket histories.
         /// </summary>
         /// <value>
@@ -167,6 +174,15 @@ namespace TicketSystemWeb.Data
                 .HasForeignKey(t => t.AssignedToId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<ColumnGroupAccess>()
+                .HasOne(cga => cga.KanbanColumn)
+                .WithMany(kc => kc.GroupAccess)
+                .HasForeignKey(cga => cga.KanbanColumnId);
+
+            modelBuilder.Entity<ColumnGroupAccess>()
+                .HasOne(cga => cga.Group)
+                .WithMany()
+                .HasForeignKey(cga => cga.GroupId);
         }
     }
 }

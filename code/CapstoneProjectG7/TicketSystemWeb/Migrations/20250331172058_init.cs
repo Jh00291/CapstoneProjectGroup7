@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TicketSystemWeb.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -278,11 +278,18 @@ namespace TicketSystemWeb.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClosedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    AssignedToId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.TicketId);
+                    table.ForeignKey(
+                        name: "FK_Tickets_AspNetUsers_AssignedToId",
+                        column: x => x.AssignedToId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Tickets_Projects_ProjectId",
                         column: x => x.ProjectId,
@@ -356,6 +363,32 @@ namespace TicketSystemWeb.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ColumnGroupAccesses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KanbanColumnId = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ColumnGroupAccesses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ColumnGroupAccesses_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ColumnGroupAccesses_KanbanColumns_KanbanColumnId",
+                        column: x => x.KanbanColumnId,
+                        principalTable: "KanbanColumns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -394,6 +427,16 @@ namespace TicketSystemWeb.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ColumnGroupAccesses_GroupId",
+                table: "ColumnGroupAccesses",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ColumnGroupAccesses_KanbanColumnId",
+                table: "ColumnGroupAccesses",
+                column: "KanbanColumnId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeGroups_GroupId",
@@ -437,6 +480,11 @@ namespace TicketSystemWeb.Migrations
                 column: "TicketId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tickets_AssignedToId",
+                table: "Tickets",
+                column: "AssignedToId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_ProjectId",
                 table: "Tickets",
                 column: "ProjectId");
@@ -461,10 +509,10 @@ namespace TicketSystemWeb.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmployeeGroups");
+                name: "ColumnGroupAccesses");
 
             migrationBuilder.DropTable(
-                name: "KanbanColumns");
+                name: "EmployeeGroups");
 
             migrationBuilder.DropTable(
                 name: "ProjectGroups");
@@ -479,13 +527,16 @@ namespace TicketSystemWeb.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "KanbanBoards");
+                name: "KanbanColumns");
 
             migrationBuilder.DropTable(
                 name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
+
+            migrationBuilder.DropTable(
+                name: "KanbanBoards");
 
             migrationBuilder.DropTable(
                 name: "Projects");
