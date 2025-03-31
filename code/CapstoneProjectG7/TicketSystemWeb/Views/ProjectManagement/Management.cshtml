@@ -27,6 +27,9 @@
                         <button class="btn btn-success" onclick="approveGroup(@pg.ProjectId, @pg.GroupId)">
                             Approve
                         </button>
+                        <button class="btn btn-danger" onclick="denyGroup(@pg.ProjectId, @pg.GroupId)">
+                            Deny
+                        </button>
                     </td>
                 </tr>
             }
@@ -788,4 +791,37 @@
             alert("Unexpected response from server: " + error.message);
         }
     }
+
+    async function denyGroup(projectId, groupId) {
+        let tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+        let token = tokenInput ? tokenInput.value : null;
+        if (!token) {
+            alert("CSRF token missing. Please refresh the page and try again.");
+            return;
+        }
+        let formData = new URLSearchParams();
+        formData.append("__RequestVerificationToken", token);
+
+        try {
+            let response = await fetch(`/ProjectManagement/DenyGroupAddition?projectId=${projectId}&groupId=${groupId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: formData
+            });
+            if (!response.ok) {
+                let errorMessage = await response.text();
+                throw new Error(`Server Error: ${errorMessage}`);
+            }
+            let result = await response.json();
+            if (result.success) {
+                location.reload();
+            } else {
+                alert("Deny failed: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error during denial:", error);
+            alert("Unexpected error: " + error.message);
+        }
+    }
+
 </script>

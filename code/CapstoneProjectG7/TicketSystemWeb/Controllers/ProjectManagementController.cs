@@ -412,6 +412,37 @@ namespace TicketSystemWeb.Controllers
             return Json(new { success = true, message = "Group approved successfully." });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DenyGroupAddition(int projectId, int groupId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return BadRequest(new { success = false, message = "User not authenticated" });
+            }
+
+            var projectGroup = await _context.ProjectGroups
+                .Include(pg => pg.Group)
+                .FirstOrDefaultAsync(pg => pg.ProjectId == projectId && pg.GroupId == groupId && !pg.IsApproved);
+
+            if (projectGroup == null)
+            {
+                return NotFound(new { success = false, message = $"Pending group request not found for ProjectId {projectId}, GroupId {groupId}" });
+            }
+
+            if (projectGroup.Group.ManagerId != user.Id)
+            {
+                return ForbidJson(new { success = false, message = "Only the group manager can deny this request." });
+            }
+
+            _context.ProjectGroups.Remove(projectGroup);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Group request denied successfully." });
+        }
+
+
         private IActionResult ForbidJson(object value)
         {
             return new JsonResult(value) { StatusCode = StatusCodes.Status403Forbidden };

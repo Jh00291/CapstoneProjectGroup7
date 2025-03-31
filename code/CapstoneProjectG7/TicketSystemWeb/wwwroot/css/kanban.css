@@ -353,6 +353,14 @@ input, select {
     padding-top: 8px;
 }
 
+.kanban-card .card-body {
+    max-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
 
 
 
