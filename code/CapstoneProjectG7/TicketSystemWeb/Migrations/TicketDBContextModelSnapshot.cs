@@ -237,6 +237,29 @@ namespace TicketSystemWeb.Migrations
                     b.ToTable("EmployeeGroups");
                 });
 
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.ColumnGroupAccess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KanbanColumnId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("KanbanColumnId");
+
+                    b.ToTable("ColumnGroupAccesses");
+                });
+
             modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanBoard", b =>
                 {
                     b.Property<int>("Id")
@@ -526,6 +549,25 @@ namespace TicketSystemWeb.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.ColumnGroupAccess", b =>
+                {
+                    b.HasOne("TicketSystemWeb.Models.ProjectManagement.Group.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TicketSystemWeb.Models.KanbanBoard.KanbanColumn", "KanbanColumn")
+                        .WithMany("GroupAccess")
+                        .HasForeignKey("KanbanColumnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("KanbanColumn");
+                });
+
             modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanBoard", b =>
                 {
                     b.HasOne("TicketSystemWeb.Models.ProjectManagement.Project.Project", "Project")
@@ -635,6 +677,11 @@ namespace TicketSystemWeb.Migrations
             modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanBoard", b =>
                 {
                     b.Navigation("Columns");
+                });
+
+            modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.KanbanColumn", b =>
+                {
+                    b.Navigation("GroupAccess");
                 });
 
             modelBuilder.Entity("TicketSystemWeb.Models.KanbanBoard.Ticket", b =>
