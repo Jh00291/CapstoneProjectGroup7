@@ -370,9 +370,10 @@ namespace TicketSystemWeb.Controllers
             if (ticket == null) return NotFound();
             if (!string.IsNullOrEmpty(assignedToId))
             {
-                var isValid = await _context.EmployeeGroups
-                    .AnyAsync(eg => eg.EmployeeId == assignedToId &&
-                                    eg.Group.ProjectGroups.Any(pg => pg.ProjectId == ticket.ProjectId));
+                var isValid = await _context.Groups
+                    .AnyAsync(g =>
+                        (g.ManagerId == assignedToId || g.EmployeeGroups.Any(eg => eg.EmployeeId == assignedToId)) &&
+                        g.ProjectGroups.Any(pg => pg.ProjectId == ticket.ProjectId));
                 if (!isValid)
                     return BadRequest("Invalid assignee.");
                 if (ticket.AssignedToId != assignedToId)
