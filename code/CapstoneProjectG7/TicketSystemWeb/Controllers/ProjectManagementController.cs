@@ -198,13 +198,12 @@ namespace TicketSystemWeb.Controllers
                     project.ProjectManager = newManager;
                 }
             }
-            var existingGroupIds = project.ProjectGroups.Select(pg => pg.GroupId).ToList();
             var newGroupIds = model.SelectedGroupIds ?? new List<int>();
-
-            _context.ProjectGroups.RemoveRange(
-                project.ProjectGroups.Where(pg => !newGroupIds.Contains(pg.GroupId))
-            );
-
+            var existingGroupIds = project.ProjectGroups.Select(pg => pg.GroupId).ToList();
+            var groupsToRemove = project.ProjectGroups
+                .Where(pg => !newGroupIds.Contains(pg.GroupId))
+                .ToList();
+            _context.ProjectGroups.RemoveRange(groupsToRemove);
             foreach (var groupId in newGroupIds.Except(existingGroupIds))
             {
                 _context.ProjectGroups.Add(new ProjectGroup
@@ -213,7 +212,6 @@ namespace TicketSystemWeb.Controllers
                     GroupId = groupId
                 });
             }
-
             _context.Projects.Update(project);
             await _context.SaveChangesAsync();
             return RedirectToAction("Management", "ProjectManagement");
@@ -310,7 +308,9 @@ namespace TicketSystemWeb.Controllers
             {
                 return BadRequest("Invalid group details.");
             }
-            var group = await _context.Groups.FindAsync(model.GroupId);
+            var group = await _context.Groups
+                .Include(g => g.EmployeeGroups)
+                .FirstOrDefaultAsync(g => g.Id == model.GroupId);
             if (group == null) return NotFound();
             bool isAdmin = User.IsInRole("admin");
             bool isGroupManager = group.ManagerId == _userManager.GetUserId(User);
@@ -320,15 +320,16 @@ namespace TicketSystemWeb.Controllers
             }
             group.Name = model.Name;
             group.ManagerId = model.SelectedManagerId;
-            _context.EmployeeGroups.RemoveRange(
-                _context.EmployeeGroups.Where(eg => eg.GroupId == model.GroupId)
-            );
-            foreach (var employeeId in model.SelectedEmployeeIds)
+            var newEmployeeIds = model.SelectedEmployeeIds ?? new List<string>();
+            var existingEmployeeIds = group.EmployeeGroups.Select(eg => eg.EmployeeId).ToList();
+            var toRemove = group.EmployeeGroups.Where(eg => !newEmployeeIds.Contains(eg.EmployeeId)).ToList();
+            _context.EmployeeGroups.RemoveRange(toRemove);
+            foreach (var empId in newEmployeeIds.Except(existingEmployeeIds))
             {
                 _context.EmployeeGroups.Add(new EmployeeGroup
                 {
                     GroupId = model.GroupId,
-                    EmployeeId = employeeId
+                    EmployeeId = empId
                 });
             }
             await _context.SaveChangesAsync();

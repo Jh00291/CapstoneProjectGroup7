@@ -25,7 +25,7 @@
 </tr>
 <tr>
 <th>File(s):</th>
-<td class="overflow-wrap"><a href="#CUsersjh00291DocumentsGitHubCapstoneProjectGroup7codeCapstoneProjectG7TicketSystemWebControllersProjectManagementControllercs" class="navigatetohash">C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\Controllers\ProjectManagementController.cs</a></td>
+<td class="overflow-wrap"><a href="#CUsersdrivera3sourcereposCapstoneProjectGroup7codeCapstoneProjectG7TicketSystemWebControllersProjectManagementControllercs" class="navigatetohash">C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\Controllers\ProjectManagementController.cs</a></td>
 </tr>
 </table>
 </div>
@@ -36,7 +36,7 @@
 <div class="card">
 <div class="card-header">Line coverage</div>
 <div class="card-body">
-<div class="large cardpercentagebar cardpercentagebar3">97%</div>
+<div class="large cardpercentagebar cardpercentagebar9">91%</div>
 <div class="table">
 <table>
 <tr>
@@ -45,19 +45,19 @@
 </tr>
 <tr>
 <th>Uncovered lines:</th>
-<td class="limit-width right" title="8">8</td>
+<td class="limit-width right" title="26">26</td>
 </tr>
 <tr>
 <th>Coverable lines:</th>
-<td class="limit-width right" title="280">280</td>
+<td class="limit-width right" title="298">298</td>
 </tr>
 <tr>
 <th>Total lines:</th>
-<td class="limit-width right" title="421">421</td>
+<td class="limit-width right" title="452">452</td>
 </tr>
 <tr>
 <th>Line coverage:</th>
-<td class="limit-width right" title="272 of 280">97.1%</td>
+<td class="limit-width right" title="272 of 298">91.2%</td>
 </tr>
 </table>
 </div>
@@ -66,7 +66,7 @@
 <div class="card">
 <div class="card-header">Branch coverage</div>
 <div class="card-body">
-<div class="large cardpercentagebar cardpercentagebar12">88%</div>
+<div class="large cardpercentagebar cardpercentagebar18">82%</div>
 <div class="table">
 <table>
 <tr>
@@ -75,11 +75,11 @@
 </tr>
 <tr>
 <th>Total branches:</th>
-<td class="limit-width right" title="78">78</td>
+<td class="limit-width right" title="84">84</td>
 </tr>
 <tr>
 <th>Branch coverage:</th>
-<td class="limit-width right" title="69 of 78">88.4%</td>
+<td class="limit-width right" title="69 of 84">82.1%</td>
 </tr>
 </table>
 </div>
@@ -119,12 +119,13 @@
 <tr><td title="GetGroups()"><a href="#file0_line370" class="navigatetohash">GetGroups()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 <tr><td title="GetEmployees()"><a href="#file0_line383" class="navigatetohash">GetEmployees()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 <tr><td title="ApproveGroupAddition()"><a href="#file0_line393" class="navigatetohash">ApproveGroupAddition()</a></td><td>100%</td><td>6</td><td>6</td><td>100%</td></tr>
-<tr><td title="ForbidJson(System.Object)"><a href="#file0_line416" class="navigatetohash">ForbidJson(...)</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
+<tr><td title="DenyGroupAddition()"><a href="#file0_line418" class="navigatetohash">DenyGroupAddition()</a></td><td>0%</td><td>42</td><td>6</td><td>0%</td></tr>
+<tr><td title="ForbidJson(System.Object)"><a href="#file0_line447" class="navigatetohash">ForbidJson(...)</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 </tbody>
 </table>
 </div>
 <h1>File(s)</h1>
-<h2 id="CUsersjh00291DocumentsGitHubCapstoneProjectGroup7codeCapstoneProjectG7TicketSystemWebControllersProjectManagementControllercs">C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\Controllers\ProjectManagementController.cs</h2>
+<h2 id="CUsersdrivera3sourcereposCapstoneProjectGroup7codeCapstoneProjectG7TicketSystemWebControllersProjectManagementControllercs">C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemWeb\Controllers\ProjectManagementController.cs</h2>
 <div class="table-responsive">
 <table class="lineAnalysis">
 <thead><tr><th></th><th>#</th><th>Line</th><th></th><th>Line coverage</th></tr></thead>
@@ -543,17 +544,48 @@
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line412"></a><code>412</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Json(new&nbsp;{&nbsp;success&nbsp;=&nbsp;true,&nbsp;message&nbsp;=&nbsp;&quot;Group&nbsp;approved&nbsp;successfully.&quot;&nbsp;});</code></td></tr>
 <tr class="coverableline" title="Covered (4 visits)" data-coverage="{'AllTestMethods': {'VC': '4', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">4</td><td class="rightmargin right"><a id="file0_line413"></a><code>413</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line414"></a><code>414</code></td><td></td><td class="lightgray"><code></code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line415"></a><code>415</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;IActionResult&nbsp;ForbidJson(object&nbsp;value)</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line416"></a><code>416</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line417"></a><code>417</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;JsonResult(value)&nbsp;{&nbsp;StatusCode&nbsp;=&nbsp;StatusCodes.Status403Forbidden&nbsp;};</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line418"></a><code>418</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line419"></a><code>419</code></td><td></td><td class="lightgray"><code></code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line420"></a><code>420</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line421"></a><code>421</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line415"></a><code>415</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[HttpPost]</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line416"></a><code>416</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ValidateAntiForgeryToken]</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line417"></a><code>417</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;async&nbsp;Task&lt;IActionResult&gt;&nbsp;DenyGroupAddition(int&nbsp;projectId,&nbsp;int&nbsp;groupId)</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line418"></a><code>418</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line419"></a><code>419</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;user&nbsp;=&nbsp;await&nbsp;_userManager.GetUserAsync(User);</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits, 0 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line420"></a><code>420</code></td><td class="percentagebar percentagebar0"><i class="icon-fork"></i></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(user&nbsp;==&nbsp;null)</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line421"></a><code>421</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line422"></a><code>422</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;BadRequest(new&nbsp;{&nbsp;success&nbsp;=&nbsp;false,&nbsp;message&nbsp;=&nbsp;&quot;User&nbsp;not&nbsp;authenticated&quot;&nbsp;});</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line423"></a><code>423</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line424"></a><code>424</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line425"></a><code>425</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;projectGroup&nbsp;=&nbsp;await&nbsp;_context.ProjectGroups</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line426"></a><code>426</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.Include(pg&nbsp;=&gt;&nbsp;pg.Group)</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line427"></a><code>427</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.FirstOrDefaultAsync(pg&nbsp;=&gt;&nbsp;pg.ProjectId&nbsp;==&nbsp;projectId&nbsp;&amp;&amp;&nbsp;pg.GroupId&nbsp;==&nbsp;groupId&nbsp;&amp;&amp;&nbsp;!pg.IsApproved);</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line428"></a><code>428</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits, 0 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line429"></a><code>429</code></td><td class="percentagebar percentagebar0"><i class="icon-fork"></i></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(projectGroup&nbsp;==&nbsp;null)</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line430"></a><code>430</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line431"></a><code>431</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;NotFound(new&nbsp;{&nbsp;success&nbsp;=&nbsp;false,&nbsp;message&nbsp;=&nbsp;$&quot;Pending&nbsp;group&nbsp;request&nbsp;not&nbsp;found&nbsp;for&nbsp;ProjectId&nbsp;{projec</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line432"></a><code>432</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line433"></a><code>433</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits, 0 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line434"></a><code>434</code></td><td class="percentagebar percentagebar0"><i class="icon-fork"></i></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(projectGroup.Group.ManagerId&nbsp;!=&nbsp;user.Id)</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line435"></a><code>435</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line436"></a><code>436</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ForbidJson(new&nbsp;{&nbsp;success&nbsp;=&nbsp;false,&nbsp;message&nbsp;=&nbsp;&quot;Only&nbsp;the&nbsp;group&nbsp;manager&nbsp;can&nbsp;deny&nbsp;this&nbsp;request.&quot;&nbsp;});</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line437"></a><code>437</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line438"></a><code>438</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line439"></a><code>439</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_context.ProjectGroups.Remove(projectGroup);</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line440"></a><code>440</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;await&nbsp;_context.SaveChangesAsync();</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line441"></a><code>441</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line442"></a><code>442</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Json(new&nbsp;{&nbsp;success&nbsp;=&nbsp;true,&nbsp;message&nbsp;=&nbsp;&quot;Group&nbsp;request&nbsp;denied&nbsp;successfully.&quot;&nbsp;});</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line443"></a><code>443</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line444"></a><code>444</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line445"></a><code>445</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line446"></a><code>446</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;IActionResult&nbsp;ForbidJson(object&nbsp;value)</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line447"></a><code>447</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line448"></a><code>448</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;JsonResult(value)&nbsp;{&nbsp;StatusCode&nbsp;=&nbsp;StatusCodes.Status403Forbidden&nbsp;};</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line449"></a><code>449</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line450"></a><code>450</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line451"></a><code>451</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line452"></a><code>452</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
 </div>
-<div class="footer">Generated by: ReportGenerator 5.4.4.0<br />3/29/2025 - 7:27:58 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="https://reportgenerator.io">reportgenerator.io</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.4.4.0<br />3/31/2025 - 9:37:57 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="https://reportgenerator.io">reportgenerator.io</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
@@ -569,7 +601,8 @@
 <a href="#file0_line370" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - GetGroups()"><i class="icon-cube"></i>GetGroups()</a><br />
 <a href="#file0_line383" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - GetEmployees()"><i class="icon-cube"></i>GetEmployees()</a><br />
 <a href="#file0_line393" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - ApproveGroupAddition()"><i class="icon-cube"></i>ApproveGroupAddition()</a><br />
-<a href="#file0_line416" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - ForbidJson(System.Object)"><i class="icon-cube"></i>ForbidJson(System.Object)</a><br />
+<a href="#file0_line418" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - DenyGroupAddition()"><i class="icon-cube"></i>DenyGroupAddition()</a><br />
+<a href="#file0_line447" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - ForbidJson(System.Object)"><i class="icon-cube"></i>ForbidJson(System.Object)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">
