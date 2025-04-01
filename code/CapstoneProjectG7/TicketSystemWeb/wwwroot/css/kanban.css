@@ -233,7 +233,7 @@
     justify-content: center;
 }
 
-.modal-content {
+.manage-modal-content {
     background-color: white;
     padding: 20px;
     width: 800px;
@@ -360,15 +360,3 @@ input, select {
     word-wrap: break-word;
     white-space: normal;
 }
-
-
-
-
-
-
-
-
-
-
-
-
