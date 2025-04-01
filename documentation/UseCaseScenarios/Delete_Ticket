@@ -1,0 +1,9 @@
+Context – Signed in as employee, manager, or admin
+
+Primary Flow 
+	1. User clicks the delete ticket button (red "x").
+	2a. Confirmation modal shows up to confirm deletion.
+	3. User selects delete and modal closes.
+	4. User should no longer see the deleted ticket.
+
+	2b. User cancels and is returned to the board view.

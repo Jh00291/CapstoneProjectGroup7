@@ -1,0 +1,10 @@
+Context – Signed in as employee, manager, or admin
+
+Primary Flow 
+	1. User clicks the view ticket details button (magnifying glass).
+	2a. User can see all details of a ticket.
+	3. User can then close the modal.
+
+
+	2b. User can add a comment and hit save, this should update instantly.
+	2b. User closes the modal.

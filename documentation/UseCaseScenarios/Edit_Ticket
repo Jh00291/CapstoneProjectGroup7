@@ -1,0 +1,11 @@
+Context – Signed in as employee, manager, or admin
+
+Primary Flow 
+	1. User clicks the edit ticket button (pencil).
+	2a. User fills out fields in modal and clicks save.
+	3. Modal closes with the updated ticket on board.
+	4. User should see updated ticket in same column.
+
+	2b. User is prompted for invalid data entry or empty fields.
+	2b. Returns to step 2a.
+	2b. User closes the modal.

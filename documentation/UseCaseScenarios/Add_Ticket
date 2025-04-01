@@ -1,0 +1,11 @@
+Context – Signed in as employee, manager, or admin
+
+Primary Flow 
+	1. User clicks the add ticket button.
+	2a. User fills out fields in modal and clicks save
+	3. Modal closes with the new ticket on board.
+	4. User should see added ticket in left column unassigned.
+
+	2b. User is prompted for invalid data entry or empty fields.
+	2b. Returns to step 2a.
+	2b. User closes the modal.
