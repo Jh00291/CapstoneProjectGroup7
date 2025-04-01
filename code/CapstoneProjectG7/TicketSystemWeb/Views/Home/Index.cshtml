@@ -189,27 +189,27 @@
             <span class="close" onclick="closeViewTicketModal()">&times;</span>
             <h2>Ticket Details</h2>
             <div class="input-group">
-                <label><strong>Title:</strong></label>
+                <label><strong style="margin-right: 6px;">Title:</strong></label>
                 <div id="ticketViewTitle"></div>
             </div>
             <div class="input-group">
-                <label><strong>Description:</strong></label>
+                <div id="ticketViewDescription" style="white-space: pre-wrap; word-break: break-word; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 8px;"></div>
                 <div id="ticketViewDescription"></div>
             </div>
             <div class="input-group">
-                <label><strong>Status:</strong></label>
+                <label><strong style="margin-right: 6px;">Status:</strong></label>
                 <div id="ticketViewStatus"></div>
             </div>
             <div class="input-group">
-                <label><strong>Created At:</strong></label>
+                <label><strong style="margin-right: 6px;">Created At:</strong></label>
                 <div id="ticketViewCreatedAt"></div>
             </div>
             <div class="input-group">
-                <label><strong>Assigned To:</strong></label>
+                <label><strong style="margin-right: 6px;">Assigned To:</strong></label>
                 <div id="ticketViewAssignedTo">—</div>
             </div>
             <div class="input-group">
-                <label><strong>Comments:</strong></label>
+                <label><strong style="margin-right: 6px;">Comments:</strong></label>
                 <div id="ticketComments" style="white-space: pre-line; border: 1px solid #ccc; padding: 8px; max-height: 150px; overflow-y: auto;"></div>
             </div>
             <div class="input-group">
@@ -262,7 +262,7 @@
     <script>
         const accessibleColumnIds = @Html.Raw(JsonSerializer.Serialize(ViewBag.AccessibleColumnIds));
         function openColumnModal() {
-            document.getElementById("columnModal").style.display = "block";
+            document.getElementById("columnModal").style.display = "flex";
         }
         function closeColumnModal() {
             document.getElementById("columnModal").style.display = "none";
@@ -402,7 +402,7 @@
             }
         }
         function openTicketModal() {
-            document.getElementById("ticketModal").style.display = "block";
+            document.getElementById("ticketModal").style.display = "flex";
         }
         function closeTicketModal() {
             document.getElementById("ticketModal").style.display = "none";
@@ -457,7 +457,7 @@
                 });
                 commentsDiv.setAttribute("data-ticket-id", ticketId);
 
-                document.getElementById("viewTicketModal").style.display = "block";
+                document.getElementById("viewTicketModal").style.display = "flex";
             } else {
                 alert("Failed to fetch ticket details.");
             }
@@ -505,7 +505,7 @@
                     if (emp.id === ticket.assignedToId) option.selected = true;
                     dropdown.appendChild(option);
                 });
-                document.getElementById("editTicketModal").style.display = "block";
+                document.getElementById("editTicketModal").style.display = "flex";
             } else {
                 alert("Failed to fetch ticket details.");
             }
@@ -542,7 +542,7 @@
         }
         function deleteTicket(ticketId) {
             document.getElementById("deleteTicketId").value = ticketId;
-            document.getElementById("deleteTicketModal").style.display = "block";
+            document.getElementById("deleteTicketModal").style.display = "flex";
         }
         function closeDeleteTicketModal() {
             document.getElementById("deleteTicketModal").style.display = "none";
