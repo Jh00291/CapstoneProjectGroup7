@@ -170,16 +170,32 @@ namespace TicketSystemWeb.Tests.Controllers
         [Test]
         public async Task MoveTicket_ValidMove_UpdatesTicketStatus()
         {
-            var column = new KanbanColumn { Name = "In Progress" };
-            var ticket = new Ticket { Title = "Fix Bug", Description = "Resolve issue #123", CreatedBy = "Developer", Status = "In Progress" };
-
+            var userId = "test-user";
+            var project = new Project { Id = 1, Title = "Test Project", ProjectManagerId = userId };
+            var board = new KanbanBoard { ProjectId = 1, Project = project };
+            var column = new KanbanColumn { Id = 1, Name = "In Progress", KanbanBoard = board };
+            var ticket = new Ticket { Title = "Fix Bug", Description = "Issue #123", CreatedBy = "Dev", Project = project, ProjectId = 1, Status = "To Do" };
+            board.Columns.Add(column);
+            project.KanbanBoard = board;
+            _context.Projects.Add(project);
+            _context.KanbanBoards.Add(board);
             _context.KanbanColumns.Add(column);
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
-
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.Role, "admin")
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var principal = new ClaimsPrincipal(identity);
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = principal }
+            };
             var result = await _controller.MoveTicket(ticket.TicketId, column.Id) as JsonResult;
-
-            Assert.That(result, Is.InstanceOf<JsonResult>(), "Expected JsonResult but got a different type.");
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<JsonResult>());
         }
 
         [Test]
@@ -689,23 +705,26 @@ namespace TicketSystemWeb.Tests.Controllers
             var employee = new Employee { Id = "emp1", UserName = "Alice" };
             var group = new Group { Id = 1, Name = "Team Alpha" };
             var project = new Project { Id = 1, Title = "Project X" };
-
             var employeeGroup = new EmployeeGroup { Employee = employee, Group = group };
             var projectGroup = new ProjectGroup { Group = group, Project = project };
-
-            group.EmployeeGroups = new List<EmployeeGroup> { employeeGroup };
-            group.ProjectGroups = new List<ProjectGroup> { projectGroup };
-
             _context.Employees.Add(employee);
             _context.Groups.Add(group);
             _context.Projects.Add(project);
             _context.EmployeeGroups.Add(employeeGroup);
             _context.ProjectGroups.Add(projectGroup);
             await _context.SaveChangesAsync();
-
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, employee.Id)
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var principal = new ClaimsPrincipal(identity);
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = principal }
+            };
             var result = await _controller.GetProjectEmployees(1) as JsonResult;
-            var employees = result?.Value as IEnumerable<object>;
-
+            var employees = result?.Value as IEnumerable<dynamic>;
             Assert.That(employees, Is.Not.Null);
             Assert.That(employees.Count(), Is.EqualTo(1));
         }
