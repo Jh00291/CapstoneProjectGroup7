@@ -43,10 +43,14 @@ namespace TicketSystemWeb.Controllers
             }
             else
             {
+                var userGroupIds = await _context.Groups
+                    .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                    .Select(g => g.Id)
+                    .ToListAsync();
                 userProjects = await _context.Projects
                     .Where(p =>
                         p.ProjectManagerId == userId ||
-                        p.ProjectGroups.Any(pg => pg.Group.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                        p.ProjectGroups.Any(pg => userGroupIds.Contains(pg.GroupId))
                     )
                     .ToListAsync();
             }
@@ -56,7 +60,8 @@ namespace TicketSystemWeb.Controllers
                 ViewBag.CanManageColumns = false;
                 return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
-            if (projectId == 0) projectId = userProjects.First().Id;
+            if (projectId == 0)
+                projectId = userProjects.First().Id;
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
                     .ThenInclude(b => b.Columns)
@@ -75,12 +80,12 @@ namespace TicketSystemWeb.Controllers
                 .Select(pg => pg.Group)
                 .ToListAsync();
             ViewBag.ProjectGroups = projectGroups;
-            var userGroupIds = await _context.EmployeeGroups
-                .Where(e => e.EmployeeId == userId)
-                .Select(e => e.GroupId)
+            var currentUserGroupIds = await _context.Groups
+                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                .Select(g => g.Id)
                 .ToListAsync();
             var accessibleColumnIds = project.KanbanBoard.Columns
-                .Where(c => c.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId)))
+                .Where(c => c.GroupAccess.Any(ga => currentUserGroupIds.Contains(ga.GroupId)))
                 .Select(c => c.Id)
                 .ToList();
             ViewBag.AccessibleColumnIds = accessibleColumnIds;
@@ -160,23 +165,23 @@ namespace TicketSystemWeb.Controllers
             var isPrivileged = isAdmin || isManager;
             if (!isPrivileged)
             {
-                var userGroupIds = await _context.EmployeeGroups
-                    .Where(e => e.EmployeeId == userId)
-                    .Select(e => e.GroupId)
+                var userGroupIds = await _context.Groups
+                    .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                    .Select(g => g.Id)
                     .ToListAsync();
                 var hasAccess = column.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId));
                 if (!hasAccess)
                 {
                     ticket.AssignedToId = null;
                 }
-                else if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
+                else if (column.Id == firstColumn?.Id && string.IsNullOrEmpty(ticket.AssignedToId))
                 {
                     ticket.AssignedToId = userId;
                 }
             }
             else
             {
-                if (ticket.Status == firstColumn?.Name && string.IsNullOrEmpty(ticket.AssignedToId))
+                if (column.Id == firstColumn?.Id && string.IsNullOrEmpty(ticket.AssignedToId))
                 {
                     ticket.AssignedToId = userId;
                 }
@@ -289,7 +294,7 @@ namespace TicketSystemWeb.Controllers
                 .FirstOrDefaultAsync();
             if (firstColumn == null) return BadRequest("No valid first column found.");
             var tickets = await _context.Tickets
-                .Where(t => t.Status == column.Name)
+                .Where(t => t.Status == column.Name && t.ProjectId == kanbanBoard.ProjectId)
                 .ToListAsync();
             foreach (var ticket in tickets)
             {
@@ -363,12 +368,29 @@ namespace TicketSystemWeb.Controllers
         {
             var ticket = await _context.Tickets.FindAsync(ticketId);
             if (ticket == null) return NotFound();
-
+            if (!string.IsNullOrEmpty(assignedToId))
+            {
+                var isValid = await _context.Groups
+                    .AnyAsync(g =>
+                        (g.ManagerId == assignedToId || g.EmployeeGroups.Any(eg => eg.EmployeeId == assignedToId)) &&
+                        g.ProjectGroups.Any(pg => pg.ProjectId == ticket.ProjectId));
+                if (!isValid)
+                    return BadRequest("Invalid assignee.");
+                if (ticket.AssignedToId != assignedToId)
+                {
+                    var user = await _context.Users.FindAsync(assignedToId);
+                    _context.TicketHistories.Add(new TicketHistory
+                    {
+                        TicketId = ticket.TicketId,
+                        Action = $"Assigned to {user?.UserName}",
+                        PerformedBy = User.Identity.Name ?? "System"
+                    });
+                }
+            }
             ticket.Title = title;
             ticket.Description = description;
             ticket.AssignedToId = string.IsNullOrWhiteSpace(assignedToId) ? null : assignedToId;
             await _context.SaveChangesAsync();
-
             return Json(new { success = true });
         }
 
@@ -420,9 +442,9 @@ namespace TicketSystemWeb.Controllers
         public async Task<IActionResult> GetProjectEmployees(int projectId)
         {
             var userId = GetLoggedInUserId();
-            var userGroupIds = await _context.EmployeeGroups
-                .Where(eg => eg.EmployeeId == userId)
-                .Select(eg => eg.GroupId)
+            var userGroupIds = await _context.Groups
+                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                .Select(g => g.Id)
                 .ToListAsync();
             var employees = await _context.EmployeeGroups
                 .Where(eg => userGroupIds.Contains(eg.GroupId) &&
