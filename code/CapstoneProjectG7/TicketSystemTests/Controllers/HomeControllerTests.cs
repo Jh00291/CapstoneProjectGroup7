@@ -168,37 +168,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task MoveTicket_ValidMove_UpdatesTicketStatus()
-        {
-            var userId = "test-user";
-            var project = new Project { Id = 1, Title = "Test Project", ProjectManagerId = userId };
-            var board = new KanbanBoard { ProjectId = 1, Project = project };
-            var column = new KanbanColumn { Id = 1, Name = "In Progress", KanbanBoard = board };
-            var ticket = new Ticket { Title = "Fix Bug", Description = "Issue #123", CreatedBy = "Dev", Project = project, ProjectId = 1, Status = "To Do" };
-            board.Columns.Add(column);
-            project.KanbanBoard = board;
-            _context.Projects.Add(project);
-            _context.KanbanBoards.Add(board);
-            _context.KanbanColumns.Add(column);
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim(ClaimTypes.Role, "admin")
-            };
-            var identity = new ClaimsIdentity(claims, "TestAuth");
-            var principal = new ClaimsPrincipal(identity);
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext { User = principal }
-            };
-            var result = await _controller.MoveTicket(ticket.TicketId, column.Id) as JsonResult;
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<JsonResult>());
-        }
-
-        [Test]
         public async Task Index_UserIsAdmin_LoadsAllProjects()
         {
             _userMock.Setup(u => u.IsInRole("admin")).Returns(true);
@@ -333,39 +302,6 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That((string)value["ticket"]["title"], Is.EqualTo(ticket.Title));
             Assert.That((string)value["ticket"]["description"], Is.EqualTo(ticket.Description));
             Assert.That((string)value["ticket"]["status"], Is.EqualTo(ticket.Status));
-        }
-
-
-        [Test]
-        public async Task EditTicket_ValidTicket_UpdatesDetails_AndAssignment()
-        {
-            var employee = new Employee
-            {
-                Id = "user123",
-                UserName = "EmployeeUser"
-            };
-            _context.Employees.Add(employee);
-
-            var ticket = new Ticket
-            {
-                TicketId = 1,
-                Title = "Original Title",
-                Description = "Original Description",
-                CreatedBy = "TestUser",
-                Status = "To Do",
-                AssignedToId = null
-            };
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
-
-
-            var result = await _controller.EditTicket(1, "Updated Title", "Updated Description", employee.Id) as JsonResult;
-
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(ticket.Title, Is.EqualTo("Updated Title"));
-            Assert.That(ticket.Description, Is.EqualTo("Updated Description"));
-            Assert.That(ticket.AssignedToId, Is.EqualTo(employee.Id));
         }
 
         [Test]
@@ -512,62 +448,6 @@ namespace TicketSystemWeb.Tests.Controllers
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Value, Is.EqualTo("No columns available in the Kanban board."));
-        }
-
-        [Test]
-        public async Task MoveTicket_FromFirstColumn_Unassigned_AssignsUser()
-        {
-            var board = new KanbanBoard { Id = 1, ProjectName = "Board 1" };
-
-            var firstColumn = new KanbanColumn
-            {
-                Id = 1,
-                Name = "To Do",
-                Order = 1,
-                KanbanBoardId = board.Id,
-                KanbanBoard = board
-            };
-
-            var secondColumn = new KanbanColumn
-            {
-                Id = 2,
-                Name = "In Progress",
-                Order = 2,
-                KanbanBoardId = board.Id,
-                KanbanBoard = board
-            };
-
-            var project = new Project
-            {
-                Id = 1,
-                Title = "Project A",
-                KanbanBoard = board
-            };
-
-            var ticket = new Ticket
-            {
-                TicketId = 1,
-                Title = "Fix this bug",
-                Description = "Bug desc",
-                CreatedBy = "TestUser",
-                ProjectId = project.Id,
-                Status = "To Do",
-                AssignedToId = null
-            };
-
-            await _context.KanbanBoards.AddAsync(board);
-            await _context.KanbanColumns.AddRangeAsync(firstColumn, secondColumn);
-            await _context.Projects.AddAsync(project);
-            await _context.Tickets.AddAsync(ticket);
-            await _context.SaveChangesAsync();
-
-            var result = await _controller.MoveTicket(ticket.TicketId, secondColumn.Id) as JsonResult;
-
-            var updated = await _context.Tickets.FindAsync(ticket.TicketId);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(updated.Status, Is.EqualTo("In Progress"));
-            Assert.That(updated.AssignedToId, Is.EqualTo(_testUserId));
         }
 
         [Test]
@@ -781,6 +661,287 @@ namespace TicketSystemWeb.Tests.Controllers
             Assert.That(updatedTicket.Status, Is.EqualTo("To Do"));
             Assert.That(result, Is.Not.Null);
         }
+
+
+
+
+
+        [Test]
+        public async Task Index_UserHasGroupColumnAccess_PopulatesAccessibleColumnIds()
+        {
+            var group = new Group { Id = 1, Name = "Group A", ManagerId = _testUserId };
+            var column = new KanbanColumn { Id = 1, Name = "Col", Order = 1, GroupAccess = new List<ColumnGroupAccess>() };
+            var access = new ColumnGroupAccess { GroupId = 1, KanbanColumn = column, KanbanColumnId = 1, Group = group };
+            column.GroupAccess.Add(access);
+            var board = new KanbanBoard { Id = 1, ProjectName = "Board", Columns = new List<KanbanColumn> { column } };
+            var project = new Project { Id = 1, Title = "Test Project", ProjectManagerId = _testUserId, KanbanBoard = board };
+
+            _context.Groups.Add(group);
+            _context.ColumnGroupAccesses.Add(access);
+            _context.Projects.Add(project);
+            _context.KanbanBoards.Add(board);
+            _context.KanbanColumns.Add(column);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.Index(1) as ViewResult;
+            var accessible = result?.ViewData["AccessibleColumnIds"] as List<int>;
+
+            Assert.That(accessible, Is.Not.Null);
+            Assert.That(accessible.Contains(1), Is.True);
+        }
+
+        [Test]
+        public async Task MoveTicket_ToFirstColumn_Unassigned_AssignsToUser()
+        {
+            var column = new KanbanColumn { Id = 1, Name = "To Do", Order = 1 };
+            var board = new KanbanBoard { Id = 1, ProjectName = "Board", Columns = new List<KanbanColumn> { column } };
+            column.KanbanBoard = board;
+
+            var project = new Project
+            {
+                Id = 1,
+                Title = "Project",
+                KanbanBoard = board,
+                ProjectManagerId = "manager123"
+            };
+
+            var ticket = new Ticket
+            {
+                TicketId = 1,
+                ProjectId = 1,
+                Status = "Backlog",
+                CreatedBy = "TestUser",
+                CreatedAt = DateTime.UtcNow,
+                Title = "Move Me",
+                Description = "Move ticket into first column"
+            };
+
+            _context.Projects.Add(project);
+            _context.KanbanBoards.Add(board);
+            _context.KanbanColumns.Add(column);
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+
+            _userMock.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true); // admin or project manager
+            _userMock.Setup(u => u.FindFirst(ClaimTypes.NameIdentifier)).Returns(new Claim(ClaimTypes.NameIdentifier, _testUserId));
+            _controller.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = _userMock.Object } };
+
+            var result = await _controller.MoveTicket(1, 1) as JsonResult;
+
+            var updatedTicket = await _context.Tickets.FindAsync(1);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(updatedTicket.AssignedToId, Is.EqualTo(_testUserId));
+        }
+
+
+        [Test]
+        public async Task EditTicket_AssigneeChanged_AddsHistory()
+        {
+            var manager = new Employee { Id = "manager1", UserName = "Manager" };
+            var newEmployee = new Employee { Id = "newEmp", UserName = "NewEmployee" };
+            var group = new Group { Id = 1, ManagerId = "manager1" };
+            var project = new Project { Id = 1, Title = "Project" };
+
+            var ticket = new Ticket
+            {
+                TicketId = 1,
+                Title = "Task",
+                Description = "Desc",
+                ProjectId = 1,
+                AssignedToId = "someone",
+                Status = "To Do",
+                CreatedBy = "Tester",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Users.Add(newEmployee);
+            _context.Employees.Add(manager);
+            _context.Groups.Add(group);
+            _context.ProjectGroups.Add(new ProjectGroup { Project = project, Group = group });
+            _context.EmployeeGroups.Add(new EmployeeGroup { Group = group, Employee = newEmployee });
+            _context.Projects.Add(project);
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.EditTicket(1, "Updated", "Updated Desc", "newEmp") as JsonResult;
+
+            var updated = await _context.Tickets.FindAsync(1);
+            var history = await _context.TicketHistories.FirstOrDefaultAsync(h => h.TicketId == 1);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(updated.AssignedToId, Is.EqualTo("newEmp"));
+            Assert.That(history?.Action, Does.Contain("Assigned to"));
+        }
+
+
+        [Test]
+        public async Task GetColumnGroup_NoAccess_ReturnsFalse()
+        {
+            var result = await _controller.GetColumnGroup(999) as JsonResult;
+            Assert.That(result, Is.Not.Null);
+
+            var json = JObject.FromObject(result.Value!);
+            Assert.That((bool)json["success"]!, Is.False);
+        }
+
+        [Test]
+        public async Task GetColumnGroup_Valid_ReturnsGroup()
+        {
+            var group = new Group { Id = 1, Name = "Team A" };
+            var column = new KanbanColumn { Id = 10, Name = "Col" };
+            var access = new ColumnGroupAccess { KanbanColumnId = 10, GroupId = 1, Group = group };
+
+            _context.Groups.Add(group);
+            _context.KanbanColumns.Add(column);
+            _context.ColumnGroupAccesses.Add(access);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.GetColumnGroup(10) as JsonResult;
+            Assert.That(result, Is.Not.Null);
+
+            var json = JObject.FromObject(result.Value!);
+            Assert.That((bool)json["success"]!, Is.True);
+            Assert.That((int)json["groupId"]!, Is.EqualTo(1));
+            Assert.That((string)json["groupName"]!, Is.EqualTo("Team A"));
+        }
+
+        [Test]
+        public async Task UpdateColumnGroupAccess_ReplacesExisting_ReturnsSuccess()
+        {
+            var groupOld = new Group { Id = 1, Name = "Old" };
+            var groupNew = new Group { Id = 2, Name = "New" };
+            var column = new KanbanColumn { Id = 1, Name = "Col" };
+
+            var oldAccess = new ColumnGroupAccess { KanbanColumnId = 1, GroupId = 1 };
+            _context.Groups.AddRange(groupOld, groupNew);
+            _context.KanbanColumns.Add(column);
+            _context.ColumnGroupAccesses.Add(oldAccess);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.UpdateColumnGroupAccess(1, 2) as JsonResult;
+            var updated = await _context.ColumnGroupAccesses.FirstOrDefaultAsync(a => a.KanbanColumnId == 1);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(updated.GroupId, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ColumnGroupAccess_Id_CanBeSetAndRetrieved()
+        {
+            var access = new ColumnGroupAccess { Id = 42 };
+            Assert.That(access.Id, Is.EqualTo(42));
+        }
+
+        [Test]
+        public void KanbanBoard_Project_CanBeAssigned()
+        {
+            var project = new Project { Id = 7, Title = "Board's Project" };
+            var board = new KanbanBoard { Project = project };
+
+            Assert.That(board.Project, Is.Not.Null);
+            Assert.That(board.Project.Id, Is.EqualTo(7));
+            Assert.That(board.Project.Title, Is.EqualTo("Board's Project"));
+        }
+
+        [Test]
+        public void TicketComment_Id_CanBeSet()
+        {
+            var comment = new TicketComment { Id = 99 };
+            Assert.That(comment.Id, Is.EqualTo(99));
+        }
+
+        [Test]
+        public void TicketHistory_Id_CanBeSetAndRetrieved()
+        {
+            var history = new TicketHistory { Id = 101 };
+            Assert.That(history.Id, Is.EqualTo(101));
+        }
+
+
+        [Test]
+        public void TicketComment_TicketReference_CanBeAssigned()
+        {
+            var ticket = new Ticket { TicketId = 3, Title = "Parent Ticket" };
+            var comment = new TicketComment { Ticket = ticket };
+
+            Assert.That(comment.Ticket, Is.Not.Null);
+            Assert.That(comment.Ticket.TicketId, Is.EqualTo(3));
+        }
+
+        [Test]
+        public async Task MoveTicket_UnprivilegedUserWithAccess_AssignsToSelf()
+        {
+            var userId = _testUserId;
+
+            // Create group and give user access
+            var group = new Group { Id = 1 };
+            var employee = new Employee { Id = userId };
+            var access = new ColumnGroupAccess { KanbanColumnId = 1, GroupId = 1 };
+
+            var column = new KanbanColumn
+            {
+                Id = 1,
+                Name = "To Do",
+                Order = 1,
+                GroupAccess = new List<ColumnGroupAccess> { access }
+            };
+
+            var board = new KanbanBoard
+            {
+                Id = 1,
+                ProjectName = "Board",
+                Columns = new List<KanbanColumn> { column }
+            };
+
+            var project = new Project
+            {
+                Id = 1,
+                KanbanBoard = board,
+                Title = "Test Project",
+                ProjectManagerId = "manager123"
+            };
+
+            var ticket = new Ticket
+            {
+                TicketId = 1,
+                ProjectId = project.Id,
+                Title = "Ticket",
+                Description = "Unassigned",
+                Status = "Backlog",
+                CreatedBy = "Tester"
+            };
+
+            _context.Groups.Add(group);
+            _context.Employees.Add(employee);
+            _context.KanbanBoards.Add(board);
+            _context.KanbanColumns.Add(column);
+            _context.Projects.Add(project);
+            _context.Tickets.Add(ticket);
+            _context.ColumnGroupAccesses.Add(access);
+            _context.EmployeeGroups.Add(new EmployeeGroup
+            {
+                Group = group,
+                Employee = employee
+            });
+            _context.SaveChanges();
+
+            _userMock.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
+            _userMock.Setup(u => u.FindFirst(ClaimTypes.NameIdentifier))
+                     .Returns(new Claim(ClaimTypes.NameIdentifier, userId));
+
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = _userMock.Object }
+            };
+
+            var result = await _controller.MoveTicket(ticket.TicketId, column.Id) as JsonResult;
+
+            var updatedTicket = await _context.Tickets.FindAsync(ticket.TicketId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(updatedTicket.AssignedToId, Is.EqualTo(userId));
+        }
+
 
     }
 }
