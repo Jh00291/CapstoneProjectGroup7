@@ -1,19 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using TicketSystemDesktop.Models;
 
 namespace TicketSystemDesktop.Data
 {
-    public class TicketDBContext : DbContext
+    public class TicketDBContext : IdentityDbContext<Employee>
     {
         public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
+
+        public TicketDBContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string connectionString = ConfigurationManager.ConnectionStrings["TicketDBConnection"].ConnectionString;
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=TicketSystemDb;Trusted_Connection=True;");
             }
         }
     }

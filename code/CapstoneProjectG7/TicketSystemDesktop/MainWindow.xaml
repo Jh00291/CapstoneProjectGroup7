@@ -1,42 +1,42 @@
 ﻿<Window x:Class="TicketSystemDesktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TicketSystemDesktop"
-        mc:Ignorable="d"
-        Title="Ticket System" Height="600" Width="900">
+        Title="Ticket System" Height="500" Width="700">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Welcome message -->
+            <RowDefinition Height="*"/>
+            <!-- Ticket lists -->
+        </Grid.RowDefinitions>
 
-    <Grid>
-        <!-- DataGrid to Display Tickets -->
-        <DataGrid x:Name="TicketDataGrid"
-                  AutoGenerateColumns="False"
-                  HeadersVisibility="Column"
-                  CanUserAddRows="False"
-                  IsReadOnly="True"
-                  Margin="10,10,10,200">
+        <!-- Welcome message -->
+        <TextBlock x:Name="WelcomeText"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,10"
+                   Grid.Row="0"
+                   Text="Welcome!" />
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding TicketId}" Width="50"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="150"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="250"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
-                <DataGridTextColumn Header="Created At" Binding="{Binding CreatedAt}" Width="150"/>
-                <DataGridTextColumn Header="Created By" Binding="{Binding CreatedBy}" Width="120"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Ticket Lists -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <!-- Form to Add Ticket -->
-        <StackPanel Orientation="Vertical" Margin="10,370,10,10">
-            <TextBox x:Name="TitleTextBox" Text="Title..." Margin="5"/>
-            <TextBox x:Name="DescriptionTextBox" Text="Description..." Margin="5"/>
-            <ComboBox x:Name="StatusComboBox" Margin="5">
-                <ComboBoxItem Content="Open"/>
-                <ComboBoxItem Content="In Progress"/>
-                <ComboBoxItem Content="Closed"/>
-            </ComboBox>
-            <TextBox x:Name="CreatedByTextBox" Text="Created By..." Margin="5"/>
-            <Button Content="Add Ticket" Click="AddTicket_Click" Margin="5"/>
-        </StackPanel>
+            <!-- Assigned Tickets -->
+            <StackPanel Grid.Column="0" Margin="10">
+                <TextBlock Text="Your Assigned Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                <ListBox x:Name="AssignedTicketsList" DisplayMemberPath="Title" Height="350"/>
+            </StackPanel>
+
+            <!-- Available Tickets -->
+            <StackPanel Grid.Column="1" Margin="10">
+                <TextBlock Text="Available Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                <ListBox x:Name="AvailableTicketsList" DisplayMemberPath="Title" Height="350"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
