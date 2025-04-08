@@ -58,6 +58,7 @@ namespace TicketSystemWeb.Controllers
             {
                 ViewBag.UserProjects = new List<Project>();
                 ViewBag.CanManageColumns = false;
+                ViewBag.CanMoveTickets = false;
                 return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             if (projectId == 0)
@@ -73,19 +74,22 @@ namespace TicketSystemWeb.Controllers
                 return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             ViewBag.UserProjects = userProjects;
-            ViewBag.CanManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
-            ViewBag.CanMoveTickets = User.IsInRole("admin") || User.IsInRole("user") || project.ProjectManagerId == userId;
+            var userGroupIdsForAccess = await _context.Groups
+                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                .Select(g => g.Id)
+                .ToListAsync();
+            var isAdmin = User.IsInRole("admin");
+            var isManager = project.ProjectManagerId == userId;
+            var isInProject = project.ProjectGroups.Any(pg => userGroupIdsForAccess.Contains(pg.GroupId));
+            ViewBag.CanManageColumns = isAdmin || isManager;
+            ViewBag.CanMoveTickets = isAdmin || isManager || isInProject;
             var projectGroups = await _context.ProjectGroups
                 .Where(pg => pg.ProjectId == project.Id)
                 .Select(pg => pg.Group)
                 .ToListAsync();
             ViewBag.ProjectGroups = projectGroups;
-            var currentUserGroupIds = await _context.Groups
-                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
-                .Select(g => g.Id)
-                .ToListAsync();
             var accessibleColumnIds = project.KanbanBoard.Columns
-                .Where(c => c.GroupAccess.Any(ga => currentUserGroupIds.Contains(ga.GroupId)))
+                .Where(c => c.GroupAccess.Any(ga => userGroupIdsForAccess.Contains(ga.GroupId)))
                 .Select(c => c.Id)
                 .ToList();
             ViewBag.AccessibleColumnIds = accessibleColumnIds;
@@ -350,7 +354,8 @@ namespace TicketSystemWeb.Controllers
                     comments = ticket.Comments.Select(c => new
                     {
                         author = c.AuthorName,
-                        text = c.CommentText
+                        text = c.CommentText,
+                        createdAt = c.CreatedAt.ToString("yyyy-MM-dd HH:mm")
                     })
                 }
             });

@@ -452,7 +452,7 @@
                 commentsDiv.innerText = "";
                 data.ticket.comments?.forEach(c => {
                     let line = document.createElement("div");
-                    line.innerText = `${c.author} - "${c.text}"`;
+                    line.innerText = `[${c.createdAt}] ${c.author} - "${c.text}"`;
                     commentsDiv.appendChild(line);
                 });
                 commentsDiv.setAttribute("data-ticket-id", ticketId);
