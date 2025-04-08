@@ -216,7 +216,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Save Changes</button>
+                    <button type="submit" class="btn btn-success" onclick="selectAll('editSelectedGroups')" style="background-color: #6f42c1; border-color: #6f42c1; color: white;">Save Changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -408,6 +408,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"
+                            onclick="selectAll('editSelectedEmployees')"
                             style="background-color: #6f42c1; border-color: #6f42c1; color: white;">
                         Save Changes
                     </button>
@@ -477,6 +478,14 @@
             addGroup();
         } else {
             form.classList.add("was-validated");
+        }
+    }
+    function selectAll(selectId) {
+        const select = document.getElementById(selectId);
+        if (select) {
+            for (let i = 0; i < select.options.length; i++) {
+                select.options[i].selected = true;
+            }
         }
     }
     async function addProject() {
@@ -791,7 +800,6 @@
             alert("Unexpected response from server: " + error.message);
         }
     }
-
     async function denyGroup(projectId, groupId) {
         let tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
         let token = tokenInput ? tokenInput.value : null;
@@ -823,5 +831,4 @@
             alert("Unexpected error: " + error.message);
         }
     }
-
 </script>
