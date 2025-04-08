@@ -494,7 +494,7 @@
                 document.getElementById("editTicketId").value = ticketId;
                 document.getElementById("editTicketTitle").value = ticket.title;
                 document.getElementById("editTicketDescription").value = ticket.description;
-                const employeeRes = await fetch(`/Home/GetProjectEmployees?projectId=@Model.ProjectId`);
+                const employeeRes = await fetch(`/Home/GetAssignableEmployeesForTicket?ticketId=${ticketId}`);
                 const employees = await employeeRes.json();
                 const dropdown = document.getElementById("editAssignedTo");
                 dropdown.innerHTML = `<option value="">Unassigned</option>`;
