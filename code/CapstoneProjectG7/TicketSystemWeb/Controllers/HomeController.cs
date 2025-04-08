@@ -58,6 +58,7 @@ namespace TicketSystemWeb.Controllers
             {
                 ViewBag.UserProjects = new List<Project>();
                 ViewBag.CanManageColumns = false;
+                ViewBag.CanMoveTickets = false;
                 return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             if (projectId == 0)
@@ -73,19 +74,22 @@ namespace TicketSystemWeb.Controllers
                 return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             ViewBag.UserProjects = userProjects;
-            ViewBag.CanManageColumns = User.IsInRole("admin") || project.ProjectManagerId == userId;
-            ViewBag.CanMoveTickets = User.IsInRole("admin") || User.IsInRole("user") || project.ProjectManagerId == userId;
+            var userGroupIdsForAccess = await _context.Groups
+                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
+                .Select(g => g.Id)
+                .ToListAsync();
+            var isAdmin = User.IsInRole("admin");
+            var isManager = project.ProjectManagerId == userId;
+            var isInProject = project.ProjectGroups.Any(pg => userGroupIdsForAccess.Contains(pg.GroupId));
+            ViewBag.CanManageColumns = isAdmin || isManager;
+            ViewBag.CanMoveTickets = isAdmin || isManager || isInProject;
             var projectGroups = await _context.ProjectGroups
                 .Where(pg => pg.ProjectId == project.Id)
                 .Select(pg => pg.Group)
                 .ToListAsync();
             ViewBag.ProjectGroups = projectGroups;
-            var currentUserGroupIds = await _context.Groups
-                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
-                .Select(g => g.Id)
-                .ToListAsync();
             var accessibleColumnIds = project.KanbanBoard.Columns
-                .Where(c => c.GroupAccess.Any(ga => currentUserGroupIds.Contains(ga.GroupId)))
+                .Where(c => c.GroupAccess.Any(ga => userGroupIdsForAccess.Contains(ga.GroupId)))
                 .Select(c => c.Id)
                 .ToList();
             ViewBag.AccessibleColumnIds = accessibleColumnIds;
@@ -350,7 +354,8 @@ namespace TicketSystemWeb.Controllers
                     comments = ticket.Comments.Select(c => new
                     {
                         author = c.AuthorName,
-                        text = c.CommentText
+                        text = c.CommentText,
+                        createdAt = c.CreatedAt.ToString("yyyy-MM-dd HH:mm")
                     })
                 }
             });
@@ -434,31 +439,6 @@ namespace TicketSystemWeb.Controllers
         }
 
         /// <summary>
-        /// Gets the employees associated with a particular project.
-        /// </summary>
-        /// <param name="projectId">The project identifier.</param>
-        /// <returns>List of employees on a project</returns>
-        [HttpGet]
-        public async Task<IActionResult> GetProjectEmployees(int projectId)
-        {
-            var userId = GetLoggedInUserId();
-            var userGroupIds = await _context.Groups
-                .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
-                .Select(g => g.Id)
-                .ToListAsync();
-            var employees = await _context.EmployeeGroups
-                .Where(eg => userGroupIds.Contains(eg.GroupId) &&
-                             eg.Group.ProjectGroups.Any(pg => pg.ProjectId == projectId))
-                .Select(eg => new {
-                    id = eg.Employee.Id,
-                    name = eg.Employee.UserName
-                })
-                .Distinct()
-                .ToListAsync();
-            return Json(employees);
-        }
-
-        /// <summary>
         /// Gets the column group.
         /// </summary>
         /// <param name="columnId">The column identifier.</param>
@@ -503,6 +483,38 @@ namespace TicketSystemWeb.Controllers
 
             await _context.SaveChangesAsync();
             return Json(new { success = true });
+        }
+
+        /// <summary>
+        /// Gets the assignable employees for ticket.
+        /// </summary>
+        /// <param name="ticketId">The ticket identifier.</param>
+        /// <returns>the employees with access to that column</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAssignableEmployeesForTicket(int ticketId)
+        {
+            var ticket = await _context.Tickets
+                .Include(t => t.Project)
+                    .ThenInclude(p => p.KanbanBoard)
+                        .ThenInclude(kb => kb.Columns)
+                .FirstOrDefaultAsync(t => t.TicketId == ticketId);
+            if (ticket == null) return NotFound();
+            var column = ticket.Project.KanbanBoard.Columns.FirstOrDefault(c => c.Name == ticket.Status);
+            if (column == null) return NotFound("Column not found for this ticket.");
+            var groupAccess = await _context.ColumnGroupAccesses
+                .Include(cga => cga.Group)
+                .FirstOrDefaultAsync(cga => cga.KanbanColumnId == column.Id);
+            if (groupAccess == null) return Json(new List<object>());
+            var groupId = groupAccess.GroupId;
+            var employees = await _context.EmployeeGroups
+                .Where(eg => eg.GroupId == groupId)
+                .Select(eg => new {
+                    id = eg.Employee.Id,
+                    name = eg.Employee.UserName
+                })
+                .Distinct()
+                .ToListAsync();
+            return Json(employees);
         }
 
     }
