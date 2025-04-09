@@ -164,12 +164,6 @@ C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\Tick
 C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.pdb
 C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.genruntimeconfig.cache
 C:\Users\drivera3\source\repos\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\ref\TicketSystemDesktop.dll
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.csproj.AssemblyReference.cache
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\LoginWindow.baml
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\LoginWindow.g.cs
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\MainWindow.g.cs
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\App.g.cs
-C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop_MarkupCompile.cache
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemDesktop.exe
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemDesktop.dll.config
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\TicketSystemDesktop.deps.json
@@ -318,7 +312,13 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.csproj.AssemblyReference.cache
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\LoginWindow.baml
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\LoginWindow.g.cs
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop_MarkupCompile.cache
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.g.resources
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.AssemblyInfoInputs.cache
@@ -331,3 +331,5 @@ C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\T
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.pdb
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketSystemDesktop.genruntimeconfig.cache
 C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\ref\TicketSystemDesktop.dll
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketDetailsWindow.baml
+C:\Users\jh00291\Documents\GitHub\CapstoneProjectGroup7\code\CapstoneProjectG7\TicketSystemDesktop\obj\Debug\net8.0-windows\TicketDetailsWindow.g.cs

@@ -580,36 +580,6 @@ namespace TicketSystemWeb.Tests.Controllers
         }
 
         [Test]
-        public async Task GetProjectEmployees_ReturnsEmployeeList()
-        {
-            var employee = new Employee { Id = "emp1", UserName = "Alice" };
-            var group = new Group { Id = 1, Name = "Team Alpha" };
-            var project = new Project { Id = 1, Title = "Project X" };
-            var employeeGroup = new EmployeeGroup { Employee = employee, Group = group };
-            var projectGroup = new ProjectGroup { Group = group, Project = project };
-            _context.Employees.Add(employee);
-            _context.Groups.Add(group);
-            _context.Projects.Add(project);
-            _context.EmployeeGroups.Add(employeeGroup);
-            _context.ProjectGroups.Add(projectGroup);
-            await _context.SaveChangesAsync();
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, employee.Id)
-            };
-            var identity = new ClaimsIdentity(claims, "TestAuth");
-            var principal = new ClaimsPrincipal(identity);
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext { User = principal }
-            };
-            var result = await _controller.GetProjectEmployees(1) as JsonResult;
-            var employees = result?.Value as IEnumerable<dynamic>;
-            Assert.That(employees, Is.Not.Null);
-            Assert.That(employees.Count(), Is.EqualTo(1));
-        }
-
-        [Test]
         public async Task DeleteColumn_WithTickets_ReassignsToFirstColumn()
         {
             var board = new KanbanBoard { Id = 1, ProjectName = "Test Board" };

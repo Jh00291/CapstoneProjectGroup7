@@ -1,0 +1,21 @@
+﻿<Window x:Class="TicketSystemDesktop.TicketDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ticket Details" Height="300" Width="400">
+
+    <Grid Margin="10">
+        <StackPanel>
+            <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="18"/>
+            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,10"/>
+            <TextBlock Text="{Binding Status}"/>
+            <TextBlock Text="{Binding CreatedAt}" />
+            <TextBlock Text="Assigned To:" FontWeight="Bold" Margin="0,10,0,0"/>
+            <TextBlock>
+                <TextBlock.Text>
+                    <Binding Path="AssignedTo.UserName" FallbackValue="Unassigned" TargetNullValue="Unassigned" />
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
+

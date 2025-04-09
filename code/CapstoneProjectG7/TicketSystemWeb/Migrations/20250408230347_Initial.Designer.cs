@@ -12,13 +12,8 @@ using TicketSystemWeb.Data;
 namespace TicketSystemWeb.Migrations
 {
     [DbContext(typeof(TicketDBContext))]
-<<<<<<<< HEAD:code/CapstoneProjectG7/TicketSystemWeb/Migrations/20250407154015_Initial.Designer.cs
-    [Migration("20250407154015_Initial")]
+    [Migration("20250408230347_Initial")]
     partial class Initial
-========
-    [Migration("20250408013538_init")]
-    partial class init
->>>>>>>> origin/main:code/CapstoneProjectG7/TicketSystemWeb/Migrations/20250408013538_init.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

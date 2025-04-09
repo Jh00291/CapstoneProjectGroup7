@@ -26,17 +26,23 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Assigned Tickets -->
+            <!-- Available Tickets -->
             <StackPanel Grid.Column="0" Margin="10">
-                <TextBlock Text="Your Assigned Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
-                <ListBox x:Name="AssignedTicketsList" DisplayMemberPath="Title" Height="350"/>
+                <TextBlock Text="Available Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                <ListBox x:Name="AvailableTicketsList" DisplayMemberPath="Title" Height="350" ToolTip="Double-click to view details"/>
             </StackPanel>
 
-            <!-- Available Tickets -->
+            <!-- Assigned Tickets -->
             <StackPanel Grid.Column="1" Margin="10">
-                <TextBlock Text="Available Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
-                <ListBox x:Name="AvailableTicketsList" DisplayMemberPath="Title" Height="350"/>
+                <TextBlock Text="Your Assigned Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                <ListBox x:Name="AssignedTicketsList" DisplayMemberPath="Title" Height="350" ToolTip="Double-click to view details"/>
             </StackPanel>
         </Grid>
+        <Button Content="Logout"
+        Width="75"
+        HorizontalAlignment="Right"
+        Click="Logout_Click"
+        Margin="0,3,10,7"
+        Grid.Row="0"/>
     </Grid>
 </Window>
