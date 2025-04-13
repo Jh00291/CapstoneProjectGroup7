@@ -13,6 +13,8 @@ namespace TicketSystemDesktop.Models
 
         public string Title { get; set; } = string.Empty;
 
+        public KanbanBoard? KanbanBoard { get; set; }
+
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 

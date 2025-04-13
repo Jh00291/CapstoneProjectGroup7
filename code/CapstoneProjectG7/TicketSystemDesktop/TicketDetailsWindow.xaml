@@ -14,8 +14,13 @@
             </TextBlock>
             <TextBlock Text="Description:" FontWeight="Bold"/>
             <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,10"/>
-            <TextBlock Text="Status:" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Status}"/>
+            <TextBlock Text="Stage:" FontWeight="Bold"/>
+            <ComboBox x:Name="StageDropdown"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Name"
+                  Margin="0,0,0,10"
+                  SelectionChanged="StageDropdown_SelectionChanged"/>
+
             <TextBlock Text="Created At:" FontWeight="Bold"/>
             <TextBlock Text="{Binding CreatedAt}" />
             <TextBlock Text="Assigned To:" FontWeight="Bold" Margin="0,10,0,0"/>
