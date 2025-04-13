@@ -6,8 +6,17 @@
     <Grid Margin="10">
         <StackPanel>
             <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="18"/>
+            <TextBlock Text="Project:" FontWeight="Bold" Margin="0,10,0,0"/>
+            <TextBlock>
+                <TextBlock.Text>
+                    <Binding Path="Project.Title" FallbackValue="N/A" TargetNullValue="N/A" />
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Text="Description:" FontWeight="Bold"/>
             <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,10"/>
+            <TextBlock Text="Status:" FontWeight="Bold"/>
             <TextBlock Text="{Binding Status}"/>
+            <TextBlock Text="Created At:" FontWeight="Bold"/>
             <TextBlock Text="{Binding CreatedAt}" />
             <TextBlock Text="Assigned To:" FontWeight="Bold" Margin="0,10,0,0"/>
             <TextBlock>

@@ -11,20 +11,40 @@
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\loginwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\ticketdetailswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\ticketdetailswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\ticketdetailswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\ticketdetailswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\migrations\\20250408230347_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\migrations\\20250408230347_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\data\\ticketdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\data\\ticketdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\models\\kanbanboard\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\models\\kanbanboard\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,32 +58,33 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAAADMAAAAsAAAA",
+              "DocumentIndex": 4,
+              "Title": "Project.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Project.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Project.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Project.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\Project.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-13T22:01:38.805Z",
+              "WhenOpened": "2025-04-13T22:43:22.862Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
-              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-04-13T22:02:15.196Z",
+              "Title": "TicketDetailsWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T21:54:23Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "TicketDetailsWindow.xaml",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml",
               "RelativeDocumentMoniker": "TicketSystemDesktop\\TicketDetailsWindow.xaml",
@@ -92,8 +113,8 @@
               "Title": "LoginWindow.xaml",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml",
               "RelativeDocumentMoniker": "TicketSystemDesktop\\LoginWindow.xaml",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml*",
-              "RelativeToolTip": "TicketSystemDesktop\\LoginWindow.xaml*",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml",
+              "RelativeToolTip": "TicketSystemDesktop\\LoginWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-04-13T21:52:42.923Z",
               "EditorCaption": ""
@@ -101,14 +122,78 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "TicketDetailsWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAAAAAA",
+              "Title": "Ticket.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Ticket.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Ticket.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Ticket.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\Ticket.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB8AAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-13T21:54:23Z",
+              "WhenOpened": "2025-04-13T22:18:30.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20250408230347_Initial.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Migrations\\20250408230347_Initial.cs",
+              "RelativeDocumentMoniker": "TicketSystemWeb\\Migrations\\20250408230347_Initial.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Migrations\\20250408230347_Initial.cs",
+              "RelativeToolTip": "TicketSystemWeb\\Migrations\\20250408230347_Initial.cs",
+              "ViewState": "AQIAAAgBAAAAAAAAAAAAwCQCAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T22:45:53.664Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TicketDBContext.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Data\\TicketDBContext.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Data\\TicketDBContext.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Data\\TicketDBContext.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Data\\TicketDBContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T22:19:30.905Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Ticket.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Models\\KanbanBoard\\Ticket.cs",
+              "RelativeDocumentMoniker": "TicketSystemWeb\\Models\\KanbanBoard\\Ticket.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Models\\KanbanBoard\\Ticket.cs",
+              "RelativeToolTip": "TicketSystemWeb\\Models\\KanbanBoard\\Ticket.cs",
+              "ViewState": "AQIAAFIAAAAAAAAAAAAmwH4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T22:29:44.096Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml.cs",
+              "ViewState": "AQIAACoAAAAAAAAAAAAYwFIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T22:01:38.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
+              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-13T22:02:15.196Z",
               "EditorCaption": ""
             }
           ]

@@ -29,8 +29,7 @@ namespace TicketSystemDesktop.Models
 
         public int ProjectId { get; set; }
 
-        // Optional navigation property - include if you also bring in Project class
-        // public Project Project { get; set; }
+        public Project? Project { get; set; }
 
         public string? AssignedToId { get; set; }
 
