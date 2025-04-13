@@ -22,29 +22,23 @@ namespace TicketSystemDesktop
 
             LoadTickets();
 
-            AssignedTicketsList.MouseDoubleClick += TicketList_DoubleClick;
-            AvailableTicketsList.MouseDoubleClick += TicketList_DoubleClick;
-
         }
 
         private void LoadTickets()
         {
             using (var context = new TicketDBContext())
             {
-                var availableTickets = context.Tickets
+                var showOnlyMyTickets = MyTicketsOnlyCheckBox.IsChecked == true;
+
+                var tickets = context.Tickets
                     .Include(t => t.AssignedTo)
-                    .Where(t => t.AssignedToId == null)
+                    .Where(t => !showOnlyMyTickets || t.AssignedToId == _loggedInUser.Id)
                     .ToList();
 
-                var assignedTickets = context.Tickets
-                    .Include(t => t.AssignedTo)
-                    .Where(t => t.AssignedToId == _loggedInUser.Id)
-                    .ToList();
-
-                AssignedTicketsList.ItemsSource = assignedTickets;
-                AvailableTicketsList.ItemsSource = availableTickets;
+                UnifiedTicketsList.ItemsSource = tickets;
             }
         }
+
 
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
@@ -65,7 +59,10 @@ namespace TicketSystemDesktop
             }
         }
 
-
+        private void MyTicketsOnlyCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            LoadTickets();
+        }
 
     }
 }
