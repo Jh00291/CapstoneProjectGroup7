@@ -1,7 +1,7 @@
 ﻿<Window x:Class="TicketSystemDesktop.TicketDetailsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Ticket Details" Height="300" Width="400">
+        Title="Ticket Details" Height="350" Width="400">
 
     <Grid Margin="10">
         <StackPanel>
@@ -29,6 +29,15 @@
                     <Binding Path="AssignedTo.UserName" FallbackValue="Unassigned" TargetNullValue="Unassigned" />
                 </TextBlock.Text>
             </TextBlock>
+            <StackPanel Orientation="Horizontal"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center">
+                <Button Content="Assign to Me"
+            Click="AssignToMe_Click"
+            Margin="0,0,10,0"/>
+                <Button Content="Unassign Me"
+            Click="UnassignMe_Click"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

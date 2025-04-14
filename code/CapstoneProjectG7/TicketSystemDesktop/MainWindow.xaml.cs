@@ -9,10 +9,22 @@ using TicketSystemDesktop.Models;
 
 namespace TicketSystemDesktop
 {
+    /// <summary>
+    /// the main window
+    /// </summary>
+    /// <seealso cref="System.Windows.Window" />
+    /// <seealso cref="System.Windows.Markup.IComponentConnector" />
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// The logged in user
+        /// </summary>
         private readonly Employee _loggedInUser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
+        /// <param name="user">The user.</param>
         public MainWindow(Employee user)
         {
             InitializeComponent();
@@ -24,6 +36,9 @@ namespace TicketSystemDesktop
 
         }
 
+        /// <summary>
+        /// Loads the tickets.
+        /// </summary>
         private void LoadTickets()
         {
             using (var context = new TicketDBContext())
@@ -40,6 +55,11 @@ namespace TicketSystemDesktop
         }
 
 
+        /// <summary>
+        /// Handles the Click event of the Logout control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
             var loginWindow = new LoginWindow();
@@ -47,6 +67,11 @@ namespace TicketSystemDesktop
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the DoubleClick event of the TicketList control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
         private void TicketList_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             try
@@ -65,7 +90,7 @@ namespace TicketSystemDesktop
 
                         if (ticketWithProject != null)
                         {
-                            var detailsWindow = new TicketDetailsWindow(ticketWithProject);
+                            var detailsWindow = new TicketDetailsWindow(ticketWithProject, _loggedInUser);
                             detailsWindow.ShowDialog();
                         }
                         else
@@ -82,6 +107,11 @@ namespace TicketSystemDesktop
         }
 
 
+        /// <summary>
+        /// Handles the Changed event of the MyTicketsOnlyCheckBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void MyTicketsOnlyCheckBox_Changed(object sender, RoutedEventArgs e)
         {
             LoadTickets();
