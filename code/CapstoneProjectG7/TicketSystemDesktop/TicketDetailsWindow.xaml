@@ -1,27 +1,13 @@
 ﻿<Window x:Class="TicketSystemDesktop.TicketDetailsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Ticket Details" Height="350" Width="400">
+        Title="Ticket Details" Height="300" Width="400">
 
     <Grid Margin="10">
         <StackPanel>
             <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="18"/>
-            <TextBlock Text="Project:" FontWeight="Bold" Margin="0,10,0,0"/>
-            <TextBlock>
-                <TextBlock.Text>
-                    <Binding Path="Project.Title" FallbackValue="N/A" TargetNullValue="N/A" />
-                </TextBlock.Text>
-            </TextBlock>
-            <TextBlock Text="Description:" FontWeight="Bold"/>
             <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,10"/>
-            <TextBlock Text="Stage:" FontWeight="Bold"/>
-            <ComboBox x:Name="StageDropdown"
-                  DisplayMemberPath="Name"
-                  SelectedValuePath="Name"
-                  Margin="0,0,0,10"
-                  SelectionChanged="StageDropdown_SelectionChanged"/>
-
-            <TextBlock Text="Created At:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Status}"/>
             <TextBlock Text="{Binding CreatedAt}" />
             <TextBlock Text="Assigned To:" FontWeight="Bold" Margin="0,10,0,0"/>
             <TextBlock>
@@ -29,15 +15,6 @@
                     <Binding Path="AssignedTo.UserName" FallbackValue="Unassigned" TargetNullValue="Unassigned" />
                 </TextBlock.Text>
             </TextBlock>
-            <StackPanel Orientation="Horizontal"
-            Margin="0,10,0,0"
-            HorizontalAlignment="Center">
-                <Button Content="Assign to Me"
-            Click="AssignToMe_Click"
-            Margin="0,0,10,0"/>
-                <Button Content="Unassign Me"
-            Click="UnassignMe_Click"/>
-            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
