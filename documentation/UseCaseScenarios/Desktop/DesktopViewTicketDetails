@@ -1,0 +1,5 @@
+Context - User is logged in 
+
+Primary Flow
+	1. User double clicks a ticket
+	2. modal opens with ticket information
