@@ -7,13 +7,26 @@ using TicketSystemDesktop.Models;
 
 namespace TicketSystemDesktop
 {
+    /// <summary>
+    /// login window
+    /// </summary>
+    /// <seealso cref="System.Windows.Window" />
+    /// <seealso cref="System.Windows.Markup.IComponentConnector" />
     public partial class LoginWindow : Window
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginWindow"/> class.
+        /// </summary>
         public LoginWindow()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles the Click event of the Login control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             string username = UsernameTextBox.Text.Trim();
