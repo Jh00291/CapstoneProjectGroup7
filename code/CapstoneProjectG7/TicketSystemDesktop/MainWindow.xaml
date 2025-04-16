@@ -1,7 +1,7 @@
 ﻿<Window x:Class="TicketSystemDesktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Ticket System" Height="500" Width="700">
+        Title="Ticket System" Height="500" Width="410">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,25 +19,24 @@
                    Grid.Row="0"
                    Text="Welcome!" />
 
-        <!-- Ticket Lists -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" Margin="10">
 
-            <!-- Available Tickets -->
-            <StackPanel Grid.Column="0" Margin="10">
-                <TextBlock Text="Available Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
-                <ListBox x:Name="AvailableTicketsList" DisplayMemberPath="Title" Height="350" ToolTip="Double-click to view details"/>
-            </StackPanel>
+            <!-- Filter CheckBox -->
+            <CheckBox x:Name="MyTicketsOnlyCheckBox"
+              Content="Show only my assigned tickets"
+              Margin="0,0,0,10"
+              Checked="MyTicketsOnlyCheckBox_Changed"
+              Unchecked="MyTicketsOnlyCheckBox_Changed"/>
 
-            <!-- Assigned Tickets -->
-            <StackPanel Grid.Column="1" Margin="10">
-                <TextBlock Text="Your Assigned Tickets" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
-                <ListBox x:Name="AssignedTicketsList" DisplayMemberPath="Title" Height="350" ToolTip="Double-click to view details"/>
-            </StackPanel>
-        </Grid>
+            <!-- Unified Ticket List -->
+            <ListBox x:Name="UnifiedTicketsList"
+             DisplayMemberPath="Title"
+             Height="350"
+             ToolTip="Double-click to view details"
+             MouseDoubleClick="TicketList_DoubleClick"/>
+
+        </StackPanel>
+
         <Button Content="Logout"
         Width="75"
         HorizontalAlignment="Right"

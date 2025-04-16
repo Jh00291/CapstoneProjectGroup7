@@ -11,6 +11,11 @@ namespace TicketSystemDesktop.Data
 
         public DbSet<Employee> Employees { get; set; }
 
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<KanbanBoard> KanbanBoards { get; set; }
+        public DbSet<KanbanColumn> KanbanColumns { get; set; }
+
+
         public TicketDBContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,6 +24,27 @@ namespace TicketSystemDesktop.Data
             {
                 optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=TicketSystemDb;Trusted_Connection=True;");
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.Tickets)
+                .HasForeignKey(t => t.ProjectId);
+
+            modelBuilder.Entity<KanbanBoard>()
+                .HasMany(b => b.Columns)
+                .WithOne(c => c.KanbanBoard)
+                .HasForeignKey(c => c.KanbanBoardId);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.KanbanBoard)
+                .WithOne(b => b.Project)
+                .HasForeignKey<KanbanBoard>(b => b.ProjectId);
+
         }
     }
 }
