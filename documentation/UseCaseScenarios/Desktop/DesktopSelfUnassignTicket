@@ -1,0 +1,5 @@
+Context - User is logged in and viewing a ticket
+
+Primary Flow
+	1. User checks the unassign to me button
+	2. The ticket becomes unassigned to the logged in user

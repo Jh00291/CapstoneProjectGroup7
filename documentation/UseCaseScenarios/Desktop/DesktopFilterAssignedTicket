@@ -1,0 +1,8 @@
+Context - User is logged in 
+
+Primary Flow
+	1a. User checks the assigned to me checkbox
+	2. Ticket list is filtered to only those that are assigned to you
+	
+	1b. User unchecks the assigned to me checkbox
+	1c. Ticket list shows all the tickets available to the user
