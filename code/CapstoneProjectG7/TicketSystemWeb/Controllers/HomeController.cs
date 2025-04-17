@@ -58,7 +58,6 @@ namespace TicketSystemWeb.Controllers
             {
                 ViewBag.UserProjects = new List<Project>();
                 ViewBag.CanManageColumns = false;
-                ViewBag.CanMoveTickets = false;
                 return View(new KanbanBoard { Columns = new List<KanbanColumn>() });
             }
             if (projectId == 0)
@@ -82,7 +81,6 @@ namespace TicketSystemWeb.Controllers
             var isManager = project.ProjectManagerId == userId;
             var isInProject = project.ProjectGroups.Any(pg => userGroupIdsForAccess.Contains(pg.GroupId));
             ViewBag.CanManageColumns = isAdmin || isManager;
-            ViewBag.CanMoveTickets = isAdmin || isManager || isInProject;
             var projectGroups = await _context.ProjectGroups
                 .Where(pg => pg.ProjectId == project.Id)
                 .Select(pg => pg.Group)
@@ -92,7 +90,7 @@ namespace TicketSystemWeb.Controllers
                 .Where(c => c.GroupAccess.Any(ga => userGroupIdsForAccess.Contains(ga.GroupId)))
                 .Select(c => c.Id)
                 .ToList();
-            ViewBag.AccessibleColumnIds = accessibleColumnIds;
+            ViewBag.AccessibleColumnIds = accessibleColumnIds ?? new List<int>();
             return View(project.KanbanBoard);
         }
 
@@ -159,38 +157,30 @@ namespace TicketSystemWeb.Controllers
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
                     .ThenInclude(b => b.Columns)
+                .Include(p => p.ProjectGroups)
                 .FirstOrDefaultAsync(p => p.Id == ticket.ProjectId);
             if (project == null) return NotFound();
-            var kanbanBoard = project.KanbanBoard;
-            var firstColumn = kanbanBoard?.Columns.OrderBy(c => c.Order).FirstOrDefault();
+            var firstColumn = project.KanbanBoard.Columns.OrderBy(c => c.Order).FirstOrDefault();
             var userId = GetLoggedInUserId();
             var isAdmin = User.IsInRole("admin");
             var isManager = project.ProjectManagerId == userId;
-            var isPrivileged = isAdmin || isManager;
-            if (!isPrivileged)
+            if (!isAdmin && !isManager)
             {
                 var userGroupIds = await _context.Groups
                     .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
                     .Select(g => g.Id)
                     .ToListAsync();
-                var hasAccess = column.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId));
-                if (!hasAccess)
-                {
-                    ticket.AssignedToId = null;
-                }
-                else if (column.Id == firstColumn?.Id && string.IsNullOrEmpty(ticket.AssignedToId))
-                {
-                    ticket.AssignedToId = userId;
-                }
-            }
-            else
-            {
-                if (column.Id == firstColumn?.Id && string.IsNullOrEmpty(ticket.AssignedToId))
-                {
-                    ticket.AssignedToId = userId;
-                }
+                var isInProject = project.ProjectGroups.Any(pg => userGroupIds.Contains(pg.GroupId));
+                var hasAccessToColumn = column.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId));
+                if (!isInProject)
+                    return Forbid();
             }
             ticket.Status = column.Name;
+
+            if (column.Id == firstColumn?.Id && string.IsNullOrEmpty(ticket.AssignedToId))
+            {
+                ticket.AssignedToId = userId;
+            }
             var history = new TicketHistory
             {
                 TicketId = ticketId,
@@ -357,7 +347,9 @@ namespace TicketSystemWeb.Controllers
                         text = c.CommentText,
                         createdAt = c.CreatedAt.ToString("yyyy-MM-dd HH:mm")
                     })
-                }
+                },
+                isAdmin = User.IsInRole("admin"),
+                isProjectManager = await _context.Projects.AnyAsync(p => p.Id == ticket.ProjectId && p.ProjectManagerId == GetLoggedInUserId())
             });
         }
 
@@ -373,14 +365,20 @@ namespace TicketSystemWeb.Controllers
         {
             var ticket = await _context.Tickets.FindAsync(ticketId);
             if (ticket == null) return NotFound();
+            var userId = GetLoggedInUserId();
+            var isAdmin = User.IsInRole("admin");
+            var isProjectManager = await _context.Projects
+                .AnyAsync(p => p.Id == ticket.ProjectId && p.ProjectManagerId == userId);
             if (!string.IsNullOrEmpty(assignedToId))
             {
-                var isValid = await _context.Groups
-                    .AnyAsync(g =>
-                        (g.ManagerId == assignedToId || g.EmployeeGroups.Any(eg => eg.EmployeeId == assignedToId)) &&
-                        g.ProjectGroups.Any(pg => pg.ProjectId == ticket.ProjectId));
-                if (!isValid)
-                    return BadRequest("Invalid assignee.");
+                if (isAdmin || isProjectManager)
+                {
+                }
+                else
+                {
+                    if (assignedToId != userId)
+                        return BadRequest("You can only assign tickets to yourself.");
+                }
                 if (ticket.AssignedToId != assignedToId)
                 {
                     var user = await _context.Users.FindAsync(assignedToId);
@@ -390,11 +388,15 @@ namespace TicketSystemWeb.Controllers
                         Action = $"Assigned to {user?.UserName}",
                         PerformedBy = User.Identity.Name ?? "System"
                     });
+                    ticket.AssignedToId = assignedToId;
                 }
+            }
+            else
+            {
+                ticket.AssignedToId = null;
             }
             ticket.Title = title;
             ticket.Description = description;
-            ticket.AssignedToId = string.IsNullOrWhiteSpace(assignedToId) ? null : assignedToId;
             await _context.SaveChangesAsync();
             return Json(new { success = true });
         }
@@ -515,6 +517,25 @@ namespace TicketSystemWeb.Controllers
                 .Distinct()
                 .ToListAsync();
             return Json(employees);
+        }
+
+        /// <summary>
+        /// Unassigns the current user from a ticket.
+        /// </summary>
+        /// <param name="ticketId">The ticket ID.</param>
+        /// <returns>Success response if unassigned.</returns>
+        [HttpPost]
+        public async Task<IActionResult> UnassignTicket(int ticketId)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket == null) return NotFound();
+            var userId = GetLoggedInUserId();
+            if (ticket.AssignedToId != userId)
+                return Forbid();
+            ticket.AssignedToId = null;
+            _context.Tickets.Update(ticket);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
         }
 
     }
