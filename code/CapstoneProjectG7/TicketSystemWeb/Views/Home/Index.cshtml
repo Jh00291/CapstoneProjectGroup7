@@ -33,10 +33,7 @@
             {
                 <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
                 <div class="button-group">
-                    @if (ViewBag.CanMoveTickets != null && ViewBag.CanMoveTickets)
-                    {
-                        <button class="btn-add-column" onclick="openTicketModal()">Add Ticket</button>
-                    }
+                    <button class="btn-add-column" onclick="openTicketModal()">Add Ticket</button>
                     @if (ViewBag.CanManageColumns != null && ViewBag.CanManageColumns)
                     {
                         <button class="btn-add-column" onclick="openColumnModal()">Manage Columns</button>
@@ -46,6 +43,7 @@
                     <div class="kanban-board">
                         @foreach (var column in Model.Columns.OrderBy(c => c.Order))
                         {
+                            var accessibleIds = ViewBag.AccessibleColumnIds as List<int> ?? new List<int>();
                             <div class="kanban-column" data-column-id="@column.Id"
                                  ondrop="@(ViewBag.CanManageColumns ? "dropColumn(event)" : "")"
                                  ondragover="@(ViewBag.CanManageColumns ? "allowDrop(event)" : "")">
@@ -55,8 +53,8 @@
                                     <h3>@column.Name</h3>
                                 </div>
                                 <div class="kanban-cards"
-                                     ondrop="@(ViewBag.CanMoveTickets ? "drop(event)" : "")"
-                                     ondragover="@(ViewBag.CanMoveTickets ? "allowDrop(event)" : "")">
+                                     ondrop="drop(event)"
+                                     ondragover="allowDrop(event)">
                                     @if (!Model.Project?.Tickets?.Any(t => t.Status == column.Name) ?? true)
                                     {
                                         <div class="drop-placeholder"></div>
@@ -69,10 +67,10 @@
                                     }
                                     @foreach (var ticket in Model.Project?.Tickets?.Where(t => t.Status == column.Name) ?? Enumerable.Empty<Ticket>())
                                     {
-                                        var isAccessible = ViewBag.AccessibleColumnIds.Contains(column.Id);
+                                        var isAccessible = accessibleIds.Contains(column.Id);
                                         <div class="kanban-card"
-                                             draggable="@(ViewBag.CanMoveTickets ? "true" : "false")"
-                                             ondragstart="@(ViewBag.CanMoveTickets ? "drag(event)" : "")"
+                                             draggable="@(accessibleIds.Contains(column.Id) ? "true" : "false")"
+                                             ondragstart="@(accessibleIds.Contains(column.Id) ? "drag(event)" : "")"
                                              id="ticket-@ticket.TicketId"
                                              data-column-id="@column.Id"
                                              data-editable="@isAccessible.ToString().ToLower()">
@@ -241,7 +239,6 @@
                 <label for="editAssignedTo">Assigned To:</label>
                 <select id="editAssignedTo">
                     <option value="">Unassigned</option>
-                    <!-- options will be populated dynamically -->
                 </select>
             </div>
             <button class="btn-purple" onclick="submitEditTicket()">Save Changes</button>
@@ -360,7 +357,7 @@
             let ticketId = event.dataTransfer.getData("ticketId").replace("ticket-", "");
             let columnElement = event.target.closest(".kanban-column");
             if (!columnElement) return;
-            let columnId = columnElement.getAttribute("data-column-id");
+            let columnId = parseInt(columnElement.getAttribute("data-column-id"));
             let response = await fetch(`/Home/MoveTicket?ticketId=${ticketId}&columnId=${columnId}`, {
                 method: "POST"
             });
@@ -370,6 +367,16 @@
                 let placeholder = dropArea.querySelector(".drop-placeholder");
                 if (placeholder) {
                     placeholder.remove();
+                }
+                if (!accessibleColumnIds.includes(columnId)) {
+                    alert("You have been unassigned because you do not have access to this column.");
+                    let ticketCard = document.getElementById(`ticket-${ticketId}`);
+                    ticketCard.setAttribute("data-editable", "false");
+                    const actions = ticketCard.querySelector(".card-actions");
+                    if (actions) {
+                        actions.querySelectorAll(".button-ticket-edit, .button-ticket-delete").forEach(btn => btn.remove());
+                    }
+                    await fetch(`/Home/UnassignTicket?ticketId=${ticketId}`, { method: "POST" });
                 }
             } else {
                 console.error("Failed to move ticket");
@@ -490,21 +497,39 @@
             let response = await fetch(`/Home/ViewTicketDetails?ticketId=${ticketId}`);
             let data = await response.json();
             if (data.success) {
-                const ticket = data.ticket;
+                const ticket = {
+                    id: data.ticket.id,
+                    title: data.ticket.title,
+                    description: data.ticket.description,
+                    assignedToId: data.ticket.assignedToId
+                };
+                const isAdmin = data.isAdmin;
+                const isManager = data.isProjectManager;
                 document.getElementById("editTicketId").value = ticketId;
                 document.getElementById("editTicketTitle").value = ticket.title;
                 document.getElementById("editTicketDescription").value = ticket.description;
-                const employeeRes = await fetch(`/Home/GetAssignableEmployeesForTicket?ticketId=${ticketId}`);
-                const employees = await employeeRes.json();
                 const dropdown = document.getElementById("editAssignedTo");
-                dropdown.innerHTML = `<option value="">Unassigned</option>`;
-                employees.forEach(emp => {
+                dropdown.innerHTML = "";
+                if (isAdmin || isManager) {
+                    const employeeRes = await fetch(`/Home/GetAssignableEmployeesForTicket?ticketId=${ticketId}`);
+                    const employees = await employeeRes.json();
+                    dropdown.innerHTML = `<option value="">Unassigned</option>`;
+                    employees.forEach(emp => {
+                        const option = document.createElement("option");
+                        option.value = emp.id;
+                        option.text = emp.name;
+                        if (emp.id === ticket.assignedToId) option.selected = true;
+                        dropdown.appendChild(option);
+                    });
+                } else {
+                    const selfId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
+                    const selfName = '@User.Identity.Name';
                     const option = document.createElement("option");
-                    option.value = emp.id;
-                    option.text = emp.name;
-                    if (emp.id === ticket.assignedToId) option.selected = true;
+                    option.value = selfId;
+                    option.text = selfName;
+                    option.selected = ticket.assignedToId === selfId;
                     dropdown.appendChild(option);
-                });
+                }
                 document.getElementById("editTicketModal").style.display = "flex";
             } else {
                 alert("Failed to fetch ticket details.");

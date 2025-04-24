@@ -131,12 +131,11 @@ namespace TicketSystemWeb.Controllers
                     {
                         ProjectId = project.Id,
                         GroupId = groupId,
-                        IsApproved = !requiresApproval // Auto-approve if same manager, else require approval
+                        IsApproved = !requiresApproval
                     });
                 }
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction("Management");
         }
 
@@ -388,6 +387,12 @@ namespace TicketSystemWeb.Controllers
             return Json(employees);
         }
 
+        /// <summary>
+        /// Approves the group addition.
+        /// </summary>
+        /// <param name="projectId">The project identifier.</param>
+        /// <param name="groupId">The group identifier.</param>
+        /// <returns>group approved request or badrequest</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveGroupAddition(int projectId, int groupId)
@@ -413,6 +418,12 @@ namespace TicketSystemWeb.Controllers
             return Json(new { success = true, message = "Group approved successfully." });
         }
 
+        /// <summary>
+        /// Denies the group addition.
+        /// </summary>
+        /// <param name="projectId">The project identifier.</param>
+        /// <param name="groupId">The group identifier.</param>
+        /// <returns>group denied request or badrequest</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DenyGroupAddition(int projectId, int groupId)
@@ -444,6 +455,11 @@ namespace TicketSystemWeb.Controllers
         }
 
 
+        /// <summary>
+        /// Forbids the json.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>403 forbidden</returns>
         private IActionResult ForbidJson(object value)
         {
             return new JsonResult(value) { StatusCode = StatusCodes.Status403Forbidden };
