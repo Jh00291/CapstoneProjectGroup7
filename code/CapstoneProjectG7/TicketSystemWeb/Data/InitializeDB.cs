@@ -36,6 +36,11 @@ namespace TicketSystemWeb.Data
             var user3 = await CreateUser(userManager, "michael", "michael@example.com", userRole);
             var user4 = await CreateUser(userManager, "alice", "alice@example.com", userRole);
             var user5 = await CreateUser(userManager, "bobby", "bob@example.com", userRole);
+            var user6 = await CreateUser(userManager, "charlie", "charlie@example.com", userRole);
+            var user7 = await CreateUser(userManager, "danny", "danny@example.com", userRole);
+            var user8 = await CreateUser(userManager, "evaa", "eva@example.com", userRole);
+            var user9 = await CreateUser(userManager, "frank", "frank@example.com", userRole);
+            var user10 = await CreateUser(userManager, "gina", "gina@example.com", userRole);
             await dbContext.SaveChangesAsync();
             adminUser = await userManager.FindByNameAsync("admin");
             user1 = await userManager.FindByNameAsync("johndoe");
@@ -43,6 +48,12 @@ namespace TicketSystemWeb.Data
             user3 = await userManager.FindByNameAsync("michael");
             user4 = await userManager.FindByNameAsync("alice");
             user5 = await userManager.FindByNameAsync("bobby");
+            user6 = await userManager.FindByNameAsync("charlie");
+            user7 = await userManager.FindByNameAsync("danny");
+            user8 = await userManager.FindByNameAsync("evaa");
+            user9 = await userManager.FindByNameAsync("frank");
+            user10 = await userManager.FindByNameAsync("gina");
+
             if (!await dbContext.Groups.AnyAsync())
             {
                 var group1 = new Group { Name = "Development Team", ManagerId = adminUser.Id };
@@ -60,6 +71,13 @@ namespace TicketSystemWeb.Data
                     new EmployeeGroup { EmployeeId = user4.Id, GroupId = group4.Id },
                     new EmployeeGroup { EmployeeId = user5.Id, GroupId = group5.Id },
                     new EmployeeGroup { EmployeeId = adminUser.Id, GroupId = group6.Id }
+                );
+                dbContext.EmployeeGroups.AddRange(
+                    new EmployeeGroup { EmployeeId = user6.Id, GroupId = group1.Id },
+                    new EmployeeGroup { EmployeeId = user6.Id, GroupId = group2.Id },
+                    new EmployeeGroup { EmployeeId = user7.Id, GroupId = group1.Id },
+                    new EmployeeGroup { EmployeeId = user8.Id, GroupId = group4.Id },
+                    new EmployeeGroup { EmployeeId = user9.Id, GroupId = group5.Id }
                 );
                 await dbContext.SaveChangesAsync();
             }
@@ -89,28 +107,44 @@ namespace TicketSystemWeb.Data
                     Description = "An online marketplace with payment integration.",
                     ProjectManagerId = user2.Id
                 };
+                var project4 = new Project
+                {
+                    Title = "Internal Tools",
+                    Description = "Internal management tools accessible to DevOps only.",
+                    ProjectManagerId = user5.Id
+                };
+                dbContext.Projects.Add(project4);
+                await dbContext.SaveChangesAsync();
+
+                var toolsProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Title == "Internal Tools");
+                dbContext.ProjectGroups.Add(
+                    new ProjectGroup { ProjectId = toolsProject.Id, GroupId = devOpsTeam.Id }
+                );
+                await dbContext.SaveChangesAsync();
                 dbContext.Projects.AddRange(project1, project2, project3);
                 await dbContext.SaveChangesAsync();
                 var ticketSystemProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Title == "Ticket System Project");
                 var bugTrackingProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Title == "Bug Tracking System");
                 var ecommerceProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Title == "E-commerce Platform");
                 dbContext.ProjectGroups.AddRange(
-                    new ProjectGroup { ProjectId = ticketSystemProject.Id, GroupId = devTeam.Id },
-                    new ProjectGroup { ProjectId = ticketSystemProject.Id, GroupId = qaTeam.Id },
-                    new ProjectGroup { ProjectId = bugTrackingProject.Id, GroupId = supportTeam.Id },
-                    new ProjectGroup { ProjectId = bugTrackingProject.Id, GroupId = uxTeam.Id },
-                    new ProjectGroup { ProjectId = ecommerceProject.Id, GroupId = securityTeam.Id },
-                    new ProjectGroup { ProjectId = ecommerceProject.Id, GroupId = devOpsTeam.Id }
+                    new ProjectGroup { ProjectId = ticketSystemProject.Id, GroupId = devTeam.Id, IsApproved = true },
+                    new ProjectGroup { ProjectId = ticketSystemProject.Id, GroupId = qaTeam.Id, IsApproved = true },
+                    new ProjectGroup { ProjectId = bugTrackingProject.Id, GroupId = supportTeam.Id, IsApproved = true },
+                    new ProjectGroup { ProjectId = bugTrackingProject.Id, GroupId = uxTeam.Id, IsApproved = true },
+                    new ProjectGroup { ProjectId = ecommerceProject.Id, GroupId = securityTeam.Id, IsApproved = true },
+                    new ProjectGroup { ProjectId = ecommerceProject.Id, GroupId = devOpsTeam.Id, IsApproved = true }
                 );
                 await dbContext.SaveChangesAsync();
                 var board1 = new KanbanBoard { ProjectId = ticketSystemProject.Id, ProjectName = ticketSystemProject.Title };
                 var board2 = new KanbanBoard { ProjectId = bugTrackingProject.Id, ProjectName = bugTrackingProject.Title };
-                var board3 = new KanbanBoard { ProjectId = ecommerceProject.Id, ProjectName = ecommerceProject.Title };
-                dbContext.KanbanBoards.AddRange(board1, board2, board3);
+                var board3 = new KanbanBoard { ProjectId = ecommerceProject.Id, ProjectName = ecommerceProject.Title }; 
+                var board4 = new KanbanBoard { ProjectId = toolsProject.Id, ProjectName = toolsProject.Title };
+                dbContext.KanbanBoards.AddRange(board1, board2, board3, board4);
                 await dbContext.SaveChangesAsync();
                 var kanbanBoard1 = await dbContext.KanbanBoards.FirstOrDefaultAsync(b => b.ProjectId == ticketSystemProject.Id);
                 var kanbanBoard2 = await dbContext.KanbanBoards.FirstOrDefaultAsync(b => b.ProjectId == bugTrackingProject.Id);
                 var kanbanBoard3 = await dbContext.KanbanBoards.FirstOrDefaultAsync(b => b.ProjectId == ecommerceProject.Id);
+                var kanbanBoard4 = await dbContext.KanbanBoards.FirstOrDefaultAsync(b => b.ProjectId == toolsProject.Id);
                 dbContext.KanbanColumns.AddRange(
                     new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = kanbanBoard1.Id },
                     new KanbanColumn { Name = "In Progress", Order = 2, KanbanBoardId = kanbanBoard1.Id },
@@ -123,7 +157,10 @@ namespace TicketSystemWeb.Data
                     new KanbanColumn { Name = "To Do", Order = 1, KanbanBoardId = kanbanBoard3.Id },
                     new KanbanColumn { Name = "Review", Order = 2, KanbanBoardId = kanbanBoard3.Id },
                     new KanbanColumn { Name = "Testing", Order = 3, KanbanBoardId = kanbanBoard3.Id },
-                    new KanbanColumn { Name = "Deployment", Order = 4, KanbanBoardId = kanbanBoard3.Id }
+                    new KanbanColumn { Name = "Deployment", Order = 4, KanbanBoardId = kanbanBoard3.Id },
+                    new KanbanColumn { Name = "Planning", Order = 1, KanbanBoardId = kanbanBoard4.Id },
+                    new KanbanColumn { Name = "Execution", Order = 2, KanbanBoardId = kanbanBoard4.Id },
+                    new KanbanColumn { Name = "Wrap-Up", Order = 3, KanbanBoardId = kanbanBoard4.Id }
                 );
                 await dbContext.SaveChangesAsync();
                 dbContext.Tickets.AddRange(
@@ -161,6 +198,24 @@ namespace TicketSystemWeb.Data
                         Status = "Review",
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = "Alice",
+                        ProjectId = ecommerceProject.Id
+                    },
+                    new Ticket
+                    {
+                        Title = "Unassigned Task",
+                        Description = "No one is responsible yet.",
+                        Status = "To Do",
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = "System",
+                        ProjectId = toolsProject.Id
+                    },
+                    new Ticket
+                    {
+                        Title = "Strange Status Ticket",
+                        Description = "Has an unrecognized status to test UI resilience.",
+                        Status = "WTF?",
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = "Charlie",
                         ProjectId = ecommerceProject.Id
                     }
                 );

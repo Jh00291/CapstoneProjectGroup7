@@ -33,10 +33,7 @@
             {
                 <h1 class="kanban-title">@Model.ProjectName - Kanban Board</h1>
                 <div class="button-group">
-                    @if (ViewBag.CanMoveTickets != null && ViewBag.CanMoveTickets)
-                    {
-                        <button class="btn-add-column" onclick="openTicketModal()">Add Ticket</button>
-                    }
+                    <button class="btn-add-column" onclick="openTicketModal()">Add Ticket</button>
                     @if (ViewBag.CanManageColumns != null && ViewBag.CanManageColumns)
                     {
                         <button class="btn-add-column" onclick="openColumnModal()">Manage Columns</button>
@@ -242,7 +239,6 @@
                 <label for="editAssignedTo">Assigned To:</label>
                 <select id="editAssignedTo">
                     <option value="">Unassigned</option>
-                    <!-- options will be populated dynamically -->
                 </select>
             </div>
             <button class="btn-purple" onclick="submitEditTicket()">Save Changes</button>
@@ -374,9 +370,13 @@
                 }
                 if (!accessibleColumnIds.includes(columnId)) {
                     alert("You have been unassigned because you do not have access to this column.");
-                    await fetch(`/Home/UnassignTicket?ticketId=${ticketId}`, {
-                        method: "POST"
-                    });
+                    let ticketCard = document.getElementById(`ticket-${ticketId}`);
+                    ticketCard.setAttribute("data-editable", "false");
+                    const actions = ticketCard.querySelector(".card-actions");
+                    if (actions) {
+                        actions.querySelectorAll(".button-ticket-edit, .button-ticket-delete").forEach(btn => btn.remove());
+                    }
+                    await fetch(`/Home/UnassignTicket?ticketId=${ticketId}`, { method: "POST" });
                 }
             } else {
                 console.error("Failed to move ticket");

@@ -54,6 +54,10 @@ namespace TicketSystemWeb.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Logouts this instance.
+        /// </summary>
+        /// <returns>the login screen</returns>
         public async Task<IActionResult> Logout()
         {
             try

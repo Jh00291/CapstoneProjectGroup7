@@ -45,6 +45,12 @@ namespace TicketSystemWeb.ViewModels
         /// </value>
         public bool CanManageGroups { get; set; }
 
+        /// <summary>
+        /// Gets or sets the selected group ids.
+        /// </summary>
+        /// <value>
+        /// The selected group ids.
+        /// </value>
         public List<int> SelectedGroupIds { get; set; } = new();
 
         /// <summary>
