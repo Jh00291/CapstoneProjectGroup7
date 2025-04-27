@@ -375,7 +375,7 @@
                     const actions = ticketCard.querySelector(".card-actions");
                     if (actions) {
                         actions.querySelectorAll(".button-ticket-edit, .button-ticket-delete").forEach(btn => btn.remove());
-                    }
+                    } 
                     await fetch(`/Home/UnassignTicket?ticketId=${ticketId}`, { method: "POST" });
                 }
             } else {

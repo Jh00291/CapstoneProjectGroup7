@@ -43,6 +43,9 @@ namespace TicketSystemDesktop.Models
         /// The tickets.
         /// </value>
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+
+        public ICollection<ProjectGroup> ProjectGroups { get; set; } = new List<ProjectGroup>();
+
     }
 
 

@@ -50,6 +50,9 @@ namespace TicketSystemDesktop.Models
         /// The kanban board.
         /// </value>
         public KanbanBoard KanbanBoard { get; set; }
+
+        public ICollection<ColumnGroupAccess> GroupAccess { get; set; } = new List<ColumnGroupAccess>();
+
     }
 }
 

@@ -21,12 +21,18 @@
 
         <StackPanel Grid.Row="1" Margin="10">
 
-            <!-- Filter CheckBox -->
+            <!-- Filter CheckBoxes -->
             <CheckBox x:Name="MyTicketsOnlyCheckBox"
               Content="Show only my assigned tickets"
+              Margin="0,0,0,5"
+              Checked="FilterCheckBox_Changed"
+              Unchecked="FilterCheckBox_Changed"/>
+
+            <CheckBox x:Name="AvailableTicketsOnlyCheckBox"
+              Content="Show only available tickets (unassigned)"
               Margin="0,0,0,10"
-              Checked="MyTicketsOnlyCheckBox_Changed"
-              Unchecked="MyTicketsOnlyCheckBox_Changed"/>
+              Checked="FilterCheckBox_Changed"
+              Unchecked="FilterCheckBox_Changed"/>
 
             <!-- Unified Ticket List -->
             <ListBox x:Name="UnifiedTicketsList"

@@ -44,15 +44,53 @@ namespace TicketSystemDesktop
             using (var context = new TicketDBContext())
             {
                 var showOnlyMyTickets = MyTicketsOnlyCheckBox.IsChecked == true;
+                var showOnlyAvailableTickets = AvailableTicketsOnlyCheckBox.IsChecked == true;
 
-                var tickets = context.Tickets
+                var ticketsQuery = context.Tickets
                     .Include(t => t.AssignedTo)
-                    .Where(t => !showOnlyMyTickets || t.AssignedToId == _loggedInUser.Id)
+                    .Include(t => t.Project)
+                    .AsQueryable();
+
+                // Get the logged-in user's group IDs
+                var userGroupIds = context.EmployeeGroups
+                    .Where(eg => eg.EmployeeId == _loggedInUser.Id)
+                    .Select(eg => eg.GroupId)
                     .ToList();
 
-                UnifiedTicketsList.ItemsSource = tickets;
+                // Get the columns that user's groups have access to
+                var accessibleColumnNames = context.ColumnGroupAccesses
+                    .Where(cga => userGroupIds.Contains(cga.GroupId))
+                    .Select(cga => cga.KanbanColumn.Name)
+                    .Distinct()
+                    .ToList();
+
+                if (showOnlyMyTickets)
+                {
+                    // Show only tickets assigned to this user
+                    ticketsQuery = ticketsQuery.Where(t => t.AssignedToId == _loggedInUser.Id);
+                }
+                else if (showOnlyAvailableTickets)
+                {
+                    // Show only unassigned tickets that are in accessible columns
+                    ticketsQuery = ticketsQuery.Where(t =>
+                        t.AssignedToId == null &&
+                        accessibleColumnNames.Contains(t.Status)
+                    );
+                }
+                else
+                {
+                    // DEFAULT: when neither box is checked
+                    // Show unassigned tickets (only ones accessible) + assigned-to-me tickets
+                    ticketsQuery = ticketsQuery.Where(t =>
+                        (t.AssignedToId == null && accessibleColumnNames.Contains(t.Status)) ||
+                        (t.AssignedToId == _loggedInUser.Id)
+                    );
+                }
+
+                UnifiedTicketsList.ItemsSource = ticketsQuery.ToList();
             }
         }
+
 
 
         /// <summary>
@@ -92,6 +130,9 @@ namespace TicketSystemDesktop
                         {
                             var detailsWindow = new TicketDetailsWindow(ticketWithProject, _loggedInUser);
                             detailsWindow.ShowDialog();
+
+                            // After the TicketDetailsWindow closes, reload tickets
+                            LoadTickets();
                         }
                         else
                         {
@@ -112,8 +153,17 @@ namespace TicketSystemDesktop
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void MyTicketsOnlyCheckBox_Changed(object sender, RoutedEventArgs e)
+        private void FilterCheckBox_Changed(object sender, RoutedEventArgs e)
         {
+            if (sender == MyTicketsOnlyCheckBox && MyTicketsOnlyCheckBox.IsChecked == true)
+            {
+                AvailableTicketsOnlyCheckBox.IsChecked = false;
+            }
+            else if (sender == AvailableTicketsOnlyCheckBox && AvailableTicketsOnlyCheckBox.IsChecked == true)
+            {
+                MyTicketsOnlyCheckBox.IsChecked = false;
+            }
+
             LoadTickets();
         }
 

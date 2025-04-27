@@ -40,9 +40,9 @@ namespace TicketSystemDesktop
         {
             InitializeComponent();
             _ticket = ticket;
+            _currentUser = currentUser;
             DataContext = _ticket;
             LoadStages();
-            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -69,17 +69,84 @@ namespace TicketSystemDesktop
         /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
         private void StageDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selected = StageDropdown.SelectedValue as string;
-            if (!string.IsNullOrEmpty(selected))
+            if (StageDropdown.SelectedItem == null || StageDropdown.SelectedItem is not KanbanColumn selectedColumn)
             {
-                _ticket.Status = selected;
-
-                using var context = new TicketDBContext();
-                context.Attach(_ticket);
-                context.Entry(_ticket).Property(t => t.Status).IsModified = true;
-                context.SaveChanges();
+                return; // No stage selected yet
             }
+
+            using var context = new TicketDBContext();
+
+            var ticket = context.Tickets.FirstOrDefault(t => t.TicketId == _ticket.TicketId);
+            if (ticket == null)
+            {
+                MessageBox.Show("Error: Ticket not found.");
+                return;
+            }
+
+            if (_currentUser == null)
+            {
+                MessageBox.Show("Error: Current user not set.");
+                return;
+            }
+
+            var userId = _currentUser.Id;
+
+            // NOW safe to query
+            var allowedGroupIds = context.ColumnGroupAccesses
+                .Where(cga => cga.KanbanColumnId == selectedColumn.Id)
+                .Select(cga => cga.GroupId)
+                .ToList();
+
+            var userGroupIds = context.EmployeeGroups
+                .Where(eg => eg.EmployeeId == userId)
+                .Select(eg => eg.GroupId)
+                .ToList();
+
+            bool hasAccess = allowedGroupIds.Intersect(userGroupIds).Any();
+
+            if (!hasAccess)
+            {
+                var result = MessageBox.Show(
+                    "You don't have access to move this ticket into the selected stage. " +
+                    "If you proceed, you will be unassigned and cannot move the ticket again. Continue?",
+                    "Warning",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    StageDropdown.SelectedValue = _ticket.Status; // revert selection
+                    return;
+                }
+                else
+                {
+                    ticket.Status = selectedColumn.Name;
+                    ticket.AssignedToId = null;
+                    context.SaveChanges();
+
+                    _ticket.Status = selectedColumn.Name;
+                    _ticket.AssignedTo = null;
+                    DataContext = null;
+                    DataContext = _ticket;
+
+                    StageDropdown.IsEnabled = false;
+                    return;
+                }
+            }
+
+            // Normal update if access OK
+            ticket.Status = selectedColumn.Name;
+            context.SaveChanges();
+
+            _ticket.Status = selectedColumn.Name;
+            DataContext = null;
+            DataContext = _ticket;
         }
+
+
+
+
+
 
         /// <summary>
         /// Handles the Click event of the AssignToMe control.
