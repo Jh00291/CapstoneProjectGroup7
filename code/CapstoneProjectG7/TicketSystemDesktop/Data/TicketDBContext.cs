@@ -16,6 +16,7 @@ namespace TicketSystemDesktop.Data
         public DbSet<KanbanColumn> KanbanColumns { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketComment> TicketComments { get; set; }
 
 
         public TicketDBContext() { }
@@ -32,25 +33,21 @@ namespace TicketSystemDesktop.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Ticket - Project
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Project)
                 .WithMany(p => p.Tickets)
                 .HasForeignKey(t => t.ProjectId);
 
-            // KanbanBoard - Columns
             modelBuilder.Entity<KanbanBoard>()
                 .HasMany(b => b.Columns)
                 .WithOne(c => c.KanbanBoard)
                 .HasForeignKey(c => c.KanbanBoardId);
 
-            // Project - KanbanBoard
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.KanbanBoard)
                 .WithOne(b => b.Project)
                 .HasForeignKey<KanbanBoard>(b => b.ProjectId);
 
-            // EmployeeGroup composite key and relations
             modelBuilder.Entity<EmployeeGroup>()
                 .HasKey(eg => new { eg.EmployeeId, eg.GroupId });
 
@@ -64,7 +61,6 @@ namespace TicketSystemDesktop.Data
                 .WithMany(g => g.EmployeeGroups)
                 .HasForeignKey(eg => eg.GroupId);
 
-            // ProjectGroup composite key and relations
             modelBuilder.Entity<ProjectGroup>()
                 .HasKey(pg => new { pg.ProjectId, pg.GroupId });
 
@@ -78,7 +74,6 @@ namespace TicketSystemDesktop.Data
                 .WithMany(g => g.ProjectGroups)
                 .HasForeignKey(pg => pg.GroupId);
 
-            // ColumnGroupAccess relationships
             modelBuilder.Entity<ColumnGroupAccess>()
                 .HasOne(cga => cga.KanbanColumn)
                 .WithMany(kc => kc.GroupAccess)

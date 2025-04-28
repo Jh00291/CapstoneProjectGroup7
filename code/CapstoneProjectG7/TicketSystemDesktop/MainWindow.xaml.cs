@@ -80,10 +80,13 @@ namespace TicketSystemDesktop
                 else
                 {
                     // DEFAULT: when neither box is checked
-                    // Show unassigned tickets (only ones accessible) + assigned-to-me tickets
+                    // Show unassigned tickets and assigned-to-me tickets,
+                    // but ONLY if the ticket is in an accessible column
                     ticketsQuery = ticketsQuery.Where(t =>
-                        (t.AssignedToId == null && accessibleColumnNames.Contains(t.Status)) ||
-                        (t.AssignedToId == _loggedInUser.Id)
+                        accessibleColumnNames.Contains(t.Status) && (
+                            t.AssignedToId == null ||
+                            t.AssignedToId == _loggedInUser.Id
+                        )
                     );
                 }
 

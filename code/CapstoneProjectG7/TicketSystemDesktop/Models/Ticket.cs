@@ -104,8 +104,6 @@ namespace TicketSystemDesktop.Models
         /// </value>
         public Employee? AssignedTo { get; set; }
 
-        // Optional: include if you implement these in desktop app
-        // public ICollection<TicketHistory> History { get; set; } = new List<TicketHistory>();
-        // public ICollection<TicketComment> Comments { get; set; } = new List<TicketComment>();
+        public ICollection<TicketComment> Comments { get; set; } = new List<TicketComment>();
     }
 }

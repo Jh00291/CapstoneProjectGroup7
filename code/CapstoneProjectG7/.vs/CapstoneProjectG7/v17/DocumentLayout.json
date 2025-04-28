@@ -3,16 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\ticketdetailswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\ticketdetailswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\ticketdetailswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\ticketdetailswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\data\\ticketdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\data\\ticketdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\models\\kanbancolumn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\kanbancolumn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\models\\ticketcomment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\ticketcomment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\migrations\\20250427145217_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\migrations\\20250427145217_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\loginwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,22 +63,6 @@
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\columngroupaccess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\models\\kanbancolumn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\models\\kanbancolumn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemweb\\migrations\\20250427145217_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5CCD1BE1-50CE-4FE4-99A1-2C72279429E3}|TicketSystemWeb\\TicketSystemWeb.csproj|solutionrelative:ticketsystemweb\\migrations\\20250427145217_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\ticketdetailswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\ticketdetailswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|c:\\users\\jh00291\\documents\\github\\capstoneprojectgroup7\\code\\capstoneprojectg7\\ticketsystemdesktop\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1A479834-05C4-44DE-A8A9-29022278FC2A}|TicketSystemDesktop\\TicketSystemDesktop.csproj|solutionrelative:ticketsystemdesktop\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -70,65 +78,63 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ProjectGroup.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ProjectGroup.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\ProjectGroup.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ProjectGroup.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\Models\\ProjectGroup.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T13:58:34.298Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "LoginWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\LoginWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\LoginWindow.xaml.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAowEoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T13:13:37.242Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml.cs",
-              "ViewState": "AQIAABYAAAAAAAAAAAAkwFsAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T13:13:42.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
               "Title": "TicketDetailsWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
               "RelativeDocumentMoniker": "TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
               "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
               "RelativeToolTip": "TicketSystemDesktop\\TicketDetailsWindow.xaml.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAQwL4AAAAAAAAA",
+              "ViewState": "AQIAAGIAAAAAAAAAAAAYwHAAAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-27T13:22:56.5Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml.cs",
+              "ViewState": "AQIAAIAAAAAAAAAAAAAowJcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:13:42.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TicketDetailsWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\TicketDetailsWindow.xaml",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml",
+              "RelativeToolTip": "TicketSystemDesktop\\TicketDetailsWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-27T14:59:29.433Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
+              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-27T13:26:31.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "TicketDBContext.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Data\\TicketDBContext.cs",
               "RelativeDocumentMoniker": "TicketSystemDesktop\\Data\\TicketDBContext.cs",
               "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Data\\TicketDBContext.cs",
               "RelativeToolTip": "TicketSystemDesktop\\Data\\TicketDBContext.cs",
-              "ViewState": "AQIAAC4AAAAAAAAAAAAswEUAAAAAAAAA",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAowFoAAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-27T13:13:56.519Z",
               "EditorCaption": ""
@@ -136,71 +142,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Project.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Project.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Project.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Project.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\Models\\Project.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAACEAAAATAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T14:31:20.791Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Group.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Group.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Group.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Group.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\Models\\Group.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T13:57:23.884Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "EmployeeGroup.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\EmployeeGroup.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\EmployeeGroup.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\EmployeeGroup.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\Models\\EmployeeGroup.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T13:57:50.257Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ColumnGroupAccess.cs",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
-              "RelativeToolTip": "TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T13:58:14.624Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
               "Title": "KanbanColumn.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\KanbanColumn.cs",
               "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\KanbanColumn.cs",
               "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\KanbanColumn.cs",
               "RelativeToolTip": "TicketSystemDesktop\\Models\\KanbanColumn.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAAwCEAAAAWAAAA",
+              "ViewState": "AQIAABEAAAAAAAAAAAAAwCkAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-27T14:21:10.291Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 6,
+              "Title": "Ticket.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Ticket.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Ticket.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Ticket.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\Ticket.cs",
+              "ViewState": "AQIAAFAAAAAAAAAAAAA3wGoAAABdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T21:02:53.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TicketComment.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\TicketComment.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\TicketComment.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\TicketComment.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\TicketComment.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T21:04:13.683Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "20250427145217_initial.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemWeb\\Migrations\\20250427145217_initial.cs",
               "RelativeDocumentMoniker": "TicketSystemWeb\\Migrations\\20250427145217_initial.cs",
@@ -213,31 +193,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "TicketDetailsWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\TicketDetailsWindow.xaml",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\TicketDetailsWindow.xaml",
-              "RelativeToolTip": "TicketSystemDesktop\\TicketDetailsWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-04-27T14:59:29.433Z",
+              "DocumentIndex": 9,
+              "Title": "LoginWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\LoginWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\LoginWindow.xaml.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\LoginWindow.xaml.cs",
+              "ViewState": "AQIAABsAAAAAAAAAAAAowDIAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:13:37.242Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ProjectGroup.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ProjectGroup.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\ProjectGroup.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ProjectGroup.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\ProjectGroup.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:58:34.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Project.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Project.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Project.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Project.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\Project.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAACEAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T14:31:20.791Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 12,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "TicketSystemDesktop\\MainWindow.xaml",
-              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\MainWindow.xaml",
-              "RelativeToolTip": "TicketSystemDesktop\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-04-27T13:26:31.303Z",
-              "EditorCaption": ""
+              "Title": "Group.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Group.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\Group.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\Group.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\Group.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:57:23.884Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 13,
+              "Title": "EmployeeGroup.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\EmployeeGroup.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\EmployeeGroup.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\EmployeeGroup.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\EmployeeGroup.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:57:50.257Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ColumnGroupAccess.cs",
+              "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
+              "RelativeDocumentMoniker": "TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
+              "ToolTip": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
+              "RelativeToolTip": "TicketSystemDesktop\\Models\\ColumnGroupAccess.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:58:14.624Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
               "Title": "AssemblyInfo.cs",
               "DocumentMoniker": "C:\\Users\\jh00291\\Documents\\GitHub\\CapstoneProjectGroup7\\code\\CapstoneProjectG7\\TicketSystemDesktop\\AssemblyInfo.cs",
               "RelativeDocumentMoniker": "TicketSystemDesktop\\AssemblyInfo.cs",

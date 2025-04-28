@@ -43,6 +43,7 @@ namespace TicketSystemDesktop
             _currentUser = currentUser;
             DataContext = _ticket;
             LoadStages();
+            LoadComments();
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace TicketSystemDesktop
         {
             if (StageDropdown.SelectedItem == null || StageDropdown.SelectedItem is not KanbanColumn selectedColumn)
             {
-                return; // No stage selected yet
+                return;
             }
 
             using var context = new TicketDBContext();
@@ -91,7 +92,6 @@ namespace TicketSystemDesktop
 
             var userId = _currentUser.Id;
 
-            // NOW safe to query
             var allowedGroupIds = context.ColumnGroupAccesses
                 .Where(cga => cga.KanbanColumnId == selectedColumn.Id)
                 .Select(cga => cga.GroupId)
@@ -107,15 +107,15 @@ namespace TicketSystemDesktop
             if (!hasAccess)
             {
                 var result = MessageBox.Show(
-                    "You don't have access to move this ticket into the selected stage. " +
-                    "If you proceed, you will be unassigned and cannot move the ticket again. Continue?",
+                    "You will not have access to this ticket if you move into the selected stage. " +
+                    "If you proceed, you will be unassigned. Continue?",
                     "Warning",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
 
                 if (result != MessageBoxResult.Yes)
                 {
-                    StageDropdown.SelectedValue = _ticket.Status; // revert selection
+                    StageDropdown.SelectedValue = _ticket.Status;
                     return;
                 }
                 else
@@ -184,6 +184,43 @@ namespace TicketSystemDesktop
                 DataContext = null;
                 DataContext = _ticket;
             }
+        }
+
+        private void LoadComments()
+        {
+            using var context = new TicketDBContext();
+            var comments = context.TicketComments
+                .Where(c => c.TicketId == _ticket.TicketId)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToList();
+
+            CommentsListBox.ItemsSource = comments;
+        }
+
+        private void AddComment_Click(object sender, RoutedEventArgs e)
+        {
+            var commentText = NewCommentTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(commentText))
+            {
+                MessageBox.Show("Please enter a comment before submitting.");
+                return;
+            }
+
+            using var context = new TicketDBContext();
+            var comment = new TicketComment
+            {
+                TicketId = _ticket.TicketId,
+                CommentText = commentText,
+                AuthorName = _currentUser.UserName,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            context.TicketComments.Add(comment);
+            context.SaveChanges();
+
+            NewCommentTextBox.Clear();
+            LoadComments();
         }
     }
 
