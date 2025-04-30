@@ -95,20 +95,6 @@ namespace TicketSystemWeb.Controllers
                 return View("Employees", Tuple.Create(employees, model));
             }
             await _userManager.AddToRoleAsync(user, model.Role);
-            var loggedInUserId = _userManager.GetUserId(User);
-            var managedGroups = await _context.Groups
-                .Where(g => g.ManagerId == loggedInUserId)
-                .ToListAsync();
-            if (managedGroups.Any())
-            {
-                var employeeGroups = managedGroups.Select(g => new EmployeeGroup
-                {
-                    EmployeeId = user.Id,
-                    GroupId = g.Id
-                }).ToList();
-                _context.EmployeeGroups.AddRange(employeeGroups);
-                await _context.SaveChangesAsync();
-            }
             return RedirectToAction(nameof(Employees));
         }
 

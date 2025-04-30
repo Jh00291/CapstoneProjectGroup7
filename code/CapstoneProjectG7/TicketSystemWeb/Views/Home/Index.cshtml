@@ -368,15 +368,31 @@
                 if (placeholder) {
                     placeholder.remove();
                 }
-                if (!accessibleColumnIds.includes(columnId)) {
-                    alert("You have been unassigned because you do not have access to this column.");
-                    let ticketCard = document.getElementById(`ticket-${ticketId}`);
-                    ticketCard.setAttribute("data-editable", "false");
-                    const actions = ticketCard.querySelector(".card-actions");
-                    if (actions) {
-                        actions.querySelectorAll(".button-ticket-edit, .button-ticket-delete").forEach(btn => btn.remove());
-                    } 
-                    await fetch(`/Home/UnassignTicket?ticketId=${ticketId}`, { method: "POST" });
+                let ticketCard = document.getElementById(`ticket-${ticketId}`);
+                ticketCard.setAttribute("data-editable", accessibleColumnIds.includes(columnId).toString());
+                const actions = ticketCard.querySelector(".card-actions");
+                if (actions) {
+                    actions.innerHTML = "";
+                    const viewBtn = document.createElement("button");
+                    viewBtn.className = "button-ticket button-ticket-details";
+                    viewBtn.innerHTML = "🔍";
+                    viewBtn.onclick = () => viewTicketDetails(ticketId);
+                    actions.appendChild(viewBtn);
+                    if (accessibleColumnIds.includes(columnId)) {
+                        const editBtn = document.createElement("button");
+                        editBtn.className = "button-ticket button-ticket-edit";
+                        editBtn.innerHTML = "✏️";
+                        editBtn.onclick = () => editTicket(ticketId);
+                        actions.appendChild(editBtn);
+                        const deleteBtn = document.createElement("button");
+                        deleteBtn.className = "button-ticket button-ticket-delete";
+                        deleteBtn.innerHTML = "❌";
+                        deleteBtn.onclick = () => deleteTicket(ticketId);
+                        actions.appendChild(deleteBtn);
+                    } else {
+                        await fetch(`/Home/UnassignTicket?ticketId=${ticketId}`, { method: "POST" });
+                        alert("You have been unassigned because you do not have access to this column.");
+                    }
                 }
             } else {
                 console.error("Failed to move ticket");

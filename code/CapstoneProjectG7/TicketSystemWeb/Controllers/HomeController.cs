@@ -67,6 +67,8 @@ namespace TicketSystemWeb.Controllers
                     .ThenInclude(b => b.Columns)
                         .ThenInclude(c => c.GroupAccess)
                 .Include(p => p.Tickets)
+                .Include(p => p.ProjectGroups)
+                    .ThenInclude(pg => pg.Group)
                 .FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
             {
@@ -78,9 +80,10 @@ namespace TicketSystemWeb.Controllers
                 .Select(g => g.Id)
                 .ToListAsync();
             var isAdmin = User.IsInRole("admin");
-            var isManager = project.ProjectManagerId == userId;
-            var isInProject = project.ProjectGroups.Any(pg => userGroupIdsForAccess.Contains(pg.GroupId));
-            ViewBag.CanManageColumns = isAdmin || isManager;
+            var isProjectLead = project.ProjectManagerId == userId;
+            var managesApprovedGroup = project.ProjectGroups
+                .Any(pg => pg.IsApproved && pg.Group.ManagerId == userId);
+            ViewBag.CanManageColumns = isAdmin || isProjectLead || managesApprovedGroup;
             var projectGroups = await _context.ProjectGroups
                 .Where(pg => pg.ProjectId == project.Id)
                 .Select(pg => pg.Group)
@@ -320,7 +323,7 @@ namespace TicketSystemWeb.Controllers
             var ticket = await _context.Tickets
                 .Include(t => t.AssignedTo)
                 .Include(t => t.History.OrderByDescending(h => h.Timestamp))
-                .Include(t => t.Comments.OrderBy(c => c.CreatedAt))
+                .Include(t => t.Comments.OrderByDescending(c => c.CreatedAt))
                 .FirstOrDefaultAsync(t => t.TicketId == ticketId);
             if (ticket == null) return NotFound();
             return Json(new
