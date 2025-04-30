@@ -9,14 +9,10 @@
       {
         "name": "Microsoft.WindowsDesktop.App",
         "version": "8.0.0"
-      },
-      {
-        "name": "Microsoft.AspNetCore.App",
-        "version": "8.0.0"
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\jh00291\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\drivera3\\.dotnet\\store\\|arch|\\|tfm|",
       "C:\\Users\\jh00291\\.nuget\\packages",
       "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
     ],

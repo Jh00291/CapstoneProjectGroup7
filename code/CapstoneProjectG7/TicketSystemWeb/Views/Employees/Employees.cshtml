@@ -84,6 +84,11 @@
                         <div class="invalid-feedback">Password is required.</div>
                     </div>
                     <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password*</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" required>
+                        <div class="invalid-feedback">Passwords must match.</div>
+                    </div>
+                    <div class="mb-3">
                         <label for="role" class="form-label">Role*</label>
                         <select class="form-select" id="role" name="Role" required>
                             <option value="">-- Select Role --</option>
@@ -94,7 +99,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;" onclick="validateAndSubmitEmployeeForm()">Add Employee</button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            style="background-color: #6f42c1; border-color: #6f42c1;"
+                            onclick="validateAndSubmitEmployeeForm()">
+                        Add Employee
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -190,6 +200,17 @@
     }
     function validateAndSubmitEmployeeForm() {
         let form = document.getElementById("addEmployeeForm");
+        let password = document.getElementById("password");
+        let confirmPassword = document.getElementById("confirmPassword");
+
+        if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity("Passwords do not match.");
+            form.classList.add("was-validated");
+            return;
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
+
         if (form.checkValidity()) {
             addEmployee();
         } else {
@@ -208,12 +229,14 @@
         let username = document.getElementById("username").value.trim();
         let email = document.getElementById("email").value.trim();
         let password = document.getElementById("password").value.trim();
+        let confirmPassword = document.getElementById("confirmPassword").value.trim();
         let role = document.getElementById("role").value;
         let token = document.querySelector('input[name="__RequestVerificationToken"]').value;
         let formData = new URLSearchParams();
         formData.append("UserName", username);
         formData.append("Email", email);
         formData.append("Password", password);
+        formData.append("ConfirmPassword", confirmPassword);
         formData.append("Role", role);
         formData.append("__RequestVerificationToken", token);
         let response = await fetch(`/Employees/AddEmployee`, {
@@ -225,9 +248,7 @@
             location.reload();
         } else {
             let errorMessage = await response.text();
-            if (!errorMessage.trim()) {
-                errorMessage = "An error occurred. Please check the form and try again.";
-            }
+            alert(errorMessage || "An error occurred while adding the employee.");
         }
     }
     async function updateEmployee() {

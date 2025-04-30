@@ -1,4 +1,6 @@
-﻿namespace TicketSystemWeb.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TicketSystemWeb.ViewModels
 {
     /// <summary>
     /// addemployee viewmodel
@@ -40,5 +42,15 @@
         /// The managed group ids.
         /// </value>
         public List<int> ManagedGroupIds { get; set; } = new List<int>();
+        /// <summary>
+        /// Gets or sets the confirm password.
+        /// </summary>
+        /// <value>
+        /// The confirm password.
+        /// </value>
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; }
     }
 }

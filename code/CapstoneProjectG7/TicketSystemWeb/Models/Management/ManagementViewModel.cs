@@ -31,6 +31,13 @@ namespace TicketSystemWeb.ViewModels
         /// </value>
         public List<Employee> AllEmployees { get; set; } = new();
         /// <summary>
+        /// Gets or sets the project manager options.
+        /// </summary>
+        /// <value>
+        /// The project manager options.
+        /// </value>
+        public List<Employee> ProjectManagerOptions { get; set; }
+        /// <summary>
         /// Gets or sets a value indicating whether this instance can add project.
         /// </summary>
         /// <value>

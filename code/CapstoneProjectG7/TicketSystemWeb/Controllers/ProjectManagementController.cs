@@ -36,7 +36,6 @@ namespace TicketSystemWeb.Controllers
         /// Managements this instance.
         /// </summary>
         /// <returns>the management page</returns>
-        [HttpGet]
         public async Task<IActionResult> Management()
         {
             var projects = await _context.Projects
@@ -49,12 +48,13 @@ namespace TicketSystemWeb.Controllers
                 .Include(g => g.EmployeeGroups)
                 .ThenInclude(eg => eg.Employee)
                 .ToListAsync();
-            var employees = await _context.Users.ToListAsync();
+            var allEmployees = await _context.Users.ToListAsync();
+            var groupManagers = await _context.Users
+                .Where(u => _context.Groups.Any(g => g.ManagerId == u.Id))
+                .ToListAsync();
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
             bool isGroupManager = _context.Groups.Any(g => g.ManagerId == user.Id);
-            bool isProjectManager = _context.Projects.Any(p => p.ProjectManagerId == user.Id);
-            var selectedGroupIds = new List<int>();
             var pendingApprovals = await _context.ProjectGroups
                 .Include(pg => pg.Project)
                 .Include(pg => pg.Group)
@@ -64,10 +64,11 @@ namespace TicketSystemWeb.Controllers
             {
                 Projects = projects,
                 Groups = groups,
-                AllEmployees = employees,
+                AllEmployees = allEmployees,
+                ProjectManagerOptions = groupManagers,
                 CanAddProject = isAdmin || isGroupManager,
                 CanManageGroups = isAdmin || isGroupManager,
-                SelectedGroupIds = selectedGroupIds,
+                SelectedGroupIds = new List<int>(),
                 PendingApprovals = pendingApprovals
             };
             return View("Management", viewModel);
@@ -86,6 +87,10 @@ namespace TicketSystemWeb.Controllers
             {
                 return BadRequest("Invalid project details.");
             }
+            if (model.GroupIds == null || !model.GroupIds.Any())
+            {
+                return BadRequest("A project must have at least one group.");
+            }
             bool projectExists = await _context.Projects.AnyAsync(p => p.Title == model.Title);
             if (projectExists)
             {
@@ -94,7 +99,13 @@ namespace TicketSystemWeb.Controllers
             var projectManager = await _context.Users.FindAsync(model.ProjectManagerId);
             if (projectManager == null)
             {
-                return BadRequest("Invalid Project Manager");
+                return BadRequest("Invalid Project Manager.");
+            }
+            bool isManagerOfAssignedGroup = await _context.Groups
+                .AnyAsync(g => g.ManagerId == projectManager.Id && model.GroupIds.Contains(g.Id));
+            if (!isManagerOfAssignedGroup)
+            {
+                return BadRequest("The project manager must be a manager of at least one of the selected groups.");
             }
             var project = new Project
             {
@@ -118,24 +129,21 @@ namespace TicketSystemWeb.Controllers
                 new KanbanColumn { Name = "Done", Order = 3, KanbanBoardId = kanbanBoard.Id }
             );
             await _context.SaveChangesAsync();
-            if (model.GroupIds != null && model.GroupIds.Any())
+            foreach (var groupId in model.GroupIds)
             {
-                foreach (var groupId in model.GroupIds)
+                var group = await _context.Groups.Include(g => g.Manager).FirstOrDefaultAsync(g => g.Id == groupId);
+                if (group == null) continue;
+
+                bool requiresApproval = group.ManagerId != project.ProjectManagerId;
+
+                _context.ProjectGroups.Add(new ProjectGroup
                 {
-                    var group = await _context.Groups.Include(g => g.Manager).FirstOrDefaultAsync(g => g.Id == groupId);
-                    if (group == null) continue;
-
-                    bool requiresApproval = group.ManagerId != project.ProjectManagerId;
-
-                    _context.ProjectGroups.Add(new ProjectGroup
-                    {
-                        ProjectId = project.Id,
-                        GroupId = groupId,
-                        IsApproved = !requiresApproval
-                    });
-                }
-                await _context.SaveChangesAsync();
+                    ProjectId = project.Id,
+                    GroupId = groupId,
+                    IsApproved = !requiresApproval
+                });
             }
+            await _context.SaveChangesAsync();
             return RedirectToAction("Management");
         }
 
@@ -318,7 +326,17 @@ namespace TicketSystemWeb.Controllers
                 return Forbid();
             }
             group.Name = model.Name;
-            group.ManagerId = model.SelectedManagerId;
+            if (group.ManagerId != model.SelectedManagerId)
+            {
+                bool isLeadOfProjectUsingGroup = await _context.Projects
+                    .Where(p => p.ProjectManagerId == group.ManagerId)
+                    .AnyAsync(p => p.ProjectGroups.Any(pg => pg.GroupId == group.Id));
+                if (isLeadOfProjectUsingGroup)
+                {
+                    return BadRequest("Cannot change the manager of this group because they are the project manager of a project that uses this group.");
+                }
+                group.ManagerId = model.SelectedManagerId;
+            }
             var newEmployeeIds = model.SelectedEmployeeIds ?? new List<string>();
             var existingEmployeeIds = group.EmployeeGroups.Select(eg => eg.EmployeeId).ToList();
             var toRemove = group.EmployeeGroups.Where(eg => !newEmployeeIds.Contains(eg.EmployeeId)).ToList();
@@ -346,14 +364,18 @@ namespace TicketSystemWeb.Controllers
         {
             var group = await _context.Groups
                 .Include(g => g.EmployeeGroups)
+                .Include(g => g.ProjectGroups)
                 .FirstOrDefaultAsync(g => g.Id == groupId);
-            if (group == null) return NotFound("Group not found.");
+            if (group == null)
+                return NotFound("Group not found.");
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, "admin");
             bool isGroupManager = group.ManagerId == user.Id;
             if (!isAdmin && !isGroupManager)
-            {
                 return Forbid();
+            if (group.ProjectGroups != null && group.ProjectGroups.Any())
+            {
+                return BadRequest("Cannot delete group because it is assigned to one or more projects.");
             }
             _context.EmployeeGroups.RemoveRange(group.EmployeeGroups);
             _context.Groups.Remove(group);
