@@ -107,8 +107,8 @@ namespace TicketSystemDesktop
             if (!hasAccess)
             {
                 var result = MessageBox.Show(
-                    "You will not have access to this ticket if you move into the selected stage. " +
-                    "If you proceed, you will be unassigned. Continue?",
+                    "You will not have access to this ticket if you move it into the selected stage. " +
+                    "You will be unassigned and the window will close. Continue?",
                     "Warning",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
@@ -124,12 +124,16 @@ namespace TicketSystemDesktop
                     ticket.AssignedToId = null;
                     context.SaveChanges();
 
+                    // Update the local ticket reference
                     _ticket.Status = selectedColumn.Name;
                     _ticket.AssignedTo = null;
+
+                    // Optionally refresh the UI first
                     DataContext = null;
                     DataContext = _ticket;
 
-                    StageDropdown.IsEnabled = false;
+                    // Close the window since user will lose access
+                    this.Close();
                     return;
                 }
             }

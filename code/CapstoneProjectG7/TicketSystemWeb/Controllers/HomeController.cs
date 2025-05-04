@@ -159,7 +159,7 @@ namespace TicketSystemWeb.Controllers
             if (ticket == null || column == null) return NotFound();
             var project = await _context.Projects
                 .Include(p => p.KanbanBoard)
-                    .ThenInclude(b => b.Columns)
+                .ThenInclude(b => b.Columns)
                 .Include(p => p.ProjectGroups)
                 .FirstOrDefaultAsync(p => p.Id == ticket.ProjectId);
             if (project == null) return NotFound();
@@ -173,8 +173,8 @@ namespace TicketSystemWeb.Controllers
                     .Where(g => g.ManagerId == userId || g.EmployeeGroups.Any(eg => eg.EmployeeId == userId))
                     .Select(g => g.Id)
                     .ToListAsync();
+
                 var isInProject = project.ProjectGroups.Any(pg => userGroupIds.Contains(pg.GroupId));
-                var hasAccessToColumn = column.GroupAccess.Any(ga => userGroupIds.Contains(ga.GroupId));
                 if (!isInProject)
                     return Forbid();
             }

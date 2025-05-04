@@ -51,6 +51,12 @@
                                      draggable="@(ViewBag.CanManageColumns ? "true" : "false")"
                                      ondragstart="@(ViewBag.CanManageColumns ? "dragColumn(event)" : "")">
                                     <h3>@column.Name</h3>
+                                    @if (column.GroupAccess?.FirstOrDefault()?.Group != null)
+                                    {
+                                        <p class="column-group-name">
+                                            Group: @column.GroupAccess.First().Group.Name
+                                        </p>
+                                    }
                                 </div>
                                 <div class="kanban-cards"
                                      ondrop="drop(event)"

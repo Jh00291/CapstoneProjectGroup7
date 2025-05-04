@@ -43,26 +43,21 @@ namespace TicketSystemDesktop
                 using (var context = new TicketDBContext())
                 {
                     var user = context.Users.FirstOrDefault(u => u.UserName == username);
-
-                    if (user == null)
-                    {
-                        LoginStatus.Text = "User not found.";
-                        return;
-                    }
-
                     var hasher = new PasswordHasher<Employee>();
-                    var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
 
-                    if (result == PasswordVerificationResult.Success)
+                    if (user != null)
                     {
-                        var main = new MainWindow(user);
-                        main.Show();
-                        this.Close();
+                        var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+                        if (result == PasswordVerificationResult.Success)
+                        {
+                            var main = new MainWindow(user);
+                            main.Show();
+                            this.Close();
+                            return;
+                        }
                     }
-                    else
-                    {
-                        LoginStatus.Text = "Invalid password.";
-                    }
+
+                    LoginStatus.Text = "Invalid username or password.";
                 }
             }
             catch (Exception ex)
