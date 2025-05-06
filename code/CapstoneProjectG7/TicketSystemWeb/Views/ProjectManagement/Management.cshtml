@@ -656,9 +656,7 @@
             location.reload();
         } else {
             let errorMessage = await response.text();
-            document.getElementById("groupDeleteErrorMessage").textContent = errorMessage || "Could not delete group.";
-            let errorModal = new bootstrap.Modal(document.getElementById("groupDeleteErrorModal"));
-            errorModal.show();
+            alert(errorMessage);
         }
     }
     function openRemoveGroupModal(groupId) {
