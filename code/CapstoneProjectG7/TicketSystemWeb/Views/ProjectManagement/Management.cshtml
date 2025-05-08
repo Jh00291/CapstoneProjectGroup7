@@ -362,7 +362,7 @@
                 <h5 class="modal-title" id="editGroupModalLabel">Edit Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-controller="ProjectManagement" asp-action="UpdateGroup" method="post">
+            <form id="editGroupForm" onsubmit="submitEditGroupForm(event)">
                 <input type="hidden" id="editGroupId" name="GroupId" />
                 <div class="modal-body">
                     <div class="mb-3">
@@ -475,6 +475,35 @@
             });
         }
     });
+    async function submitEditGroupForm(event) {
+        event.preventDefault();
+        const form = document.getElementById("editGroupForm");
+        const formData = new URLSearchParams(new FormData(form));
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        if (!token) {
+            alert("Missing CSRF token.");
+            return;
+        }
+        formData.append("__RequestVerificationToken", token);
+        try {
+            const response = await fetch("/ProjectManagement/UpdateGroup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: formData
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const message = await response.text();
+                alert(message);
+            }
+        } catch (error) {
+            console.error("Error updating group:", error);
+            alert("An unexpected error occurred while updating the group.");
+        }
+    }
     function validateAndSubmitProjectForm() {
         let form = document.getElementById("addProjectForm");
         if (form.checkValidity()) {
@@ -686,38 +715,43 @@
             to.appendChild(option);
         });
     }
-    function openEditProjectModal(projectId, title, description, groupIds, projectManagerId) {
+    function openEditProjectModal(projectId, title, description, groupIds, currentManagerId) {
         document.getElementById("editProjectId").value = projectId;
         document.getElementById("editTitle").value = title;
         document.getElementById("editDescription").value = description;
-        let managerSelect = document.getElementById("editManager");
-        if (managerSelect) {
-            for (let i = 0; i < managerSelect.options.length; i++) {
-                if (managerSelect.options[i].value == projectManagerId) {
-                    managerSelect.options[i].selected = true;
-                    break;
-                }
-            }
-        }
-        let availableGroups = document.getElementById("editAvailableGroups");
-        let selectedGroups = document.getElementById("editSelectedGroups");
+        const managerSelect = document.getElementById("editManager");
+        const availableGroups = document.getElementById("editAvailableGroups");
+        const selectedGroups = document.getElementById("editSelectedGroups");
+        managerSelect.innerHTML = "";
         availableGroups.innerHTML = "";
         selectedGroups.innerHTML = "";
-        fetch('/ProjectManagement/GetGroups')
-            .then(response => response.json())
-            .then(groups => {
+        Promise.all([
+            fetch('/ProjectManagement/GetGroups').then(res => res.json()),
+            fetch('/ProjectManagement/GetEmployees').then(res => res.json())
+        ])
+            .then(([groups, employees]) => {
+                const selectedGroupIds = groupIds.map(id => parseInt(id));
+                const selectedGroupManagers = new Set();
                 groups.forEach(group => {
-                    let option = new Option(group.name, group.id);
-                    if (groupIds.includes(group.id)) {
+                    const option = new Option(group.name, group.id);
+                    if (selectedGroupIds.includes(group.id)) {
                         selectedGroups.appendChild(option);
+                        selectedGroupManagers.add(group.managerId);
                     } else {
                         availableGroups.appendChild(option);
                     }
                 });
+                employees.forEach(emp => {
+                    if (selectedGroupManagers.has(emp.id)) {
+                        const option = new Option(emp.userName, emp.id);
+                        if (emp.id === currentManagerId) option.selected = true;
+                        managerSelect.appendChild(option);
+                    }
+                });
             })
-            .catch(error => console.error("Error loading groups:", error));
-        var editModal = new bootstrap.Modal(document.getElementById("editProjectModal"));
-        editModal.show();
+            .catch(error => console.error("Error loading edit project data:", error));
+        const modal = new bootstrap.Modal(document.getElementById("editProjectModal"));
+        modal.show();
     }
     function openEditGroupModal(groupId, groupName, managerId, employeeIds) {
         document.getElementById("editGroupId").value = groupId;

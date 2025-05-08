@@ -391,7 +391,7 @@ namespace TicketSystemWeb.Controllers
         public async Task<IActionResult> GetGroups()
         {
             var groups = await _context.Groups
-                .Select(g => new { g.Id, g.Name })
+                .Select(g => new { g.Id, g.Name, g.ManagerId })
                 .ToListAsync();
             return Json(groups);
         }
